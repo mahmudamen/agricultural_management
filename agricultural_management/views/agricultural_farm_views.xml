@@ -1,0 +1,689 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <!-- Form View -->
+        <record id="view_agricultural_farm_form" model="ir.ui.view">
+            <field name="name">agricultural.farm.form</field>
+            <field name="model">agricultural.farm</field>
+            <field name="arch" type="xml">
+                <form string="Farms">
+                    <header>
+                        <field name="company_id" invisible="1"/>
+                        <field name="parent_id" invisible="1"/>
+                        <button name="action_create_farm_accounts"
+                            string="Full Accounts"
+                            type="object"
+                            class="btn-primary"/>
+                        <button name="create_stock_location" type="object"
+                                string="Full"
+                                invisible="location_id != False"
+                                class="btn-primary"/>
+                        <button name="create_analytic_account"
+                                type="object"
+                                invisible="analytic_account_id != False"
+                                string="Full Accounts Analytic"
+                                class="btn-primary"/>
+                        <field name="active" invisible="1" widget="boolean_button" options='{"terminology": "archive"}'/>
+                    </header>
+                    <sheet>
+                        <div class="oe_button_box" name="button_box">
+                            <button name="action_view_children"
+                                    type="object"
+                                    class="oe_stat_button"
+                                    icon="fa-sitemap"
+                                    invisible="child_count == 0">
+                                <field name="child_count" widget="statinfo" string="Sub-Farms"/>
+                            </button>
+
+                            <button name="action_view_employees"
+                                    type="object"
+                                    class="oe_stat_button"
+                                    icon="fa-users">
+                                <field name="employee_count" widget="statinfo" string="Workers"/>
+                            </button>
+                            <button name="action_view_cost_center"
+                                    type="object"
+                                    class="oe_stat_button"
+                                    icon="fa-line-chart"
+                                    invisible="analytic_line_count == 0">
+                                <field name="analytic_line_count" widget="statinfo" string="Analytics"/>
+                            </button>
+                        </div>
+                        <widget name="web_ribbon" title="Archived" bg_color="bg-danger" invisible="active == True"/>
+                        <div class="oe_title">
+                            <h1>
+                                <field name="name" placeholder="House Sector Unit ......"/>
+                            </h1>
+                            <h3>
+                                <field name="code" invisible="1" placeholder="FARM001" class="text-muted"/>
+                                <field name="level" invisible="1" widget="badge" class="ms-2"/>
+                            </h3>
+                        </div>
+                        <group>
+                            <group string="Basic Information" class="oe_form_group_label_background">
+                                <field name="parent_id"
+                                       options="{'no_create': True, 'no_create_edit': True}"
+                                       string="Parent Farm"/>
+                                <field name="location" string="Location"/>
+                                <field name="farm_type" string="Farm Type"/>
+                                <field name="level" string="Level" />
+                                <field name="sequence" string="#⃣ Sequence"/>
+                            </group>
+                            <group string="Physical Properties" class="oe_form_group_label_background">
+                                <field name="area_hectares" string="Area (Meters2)" widget="float"/>
+                                <field name="total_area" invisible="1" readonly="1" string="Total Area" widget="float"/>
+                                <field name="soil_type" invisible="1" string="Soil Type"/>
+                                <field name="irrigation_type" invisible="1" string="Irrigation System"/>
+                                <field name="house_type"  string="House Type"/>
+                            </group>
+                        </group>
+                        <group>
+                            <group string="Staff Management" class="oe_form_group_label_background">
+                                <field name="responsible_user_id" widget="many2one_avatar_user" string="Responsible"/>
+                                <field name="farm_manager" widget="many2one_avatar" string="Farm Manager"/>
+                                <field name="agricultural_engineer" invisible="1" widget="many2one_avatar" string="Agricultural Engineer"/>
+                                <field name="veterinarian" invisible="1" widget="many2one_avatar" string="Veterinarian"/>
+                            </group>
+                            <group string="Cost Center &amp; Analytics" class="oe_form_group_label_background">
+                                <field name="analytic_account_id" string="Analytic Account"/>
+                                <field name="project_count" invisible="1" readonly="1" string="Projects"/>
+                            </group>
+                        </group>
+                        <group>
+                            <group string="Warehouse Integration" class="oe_form_group_label_background">
+                                <field name="warehouse_id" string="Warehouse"/>
+                                <field name="location_id" force_save="1" readonly="1" string="Stock Location"/>
+                                <field name="picking_type_harvest_id" string="Harvest Operation"/>
+                                <field name="picking_type_internal_id" string="Internal Operation"/>
+                            </group>
+                            <group string="Level Statistics" class="oe_form_group_label_background">
+                                <field name="sector_count" readonly="1" string="Sectors"/>
+                                <field name="house_count" readonly="1" string="Houses"/>
+                            </group>
+                        </group>
+                        <notebook>
+                            <page string="Workers" name="workers">
+                                <div class="oe_title">
+                                    <h3>Farm Workers Management</h3>
+                                </div>
+                                <field name="worker_ids">
+                                    <list editable="bottom" decoration-info="True">
+                                        <field name="company_id" invisible="1"/>
+                                        <field name="name" string="Worker Name"/>
+                                        <field name="job_id" string="Position"/>
+                                        <field name="department_id" string="Department"/>
+                                        <field name="work_email" string="Email" widget="email"/>
+                                        <field name="mobile_phone" string="Mobile" widget="phone"/>
+                                    </list>
+                                    <form>
+                                        <sheet>
+                                            <group>
+                                                <group>
+                                                    <field name="name"/>
+                                                    <field name="job_id"/>
+                                                    <field name="department_id"/>
+                                                </group>
+                                                <group>
+                                                    <field name="work_email" widget="email"/>
+                                                    <field name="mobile_phone" widget="phone"/>
+                                                </group>
+                                            </group>
+                                        </sheet>
+                                    </form>
+                                </field>
+                            </page>
+                            <page string="Current Crops" name="current_crops">
+                                <div class="oe_title">
+                                    <h3>Active Crop Production</h3>
+                                </div>
+                                <field name="current_crop_ids">
+                                    <list decoration-success="list_price > standard_price" decoration-warning="list_price == standard_price" decoration-danger="list_price &lt; standard_price">
+                                        <field name="currency_id" invisible="1"/>
+                                        <field name="name" string="Crop Name"/>
+                                        <field name="default_code" string="Code"/>
+                                        <field name="categ_id" string="Category"/>
+                                        <field name="list_price" widget="monetary" string="Sale Price"/>
+                                        <field name="standard_price" widget="monetary" string="Cost Price"/>
+                                        <field name="qty_available" string="Stock" optional="hide"/>
+                                    </list>
+                                </field>
+                            </page>
+                            <page string="Financial Summary" name="financial">
+                                <div class="oe_title">
+                                    <h3>Financial Overview</h3>
+                                </div>
+                                <group>
+                                    <group string="Costs" class="oe_form_group_label_background">
+                                        <field name="total_cost" widget="monetary" string="Total Operational Cost"/>
+                                        <field name="total_wages" widget="monetary" string="Staff Wages"/>
+                                        <field name="seed_costs" widget="monetary" string="Seed Expenses"/>
+                                        <field name="total_expenses" widget="monetary" string="Total Expenses"/>
+                                    </group>
+                                    <group string="Revenue &amp; Profit" class="oe_form_group_label_background">
+                                        <field name="total_sales" widget="monetary" string="Total Sales"/>
+                                        <field name="currency_id" invisible="1"/>
+                                        <field name="profit_loss" widget="monetary" string="Profit/Loss"
+                                               decoration-success="profit_loss >= 0"
+                                               decoration-danger="profit_loss &lt; 0"/>
+                                    </group>
+                                </group>
+                                <separator string="Financial Actions" style="margin-top: 20px;"/>
+                                <group string="Reports &amp; Analysis">
+                                    <div class="row">
+                                        <div class="col-6">
+                                            <button name="action_view_wage_report"
+                                                    type="object"
+                                                    string="Wage Reports"
+                                                    class="btn btn-info btn-block"/>
+                                        </div>
+                                        <div class="col-6">
+                                            <button name="action_view_production_report"
+                                                    type="object"
+                                                    string="Production Report"
+                                                    class="btn btn-success btn-block"/>
+                                        </div>
+                                    </div>
+                                </group>
+                            </page>
+                            <page string="Products" name="products">
+                                <div class="oe_title">
+                                    <h3>Product Management</h3>
+                                </div>
+                                <group string="Produced Products" class="oe_form_group_label_background">
+                                        <field name="produced_product_ids" nolabel="1">
+                                            <list decoration-success="list_price > 0" decoration-muted="list_price == 0">
+                                                <field name="currency_id" invisible="1"/>
+                                                <field name="name" string="Product Name"/>
+                                                <field name="default_code" string="Reference" optional="show"/>
+                                                <field name="categ_id" string="Category" optional="show"/>
+                                                <field name="list_price" widget="monetary" string="Sale Price"/>
+                                                <field name="qty_available" string="Stock" optional="show"/>
+                                            </list>
+                                        </field>
+                                    </group>
+                                <group string="Consumed Products" class="oe_form_group_label_background">
+                                        <field name="consumed_product_ids" nolabel="1">
+                                            <list decoration-info="standard_price > 0" decoration-muted="standard_price == 0">
+                                                <field name="currency_id" invisible="1"/>
+                                                <field name="name" string="Product Name"/>
+                                                <field name="default_code" string="Reference" optional="show"/>
+                                                <field name="categ_id" string="Category" optional="show"/>
+                                                <field name="standard_price" widget="monetary" string="Cost Price"/>
+                                                <field name="qty_available" string="Stock" optional="show"/>
+                                            </list>
+                                        </field>
+                                    </group>
+                                <separator string="Seed Products" style="margin-top: 20px;"/>
+                                <group string="Seed Products" class="oe_form_group_label_background">
+                                        <field name="seed_product_ids" nolabel="1">
+                                            <list decoration-warning="standard_price > 0" decoration-muted="standard_price == 0">
+                                                <field name="currency_id" invisible="1"/>
+                                                <field name="name" string="Seed Name"/>
+                                                <field name="default_code" string="Seed Code" optional="show"/>
+                                                <field name="categ_id" string="Category" optional="show"/>
+                                                <field name="standard_price" widget="monetary" string="Seed Cost"/>
+                                                <field name="qty_available" string="Available Stock" optional="show"/>
+                                                <field name="uom_id" string="Unit" optional="show"/>
+                                            </list>
+                                        </field>
+                                    </group>
+                            </page>
+                        </notebook>
+                    </sheet>
+                    <chatter/>
+                </form>
+            </field>
+        </record>
+        <!-- Enhanced list View with JS/OWL -->
+        <record id="view_agricultural_farm_list_enhanced" model="ir.ui.view">
+            <field name="name">agricultural.farm.list.enhanced</field>
+            <field name="model">agricultural.farm</field>
+            <field name="arch" type="xml">
+                <list string="Agricultural Farms Management" multi_edit="1">
+                    <!-- Handle for drag &amp; drop reordering -->
+                    <field name="sequence" widget="handle" string=""/>
+                    <field name="parent_id" />
+                    <field name="picking_type_harvest_id" optional="hide"/>
+                    <field name="picking_type_internal_id" optional="hide"/>
+                    <!-- Farm Hierarchy Display -->
+                    <field name="display_name" string="Farm/Location Name"/>
+                    <!-- Enhanced Level Badge -->
+                    <field name="level" widget="badge"
+                           string="Level"/>
+                    <!-- Physical Properties -->
+                    <field name="area_hectares" widget="float" digits="[16,2]"
+                           string="Area (Ha)" optional="show"/>
+                    <!-- Staff Information -->
+                    <field name="employee_count" string="Workers" optional="show"/>
+                    <field name="responsible_user_id" widget="many2one_avatar_user"
+                           string="Manager" optional="hide"/>
+                    <!-- Farm Type &amp; Properties -->
+                    <field name="farm_type" string="Type" optional="show"/>
+                    <field name="soil_type" string="Soil" optional="hide"/>
+                    <field name="irrigation_type" string="Irrigation" optional="hide"/>
+                    <!-- Financial Performance -->
+                    <field name="total_cost" widget="monetary"
+                           string="Total Costs" optional="show"/>
+                    <field name="total_sales" widget="monetary"
+                           string="Revenue" optional="show"/>
+                    <field name="profit_loss" widget="monetary"
+                           string="Profit/Loss" optional="show"/>
+                    <!-- Production Info -->
+                    <field name="current_crop_ids" widget="many2many_tags"
+                           string="Current Crops" optional="hide"/>
+                    <!-- Warehouse Integration -->
+                    <field name="warehouse_id" string="Warehouse" optional="hide"/>
+                    <field name="location_id" string="Stock Location" optional="hide"/>
+                    <!-- Status &amp; Analytics -->
+                    <field name="analytic_line_count" string="Analytics" optional="hide"/>
+                    <field name="project_count" string="Projects" optional="hide"/>
+                    <!-- Active Status Toggle -->
+                    <field name="active" widget="boolean_toggle"
+                           string="Active" optional="show"/>
+                    <!-- Location Information -->
+                    <field name="location" string="Location" optional="hide"/>
+                    <!-- Hierarchy Counts -->
+                    <field name="sector_count" string="Sectors" optional="hide"
+                           />
+                    <field name="house_count" string="Houses" optional="hide"
+                           />
+                    <!-- Hidden Fields for Calculations -->
+                    <field name="color" column_invisible="1"/>
+                    <field name="currency_id" column_invisible="1"/>
+                    <field name="company_id" column_invisible="1"/>
+
+                </list>
+            </field>
+        </record>
+        <!-- Kanban View -->
+        <record id="view_agricultural_farm_kanban" model="ir.ui.view">
+            <field name="name">agricultural.farm.kanban</field>
+            <field name="model">agricultural.farm</field>
+            <field name="arch" type="xml">
+                <kanban class="o_kanban_farm o_kanban_dashboard"
+                        default_group_by="level"
+                        sample="1"
+                        quick_create="false"
+                        can_open="1"
+                        archivable="1"
+                        records_draggable="1">
+                    <!-- Enhanced Field List -->
+                    <field name="id"/>
+                    <field name="name"/>
+                    <field name="code"/>
+                    <field name="level"/>
+                    <field name="farm_type"/>
+                    <field name="color"/>
+                    <field name="color_hex"/>
+                    <field name="area_hectares"/>
+                    <field name="total_area"/>
+                    <field name="employee_count"/>
+                    <field name="child_count"/>
+                    <field name="total_cost"/>
+                    <field name="total_sales"/>
+                    <field name="profit_loss"/>
+                    <field name="farm_manager"/>
+                    <field name="responsible_user_id"/>
+                    <field name="analytic_account_id"/>
+                    <field name="location"/>
+                    <field name="soil_type"/>
+                    <field name="irrigation_type"/>
+                    <field name="warehouse_id"/>
+                    <field name="current_crop_ids"/>
+                    <field name="active"/>
+                    <field name="currency_id"/>
+                    <templates>
+                        <t t-name="card">
+                            <div t-attf-class="oe_kanban_card oe_kanban_global_click o_farm_kanban_card
+                                             #{record.profit_loss.raw_value and record.profit_loss.raw_value > 0 ? 'border-success' : ''}
+                                             #{record.profit_loss.raw_value and record.profit_loss.raw_value &lt; 0 ? 'border-danger' : ''}
+                                             #{record.active.raw_value == false ? 'o_kanban_archived' : ''}"
+                                 t-attf-style="border-left: 4px solid #{record.color_hex.raw_value or '#875A7B'};">
+
+                                <!-- Enhanced Card Header -->
+                                <div class="o_kanban_card_header">
+                                    <div class="o_kanban_card_header_title">
+                                        <div class="o_primary d-flex align-items-center">
+                                            <!-- Level Icon -->
+                                            <span class="me-2">
+                                                <t t-if="record.level.raw_value == 'farm'"></t>
+                                                <t t-elif="record.level.raw_value == 'sector'"></t>
+                                                <t t-elif="record.level.raw_value == 'house'"></t>
+                                            </span>
+
+                                            <div>
+                                                <strong><field name="name"/></strong>
+                                                <t t-if="record.code.raw_value">
+                                                    <span class="badge badge-pill badge-info ms-1">
+                                                        <field name="code"/>
+                                                    </span>
+                                                </t>
+                                            </div>
+                                        </div>
+
+                                        <div class="o_secondary mt-1">
+                                            <!-- Enhanced Level Badge -->
+                                            <span t-attf-class="badge badge-pill
+                                                              #{record.level.raw_value == 'farm' ? 'badge-success' : ''}
+                                                              #{record.level.raw_value == 'sector' ? 'badge-info' : ''}
+                                                              #{record.level.raw_value == 'house' ? 'badge-warning' : ''}">
+                                                <field name="level"/>
+                                            </span>
+
+                                            <!-- Farm Type Badge -->
+                                            <t t-if="record.farm_type.raw_value">
+                                                <span t-attf-class="badge badge-pill ms-1
+                                                                  #{record.farm_type.raw_value == 'crops' ? 'badge-success' : ''}
+                                                                  #{record.farm_type.raw_value == 'livestock' ? 'badge-primary' : ''}
+                                                                  #{record.farm_type.raw_value == 'mixed' ? 'badge-warning' : 'badge-secondary'}">
+                                                    <t t-if="record.farm_type.raw_value == 'crops'"></t>
+                                                    <t t-elif="record.farm_type.raw_value == 'livestock'"></t>
+                                                    <t t-elif="record.farm_type.raw_value == 'mixed'"></t>
+                                                    <t t-else=""></t>
+                                                    <field name="farm_type"/>
+                                                </span>
+                                            </t>
+                                        </div>
+                                    </div>
+
+                                    <!-- Archive Status Indicator -->
+                                    <div class="o_kanban_manage_button_section">
+                                        <t t-if="record.active.raw_value == false">
+                                            <span class="badge badge-danger">Archived</span>
+                                        </t>
+                                        <a class="o_kanban_manage_toggle_button" href="#" tabindex="-1">
+                                            <i class="fa fa-ellipsis-v" role="img" aria-label="Manage" title="Manage"/>
+                                        </a>
+                                    </div>
+                                </div>
+
+                                <!-- Enhanced Card Content -->
+                                <div class="o_kanban_card_content">
+
+                                    <!-- Location &amp; Physical Info -->
+                                    <div class="row mb-2" t-if="record.location.raw_value">
+                                        <div class="col-12">
+                                            <small class="text-muted">
+                                                <field name="location"/>
+                                            </small>
+                                        </div>
+                                    </div>
+
+                                    <!-- Key Statistics Row -->
+                                    <div class="row mb-2">
+                                        <div class="col-12">
+                                            <div class="o_kanban_tags_section d-flex flex-wrap">
+                                                <!-- Area Information -->
+                                                <t t-if="record.area_hectares.raw_value">
+                                                    <span class="badge badge-pill badge-light me-1 mb-1">
+                                                        <field name="area_hectares"/> Ha
+                                                    </span>
+                                                </t>
+
+                                                <!-- Staff Count -->
+                                                <t t-if="record.employee_count.raw_value and record.employee_count.raw_value > 0">
+                                                    <span class="badge badge-pill badge-info me-1 mb-1">
+                                                        <field name="employee_count"/> Workers
+                                                    </span>
+                                                </t>
+
+
+
+                                                <!-- Soil Type -->
+                                                <t t-if="record.soil_type.raw_value">
+                                                    <span class="badge badge-pill badge-secondary me-1 mb-1">
+                                                        <field name="soil_type"/>
+                                                    </span>
+                                                </t>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <!-- Current Crops -->
+                                    <div class="row mb-2" t-if="record.current_crop_ids.raw_value">
+                                        <div class="col-12">
+                                            <small><strong>Current Crops:</strong></small>
+                                            <div class="mt-1">
+                                                <field name="current_crop_ids" widget="many2many_tags"/>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <!-- Management Team -->
+                                    <div class="row mb-2">
+                                        <div class="col-6" t-if="record.farm_manager.raw_value">
+                                            <small><strong>Manager:</strong></small><br/>
+                                            <field name="farm_manager" widget="many2one_avatar"
+                                                   options="{'display_avatar_name': True, 'size': 'small'}"/>
+                                        </div>
+                                        <div t-attf-class="#{record.farm_manager.raw_value ? 'col-6' : 'col-12'}"
+                                             t-if="record.responsible_user_id.raw_value">
+                                            <small><strong>Responsible:</strong></small><br/>
+                                            <field name="responsible_user_id" widget="many2one_avatar_user"
+                                                   options="{'display_avatar_name': True, 'size': 'small'}"/>
+                                        </div>
+                                    </div>
+
+                                    <!-- Enhanced Financial Performance -->
+                                    <div class="row mb-2" t-if="record.total_sales.raw_value or record.total_cost.raw_value">
+                                        <div class="col-12">
+                                            <small><strong>Financial Performance:</strong></small>
+
+                                            <!-- Revenue vs Cost Progress Bar -->
+                                            <t t-set="total_amount" t-value="(record.total_sales.raw_value or 0) + (record.total_cost.raw_value or 0)"/>
+                                            <div class="progress mt-1 mb-2" style="height: 20px;" t-if="total_amount > 0">
+                                                <div class="progress-bar bg-success d-flex align-items-center justify-content-center"
+                                                     role="progressbar"
+                                                     t-attf-style="width: #{(record.total_sales.raw_value or 0) / total_amount * 100}%">
+                                                    <small class="text-white">Revenue</small>
+                                                </div>
+                                                <div class="progress-bar bg-danger d-flex align-items-center justify-content-center"
+                                                     role="progressbar"
+                                                     t-attf-style="width: #{(record.total_cost.raw_value or 0) / total_amount * 100}%">
+                                                    <small class="text-white">Costs</small>
+                                                </div>
+                                            </div>
+
+                                            <!-- Financial Summary -->
+                                            <div class="d-flex justify-content-between">
+                                                <small>Revenue: <field name="total_sales" widget="monetary"/></small>
+                                                <small>Costs: <field name="total_cost" widget="monetary"/></small>
+                                            </div>
+
+                                            <!-- Profit/Loss Display -->
+                                            <div class="text-center mt-1" t-if="record.profit_loss.raw_value">
+                                                <span t-attf-class="badge badge-pill
+                                                                  #{record.profit_loss.raw_value > 0 ? 'badge-success' : ''}
+                                                                  #{record.profit_loss.raw_value &lt; 0 ? 'badge-danger' : ''}
+                                                                  #{record.profit_loss.raw_value == 0 ? 'badge-warning' : ''}">
+                                                    <t t-if="record.profit_loss.raw_value > 0">Profit:</t>
+                                                    <t t-elif="record.profit_loss.raw_value &lt; 0">Loss:</t>
+                                                    <t t-else="">Break-even:</t>
+                                                    <field name="profit_loss" widget="monetary"/>
+                                                </span>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <!-- Quick Action Buttons -->
+                                    <div class="row">
+                                        <div class="col-12 d-flex justify-content-between">
+
+
+                                            <button class="btn btn-info btn-sm"
+                                                    name="action_view_employees"
+                                                    type="object"
+                                                    t-if="record.employee_count.raw_value and record.employee_count.raw_value > 0">
+                                                Staff
+                                            </button>
+
+                                            <button class="btn btn-success btn-sm"
+                                                    name="action_view_financial_report"
+                                                    type="object">
+                                                Report
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Enhanced Management Dropdown -->
+                                <div class="o_kanban_card_manage_pane dropdown-menu" role="menu">
+                                    <a role="menuitem" type="open" class="dropdown-item">
+                                        <i class="fa fa-pencil me-2" title="pencil"></i>Edit Farm
+                                    </a>
+                                    <a role="menuitem" name="action_view_cost_center" type="object" class="dropdown-item">
+                                        <i class="fa fa-line-chart me-2" title="line chart"></i>Cost Center
+                                    </a>
+                                    <a role="menuitem" name="action_view_employees" type="object" class="dropdown-item">
+                                        <i class="fa fa-users me-2" title="users"></i>View Workers
+                                    </a>
+                                    <a role="menuitem" name="action_view_financial_report" type="object" class="dropdown-item">
+                                        <i class="fa fa-chart-bar me-2" title="chart bar"></i>Financial Report
+                                    </a>
+                                    <a role="menuitem" name="action_view_cost_analysis" type="object" class="dropdown-item">
+                                        <i class="fa fa-calculator me-2" title="calculator"></i>Cost Analysis
+                                    </a>
+
+                                    <div role="separator" class="dropdown-divider"/>
+
+                                    <!-- Warehouse Actions -->
+                                    <a role="menuitem" name="action_view_warehouse" type="object" class="dropdown-item" t-if="record.warehouse_id.raw_value">
+                                        <i class="fa fa-warehouse me-2" title="warehouse"></i>Warehouse
+                                    </a>
+                                    <a role="menuitem" name="action_view_products" type="object" class="dropdown-item">
+                                        <i class="fa fa-cube me-2" title="cube"></i>Products
+                                    </a>
+
+                                    <div role="separator" class="dropdown-divider"/>
+
+                                    <!-- Farm Hierarchy Actions -->
+                                    <a role="menuitem" name="action_view_children" type="object" class="dropdown-item" t-if="record.child_count.raw_value and record.child_count.raw_value > 0">
+                                        <i class="fa fa-sitemap me-2" title="sitemap"></i>Sub-Locations
+                                    </a>
+                                    <a role="menuitem" name="action_create_sector" type="object" class="dropdown-item" t-if="record.level.raw_value == 'farm'">
+                                        <i class="fa fa-plus me-2" title="plus"></i>Add Sector
+                                    </a>
+                                    <a role="menuitem" name="action_create_house" type="object" class="dropdown-item" t-if="record.level.raw_value == 'sector'">
+                                        <i class="fa fa-plus me-2" title="plus"></i>Add House
+                                    </a>
+
+                                    <div role="separator" class="dropdown-divider"/>
+
+                                    <!-- Color Picker -->
+                                    <div class="o_kanban_colorpicker" data-field="color"/>
+
+                                    <div role="separator" class="dropdown-divider"/>
+
+                                    <!-- Archive/Restore Actions -->
+                                    <a role="menuitem" name="toggle_active" type="object" class="dropdown-item">
+                                        <t t-if="record.active.raw_value">
+                                            <i class="fa fa-archive me-2" title="archive"></i>Archive Farm
+                                        </t>
+                                        <t t-else="">
+                                            <i class="fa fa-undo me-2" title="undo"></i>Restore Farm
+                                        </t>
+                                    </a>
+
+                                    <!-- Duplicate Action -->
+                                    <a role="menuitem" name="action_duplicate" type="object" class="dropdown-item">
+                                        <i class="fa fa-copy me-2" title="copy"></i>Duplicate Farm
+                                    </a>
+
+                                    <div role="separator" class="dropdown-divider"/>
+
+                                    <!-- Delete Action -->
+                                    <a role="menuitem" name="unlink" type="object" class="dropdown-item text-danger" t-if="record.active.raw_value == false">
+                                        <i class="fa fa-trash me-2" title="trash"></i>Delete Farm
+                                    </a>
+                                </div>
+                            </div>
+                        </t>
+                    </templates>
+                </kanban>
+            </field>
+        </record>
+        <!-- Graph Views -->
+        <record id="view_agricultural_farm_graph" model="ir.ui.view">
+            <field name="name">agricultural.farm.graph</field>
+            <field name="model">agricultural.farm</field>
+            <field name="arch" type="xml">
+                <graph string="Farm Statistics" type="bar" sample="1">
+                    <field name="level" type="row"/>
+                    <field name="total_area" type="measure"/>
+                    <field name="total_cost" type="measure"/>
+                    <field name="total_sales" type="measure"/>
+                    <field name="employee_count" type="measure"/>
+                </graph>
+            </field>
+        </record>
+        <record id="view_agricultural_farm_graph_pie" model="ir.ui.view">
+            <field name="name">agricultural.farm.graph.pie</field>
+            <field name="model">agricultural.farm</field>
+            <field name="arch" type="xml">
+                <graph string="Farm Distribution" type="pie" sample="1">
+                    <field name="level" type="row"/>
+                    <field name="total_area" type="measure"/>
+                </graph>
+            </field>
+        </record>
+        <record id="view_agricultural_farm_graph_line" model="ir.ui.view">
+            <field name="name">agricultural.farm.graph.line</field>
+            <field name="model">agricultural.farm</field>
+            <field name="arch" type="xml">
+                <graph string="Financial Trends" type="line" sample="1">
+                    <field name="create_date" type="row" interval="month"/>
+                    <field name="total_cost" type="measure"/>
+                    <field name="total_sales" type="measure"/>
+                </graph>
+            </field>
+        </record>
+        <!-- Pivot View -->
+        <record id="view_agricultural_farm_pivot" model="ir.ui.view">
+            <field name="name">agricultural.farm.pivot</field>
+            <field name="model">agricultural.farm</field>
+            <field name="arch" type="xml">
+                <pivot string="Farm Analysis" sample="1" display_quantity="1">
+                    <field name="level" type="row"/>
+                    <field name="farm_type" type="row"/>
+                    <field name="total_area" type="measure"/>
+                    <field name="total_cost" type="measure"/>
+                    <field name="total_sales" type="measure"/>
+                    <field name="employee_count" type="measure"/>
+                    <field name="house_count" type="measure"/>
+                </pivot>
+            </field>
+        </record>
+        <!-- Farm Management Actions -->
+        <record id="action_agricultural_farm" model="ir.actions.act_window">
+            <field name="name">Houses Agricultural</field>
+            <field name="res_model">agricultural.farm</field>
+            <field name="view_mode">list,form,graph,pivot</field>
+            <field name="view_ids" eval="[(5, 0, 0),
+                                (0, 0, {'view_mode': 'list', 'view_id': ref('view_agricultural_farm_list_enhanced'), 'sequence': 1}),
+                                (0, 0, {'view_mode': 'form', 'view_id': ref('view_agricultural_farm_form'), 'sequence': 3}),
+                                (0, 0, {'view_mode': 'graph', 'view_id': ref('view_agricultural_farm_graph'), 'sequence': 4}),
+                                (0, 0, {'view_mode': 'pivot', 'view_id': ref('view_agricultural_farm_pivot'), 'sequence': 5})]"/>
+
+        </record>
+            <menuitem id="menu_agricultural_production_request"
+              action="action_agricultural_production_request"
+              parent="menu_agricultural_production"
+              sequence="10"/>
+            <menuitem id="menu_agricultural_farm"
+              action="action_agricultural_farm"
+              parent="menu_agricultural_production"
+              sequence="10"/>
+        <!-- Server Action for Batch Integration -->
+        <record id="action_server_batch_farm_integrations" model="ir.actions.server">
+        <field name="name">Create Integrations (Accounts + Inventory)</field>
+        <field name="model_id" ref="model_agricultural_farm"/>
+        <field name="binding_model_id" ref="model_agricultural_farm"/>
+        <field name="binding_view_types">list</field>
+        <field name="state">code</field>
+        <field name="code">
+if records:
+    action = records.action_batch_create_integrations()
+        </field>
+    </record>
+    </data>
+</odoo>

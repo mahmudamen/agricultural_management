@@ -1,0 +1,549 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_agricultural_production_request_form" model="ir.ui.view">
+        <field name="name">agricultural.production.request.form</field>
+        <field name="model">agricultural.production.request</field>
+        <field name="arch" type="xml">
+            <form string="Production Request">
+
+                <!-- HEADER -->
+<header>
+
+    <field name="state" widget="statusbar"
+           statusbar_visible="draft,submitted,dr_approved,inventory_review,transfer_ready,rfq_pending,transferred,completed"/>
+
+    <!-- Submit -->
+    <button name="action_submit"
+            type="object"
+            string="Submit"
+            class="btn-primary"
+            invisible="state != 'draft'"
+            groups="agricultural_management.group_agriculture_user"/>
+
+    <!-- DR Approval -->
+    <button name="action_dr_approve"
+            type="object"
+            string="Dr Approval"
+            class="btn-success"
+            invisible="state != 'submitted'"
+            groups="agricultural_management.group_agricultural_engineer"/>
+
+    <!-- Inventory Review -->
+    <button name="action_inventory_review"
+            type="object"
+            string="Inventory Review"
+            class="btn-warning"
+            invisible="state != 'dr_approved'"
+            groups="agricultural_management.group_inventory_manager"/>
+
+    <!-- Check Availability -->
+    <button name="check_stock_availability_with_message"
+            type="object"
+            string="Check Availability"
+            class="btn-info"
+            invisible="state not in ['submitted','dr_approved','inventory_review']"
+            groups="stock.group_stock_user"/>
+
+    <!-- Create RFQ -->
+    <button name="action_create_rfq_for_missing"
+            type="object"
+            string="Create RFQ"
+            class="btn-danger"
+            invisible="state not in ['inventory_review','rfq_needed']"
+            groups="purchase.group_purchase_user"/>
+
+    <!-- Transfer -->
+    <button name="action_proceed_with_available"
+            type="object"
+            string="Transfer Available"
+            class="btn-primary"
+            invisible="state not in ['transfer_ready','inventory_review']"
+            groups="stock.group_stock_user"/>
+
+    <!-- Accounts Approval -->
+    <button name="action_accounts_approve"
+            type="object"
+            string="Accounts Approve"
+            class="btn-success"
+            invisible="state != 'transferred'"
+            groups="account.group_account_user"/>
+
+    <!-- Cancel -->
+    <button name="action_cancel"
+            type="object"
+            string="Cancel"
+            class="btn-danger"
+            invisible="state in ['cancelled','completed']"/>
+
+</header>
+
+                <sheet>
+                    <div class="oe_button_box" name="button_box">
+
+    <button type="object"
+            name="action_view_lines"
+            class="oe_stat_button"
+            icon="fa-list">
+        <field name="line_count" widget="statinfo"/>
+    </button>
+
+    <button type="object"
+            name="action_view_stock_picking"
+            class="oe_stat_button"
+            icon="fa-truck"
+            groups="stock.group_stock_user">
+        <field name="picking_count" widget="statinfo"/>
+    </button>
+
+    <button type="object"
+            name="action_view_stock_moves"
+            class="oe_stat_button"
+            icon="fa-exchange"
+            groups="stock.group_stock_user">
+        <field name="move_count" widget="statinfo"/>
+    </button>
+
+    <button type="object"
+            name="action_view_account_move"
+            class="oe_stat_button"
+            icon="fa-book"
+            groups="account.group_account_user">
+        <field name="account_move_count" widget="statinfo"/>
+    </button>
+
+</div>
+
+                    <div class="oe_title">
+                        <h1>
+                            <field name="name" readonly="1"/>
+                        </h1>
+                    </div>
+
+                    <!-- MAIN -->
+                    <group>
+                        <group>
+                            <field name="farm_id" readonly="state != 'draft'"/>
+                            <field name="project_id" readonly="state != 'draft'"/>
+                            <field name="request_type" readonly="state != 'draft'"/>
+                            <field name="priority" widget="priority"/>
+                        </group>
+
+                        <group>
+                            <field name="requested_by" readonly="1"/>
+                            <field name="request_date" readonly="1"/>
+                            <field name="availability_status" widget="badge"/>
+                        </group>
+                    </group>
+
+                    <!-- KPI -->
+                    <group string="Availability and Cost">
+                        <group>
+                            <field name="total_available_lines" readonly="1"/>
+                            <field name="total_unavailable_lines" readonly="1"/>
+                        </group>
+
+                        <group groups="agricultural_management.group_accounts">
+                            <field name="estimated_cost" readonly="1"/>
+                            <field name="total_cost" readonly="1"/>
+                        </group>
+                    </group>
+
+                    <notebook>
+
+                        <!-- LINES -->
+                        <page string="Request Lines">
+                            <field name="line_ids" nolabel="1"
+                                   readonly="state not in ['draft','submitted']">
+                                <list editable="bottom">
+                                    <field name="product_id"/>
+                                    <field name="quantity"/>
+                                    <field name="available_qty" readonly="1"/>
+                                    <field name="to_procure_qty" readonly="1"/>
+                                    <field name="price"/>
+                                    <field name="subtotal"/>
+                                </list>
+                            </field>
+                        </page>
+
+                        <!-- PROCUREMENT -->
+                        <page string="Procurement">
+                            <group>
+                                <field name="rfq_count" readonly="1"/>
+                                <field name="picking_count" readonly="1"/>
+                            </group>
+                        </page>
+
+                        <!-- NOTES -->
+                        <page string="Notes">
+                            <field name="note"/>
+                        </page>
+
+                    </notebook>
+
+                </sheet>
+
+                <chatter/>
+
+            </form>
+        </field>
+    </record>
+    <!-- Production Request list View -->
+    <record id="view_agricultural_production_request_list" model="ir.ui.view">
+        <field name="name">agricultural.production.request.list</field>
+        <field name="model">agricultural.production.request</field>
+        <field name="arch" type="xml">
+            <list string="Production Requests" multi_edit="1" sample="1"
+                  decoration-success="state in ['completed', 'all_available']"
+                  decoration-info="state in ['submitted', 'inventory_check']"
+                  decoration-warning="state in ['dr_approved', 'some_available', 'few_available', 'procurement_needed']"
+                  decoration-danger="state == 'cancelled'"
+                  decoration-muted="state == 'draft'">
+
+                <field name="name"/>
+                <field name="farm_id"/>
+                <field name="project_id"/>
+                <field name="request_type"/>
+                <field name="requested_by"/>
+                <field name="request_date"/>
+                <field name="priority" widget="priority"/>
+                <!-- Availability Info -->
+                <field name="availability_status" widget="badge"
+                       />
+                <field name="total_available_lines" string="Available"
+                       />
+                <field name="total_unavailable_lines" string="Need Procurement"
+                       />
+                <field name="estimated_cost" invisible="1" sum="Total Estimated" groups="agricultural_management.group_accounts"/>
+                <field name="total_cost" sum="Total Cost" groups="agricultural_management.group_accounts"/>
+                <field name="state" decoration-success="state in ['inventory_review','transfer_ready', 'transferred']"
+                       decoration-info="state in ['completed', 'submitted','dr_approved']"
+                       decoration-warning="state in ['rfq_needed', 'rfq_pending', 'purchase_approved', 'procurement_needed']"
+                       decoration-danger="state == 'cancelled'"
+                       widget="badge"/>
+            </list>
+        </field>
+    </record>
+    <!-- Production Request Kanban View -->
+    <record id="view_agricultural_production_request_kanban" model="ir.ui.view">
+        <field name="name">agricultural.production.request.kanban</field>
+        <field name="model">agricultural.production.request</field>
+        <field name="arch" type="xml">
+            <kanban
+                class="o_kanban_small_column o_kanban_dashboard o_agricultural_request_kanban"
+                limit="20"
+                quick_create="false"
+                records_draggable="false">
+                <!-- Fields Declaration -->
+                <field name="name"/>
+                <field name="farm_id"/>
+                <field name="request_type"/>
+                <field name="priority"/>
+                <field name="availability_status"/>
+                <field name="state"/>
+                <field name="total_cost"/>
+                <field name="estimated_cost"/>
+                <field name="required_date"/>
+                <field name="request_date"/>
+                <field name="requested_by"/>
+                <field name="activity_ids"/>
+                <field name="activity_state"/>
+                <field name="line_count"/>
+                <field name="total_available_lines"/>
+                <field name="total_unavailable_lines"/>
+                <field name="total_partial_lines"/>
+                <field name="dr_approved_by"/>
+                <field name="dr_approval_date"/>
+                <field name="cost_variance"/>
+                <field name="cost_variance_percent"/>
+                <field name="project_id"/>
+                <field name="currency_id"/>
+                <progressbar field="activity_state" colors='{"planned": "success", "today": "warning", "overdue": "danger"}'/>
+                <templates>
+                    <t t-name="card">
+                        <!-- MAIN CARD - 300px HEIGHT (Much Larger &amp; More Visible) -->
+                        <div class="oe_kanban_card oe_kanban_global_click o_agricultural_kanban_card"
+                             style="max-height: 300px !important; min-height: 300px !important; height: 300px !important; margin-bottom: 2px !important; padding: 0 !important; overflow: hidden !important; border-radius: 12px !important; box-shadow: 0 3px 10px rgba(0,0,0,0.15) !important; border: 1px solid #e5e7eb !important; background: white !important; font-family: system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif !important;">
+
+                            <!-- HEADER - 60px (Larger) -->
+                            <div class="card-header"
+                                 style="background: linear-gradient(135deg, #16a34a, #22c55e) !important; padding: 10px 15px !important; min-height: 60px !important; max-height: 60px !important; height: 60px !important; display: flex !important; align-items: center !important; justify-content: space-between !important; margin: 0 !important;">
+
+                                <div class="d-flex justify-content-between align-items-start"
+                                     style="width: 100% !important; display: flex !important; align-items: center !important; gap: 10px !important;">
+
+                                    <!-- Left: Request Info -->
+                                    <div class="flex-grow-1" style="flex: 1 !important; min-width: 0 !important; overflow: hidden !important;">
+                                        <div class="request-number"
+                                             style="font-size: 16px !important; font-weight: 600 !important; color: white !important; margin: 0 0 5px 0 !important; padding: 0 !important; line-height: 1.4 !important; white-space: nowrap !important; overflow: hidden !important; text-overflow: ellipsis !important; display: flex !important; align-items: center !important; gap: 8px !important;">
+                                            <i class="fa fa-file-text-o" title="name" aria-label="Request" style="font-size: 15px !important;"/>
+                                            <field name="name"/>
+                                        </div>
+                                        <div class="dates-row"
+                                             style="font-size: 13px !important; color: rgba(255,255,255,0.95) !important; display: flex !important; gap: 12px !important; line-height: 1.4 !important;">
+                                            <span style="display: flex !important; align-items: center !important; gap: 5px !important;">
+                                                <i class="fa fa-calendar" title="name" aria-label="Date" style="font-size: 12px !important;"/>
+                                                <field name="request_date"/>
+                                            </span>
+                                            <span style="display: flex !important; align-items: center !important; gap: 5px !important;">
+                                                <i class="fa fa-clock-o" title="name" aria-label="Due" style="font-size: 12px !important;"/>
+                                                <field name="required_date"/>
+                                            </span>
+                                        </div>
+                                    </div>
+
+                                    <!-- Right: Priority Badge -->
+                                    <div class="header-actions" style="display: flex !important; align-items: center !important; flex-shrink: 0 !important;">
+                                        <!-- Priority Badge -->
+                                        <t t-if="record.priority.raw_value == 'urgent'">
+                                            <span class="priority-badge urgent"
+                                                  style="padding: 6px 12px !important; border-radius: 8px !important; font-size: 13px !important; font-weight: 600 !important; color: white !important; line-height: 1.3 !important; background: #ef4444 !important; display: inline-flex !important; align-items: center !important; gap: 5px !important; box-shadow: 0 2px 4px rgba(0,0,0,0.15) !important;">
+ <i class="fa fa-bolt" title="name" style="font-size: 12px !important;"/> 
+                                            </span>
+                                        </t>
+                                        <t t-elif="record.priority.raw_value == 'high'">
+                                            <span class="priority-badge high"
+                                                  style="padding: 6px 12px !important; border-radius: 8px !important; font-size: 13px !important; font-weight: 600 !important; color: white !important; line-height: 1.3 !important; background: #f59e0b !important; display: inline-flex !important; align-items: center !important; gap: 5px !important; box-shadow: 0 2px 4px rgba(0,0,0,0.15) !important;">
+ <i class="fa fa-arrow-up" title="name" style="font-size: 12px !important;"/> 
+                                            </span>
+                                        </t>
+                                        <t t-elif="record.priority.raw_value == 'normal'">
+                                            <span class="priority-badge normal"
+                                                  style="padding: 6px 12px !important; border-radius: 8px !important; font-size: 13px !important; font-weight: 600 !important; color: white !important; line-height: 1.3 !important; background: #10b981 !important; display: inline-flex !important; align-items: center !important; gap: 5px !important; box-shadow: 0 2px 4px rgba(0,0,0,0.15) !important;">
+ <i class="fa fa-check" title="name" style="font-size: 12px !important;"/> 
+                                            </span>
+                                        </t>
+                                        <t t-else="">
+                                            <span class="priority-badge low"
+                                                  style="padding: 6px 12px !important; border-radius: 8px !important; font-size: 13px !important; font-weight: 600 !important; color: white !important; line-height: 1.3 !important; background: #9ca3af !important; display: inline-flex !important; align-items: center !important; gap: 5px !important; box-shadow: 0 2px 4px rgba(0,0,0,0.15) !important;">
+ <i class="fa fa-minus" title="name" style="font-size: 12px !important;"/> 
+                                            </span>
+                                        </t>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- BODY - 180px (Much More spacious) -->
+                            <div class="card-body"
+                                 style="padding: 12px 15px !important; min-height: 180px !important; max-height: 180px !important; height: 180px !important; overflow: hidden !important; display: flex !important; flex-direction: column !important; gap: 10px !important; margin: 0 !important;">
+                                <!-- Farm Section - 60px -->
+                                <div class="farm-section"
+                                     style="background: #f9fafb !important; border-radius: 10px !important; padding: 10px 12px !important; margin: 0 !important; min-height: 60px !important; max-height: 60px !important; height: 60px !important; display: flex !important; align-items: center !important; gap: 10px !important; overflow: hidden !important; border: 1px solid #f3f4f6 !important;">
+                                    <div class="farm-icon"
+                                         style="width: 40px !important; height: 40px !important; background: linear-gradient(135deg, #16a34a, #22c55e) !important; border-radius: 50% !important; display: flex !important; align-items: center !important; justify-content: center !important; flex-shrink: 0 !important; box-shadow: 0 2px 4px rgba(0,0,0,0.1) !important;">
+                                        <i class="fa fa-leaf" title="name" aria-label="Farm" style="color: white !important; font-size: 18px !important;"/>
+                                    </div>
+                                    <div class="farm-info" style="flex: 1 !important; min-width: 0 !important; line-height: 1.4 !important; overflow: hidden !important;">
+                                        <div class="farm-name"
+                                             style="font-size: 15px !important; font-weight: 600 !important; color: #1f2937 !important; white-space: nowrap !important; overflow: hidden !important; text-overflow: ellipsis !important; line-height: 1.4 !important; margin: 0 0 5px 0 !important; padding: 0 !important;">
+                                            <field name="farm_id"/>
+                                        </div>
+                                        <div class="farm-meta"
+                                             style="font-size: 12px !important; color: #6b7280 !important; display: flex !important; align-items: center !important; gap: 8px !important; line-height: 1.4 !important;">
+                                            <span class="type-badge"
+                                                  style="background: #6366f1 !important; color: white !important; padding: 4px 8px !important; border-radius: 6px !important; font-size: 11px !important; font-weight: 600 !important;">
+                                                <field name="request_type"/>
+                                            </span>
+                                            <span style="display: flex !important; align-items: center !important; gap: 4px !important;">
+                                                <i class="fa fa-user" title="name" style="font-size: 11px !important;"/>
+                                                <field name="requested_by"/>
+                                            </span>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Summary Section - 90px -->
+                                <div class="summary-section"
+                                     style="border: 1px solid #e5e7eb !important; border-radius: 10px !important; padding: 10px 12px !important; margin: 0 !important; min-height: 90px !important; max-height: 90px !important; height: 90px !important; overflow: hidden !important; display: flex !important; flex-direction: column !important; gap: 8px !important; background: white !important;">
+
+                                    <div class="summary-header"
+                                         style="display: flex !important; justify-content: space-between !important; align-items: center !important; margin: 0 !important; padding: 0 !important; line-height: 1.4 !important;">
+                                        <h6 style="font-size: 14px !important; font-weight: 600 !important; color: #1f2937 !important; margin: 0 !important; padding: 0 !important; line-height: 1.4 !important; display: flex !important; align-items: center !important; gap: 5px !important;">
+                                            <i class="fa fa-list-ul" title="name" style="font-size: 13px !important; color: #3b82f6 !important;"/>
+ Items (<t t-esc="record.line_count.value"/>)
+                                        </h6>
+
+                                        <!-- Status Badge -->
+                                        <t t-if="record.availability_status.raw_value == 'all_available'">
+                                            <span class="status-badge"
+                                                  style="background: #10b981 !important; color: white !important; font-size: 12px !important; padding: 4px 10px !important; border-radius: 7px !important; font-weight: 600 !important; line-height: 1.3 !important; display: inline-flex !important; align-items: center !important; gap: 4px !important; box-shadow: 0 1px 3px rgba(0,0,0,0.1) !important;">
+ <i class="fa fa-check-circle" title="name" style="font-size: 11px !important;"/> 
+                                            </span>
+                                        </t>
+                                        <t t-elif="record.availability_status.raw_value == 'some_available'">
+                                            <span class="status-badge"
+                                                  style="background: #f59e0b !important; color: white !important; font-size: 12px !important; padding: 4px 10px !important; border-radius: 7px !important; font-weight: 600 !important; line-height: 1.3 !important; display: inline-flex !important; align-items: center !important; gap: 4px !important; box-shadow: 0 1px 3px rgba(0,0,0,0.1) !important;">
+ <i class="fa fa-exclamation-circle" title="name" style="font-size: 11px !important;"/> 
+                                            </span>
+                                        </t>
+                                        <t t-elif="record.availability_status.raw_value == 'few_available'">
+                                            <span class="status-badge"
+                                                  style="background: #f97316 !important; color: white !important; font-size: 12px !important; padding: 4px 10px !important; border-radius: 7px !important; font-weight: 600 !important; line-height: 1.3 !important; display: inline-flex !important; align-items: center !important; gap: 4px !important; box-shadow: 0 1px 3px rgba(0,0,0,0.1) !important;">
+ <i class="fa fa-exclamation-triangle" title="name" style="font-size: 11px !important;"/> 
+                                            </span>
+                                        </t>
+                                        <t t-else="">
+                                            <span class="status-badge"
+                                                  style="background: #ef4444 !important; color: white !important; font-size: 12px !important; padding: 4px 10px !important; border-radius: 7px !important; font-weight: 600 !important; line-height: 1.3 !important; display: inline-flex !important; align-items: center !important; gap: 4px !important; box-shadow: 0 1px 3px rgba(0,0,0,0.1) !important;">
+ <i class="fa fa-times-circle" title="name" style="font-size: 11px !important;"/> 
+                                            </span>
+                                        </t>
+                                    </div>
+
+                                    <!-- Progress Bar -->
+                                    <div class="progress-bar-wrapper"
+                                         style="height: 8px !important; background: #f3f4f6 !important; border-radius: 5px !important; overflow: hidden !important; margin: 0 !important; box-shadow: inset 0 1px 2px rgba(0,0,0,0.05) !important;">
+                                        <t t-set="available_percent"
+                                           t-value="record.line_count.value > 0 ? (record.total_available_lines.value / record.line_count.value * 100) : 0"/>
+                                        <t t-set="partial_percent"
+                                           t-value="record.line_count.value > 0 ? (record.total_partial_lines.value / record.line_count.value * 100) : 0"/>
+
+                                        <div class="d-flex" style="height: 100% !important; display: flex !important;">
+                                            <div class="progress-bar available"
+                                                 t-attf-style="width: #{available_percent}%; height: 100% !important; background: linear-gradient(90deg, #10b981, #059669) !important; transition: width 0.4s ease !important;"/>
+                                            <div class="progress-bar partial"
+                                                 t-attf-style="width: #{partial_percent}%; height: 100% !important; background: linear-gradient(90deg, #f59e0b, #d97706) !important; transition: width 0.4s ease !important;"/>
+                                        </div>
+                                    </div>
+
+                                    <!-- Stats Row -->
+                                    <div class="stats-row"
+                                         style="display: flex !important; justify-content: space-between !important; font-size: 12px !important; color: #6b7280 !important; line-height: 1.4 !important; margin: 0 !important; padding: 0 !important;">
+                                        <span style="display: flex !important; align-items: center !important; gap: 5px !important; font-weight: 500 !important;">
+                                            <i class="fa fa-check-circle" title="name" style="font-size: 11px !important; color: #10b981 !important;"/>
+ <t t-esc="record.total_available_lines.value"/> 
+                                        </span>
+                                        <span style="display: flex !important; align-items: center !important; gap: 5px !important; font-weight: 500 !important;">
+                                            <i class="fa fa-exclamation-circle" title="name" style="font-size: 11px !important; color: #f59e0b !important;"/>
+ <t t-esc="record.total_partial_lines.value"/> 
+                                        </span>
+                                        <span style="display: flex !important; align-items: center !important; gap: 5px !important; font-weight: 500 !important;">
+                                            <i class="fa fa-times-circle" title="name" style="font-size: 11px !important; color: #ef4444 !important;"/>
+ <t t-esc="record.total_unavailable_lines.value"/> 
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- FOOTER - 60px -->
+                            <div class="card-footer"
+                                 style="background: #f9fafb !important; border-top: 1px solid #e5e7eb !important; padding: 10px 15px !important; min-height: 60px !important; max-height: 60px !important; height: 60px !important; display: flex !important; justify-content: space-between !important; align-items: center !important; flex-shrink: 0 !important; margin: 0 !important;">
+
+                                                            <div class="footer-left"
+                                     style="display: flex !important; align-items: center !important; gap: 10px !important;">
+
+                                    <!-- Activity Widget -->
+                                    <div class="o_kanban_record_bottom">
+                                        <field name="activity_ids" widget="kanban_activity"/>
+                                    </div>
+
+                                    <!-- Project Badge -->
+                                    <t t-if="record.project_id.value">
+                                        <span class="project-badge"
+                                              style="background: #3b82f6 !important; color: white !important; padding: 5px 10px !important; border-radius: 7px !important; font-size: 12px !important; font-weight: 600 !important; line-height: 1.3 !important; display: inline-flex !important; align-items: center !important; gap: 5px !important; box-shadow: 0 1px 3px rgba(0,0,0,0.1) !important;">
+                                            <i class="fa fa-folder-open" title="name" style="font-size: 11px !important;"/>
+                                            <field name="project_id"/>
+                                        </span>
+                                    </t>
+                                </div>
+
+                                <div class="footer-right"
+                                     style="display: flex !important; align-items: center !important; gap: 10px !important;">
+
+                                    <!-- Cost Display -->
+                                    <div class="cost-display" groups="agricultural_management.group_accounts"
+                                         style="text-align: left !important;">
+                                        <div class="label"
+                                             style="font-size: 10px !important; color: #6b7280 !important; text-transform: uppercase !important; letter-spacing: 0.3px !important; font-weight: 600 !important; line-height: 1.3 !important;">
+ 
+                                        </div>
+                                        <div class="value"
+                                             style="font-size: 15px !important; font-weight: 700 !important; color: #1f2937 !important; margin-top: 3px !important; line-height: 1.3 !important;">
+                                            <field name="total_cost" widget="monetary"/>
+                                        </div>
+                                    </div>
+
+                                    <!-- State Badge -->
+                                    <div class="state-badge">
+                                        <t t-if="record.state.raw_value == 'draft'">
+                                            <span style="background: #9ca3af !important; color: white !important; padding: 5px 10px !important; border-radius: 7px !important; font-size: 12px !important; font-weight: 600 !important; line-height: 1.3 !important; display: inline-flex !important; align-items: center !important; gap: 5px !important; box-shadow: 0 1px 3px rgba(0,0,0,0.1) !important;">
+                                                <i class="fa fa-file-o" title="name" style="font-size: 11px !important;"/> Draft
+                                            </span>
+                                        </t>
+                                        <t t-elif="record.state.raw_value == 'submitted'">
+                                            <span style="background: #3b82f6 !important; color: white !important; padding: 5px 10px !important; border-radius: 7px !important; font-size: 12px !important; font-weight: 600 !important; line-height: 1.3 !important; display: inline-flex !important; align-items: center !important; gap: 5px !important; box-shadow: 0 1px 3px rgba(0,0,0,0.1) !important;">
+ <i class="fa fa-send" title="name" style="font-size: 11px !important;"/> 
+                                            </span>
+                                        </t>
+                                        <t t-elif="record.state.raw_value == 'approved'">
+                                            <span style="background: #10b981 !important; color: white !important; padding: 5px 10px !important; border-radius: 7px !important; font-size: 12px !important; font-weight: 600 !important; line-height: 1.3 !important; display: inline-flex !important; align-items: center !important; gap: 5px !important; box-shadow: 0 1px 3px rgba(0,0,0,0.1) !important;">
+                                                <i class="fa fa-check-circle" title="name" style="font-size: 11px !important;"/> Approved
+                                            </span>
+                                        </t>
+                                        <t t-elif="record.state.raw_value == 'rejected'">
+                                            <span style="background: #ef4444 !important; color: white !important; padding: 5px 10px !important; border-radius: 7px !important; font-size: 12px !important; font-weight: 600 !important; line-height: 1.3 !important; display: inline-flex !important; align-items: center !important; gap: 5px !important; box-shadow: 0 1px 3px rgba(0,0,0,0.1) !important;">
+                                                <i class="fa fa-times-circle" title="name" style="font-size: 11px !important;"/> Rejected
+                                            </span>
+                                        </t>
+                                        <t t-elif="record.state.raw_value == 'done'">
+                                            <span style="background: #059669 !important; color: white !important; padding: 5px 10px !important; border-radius: 7px !important; font-size: 12px !important; font-weight: 600 !important; line-height: 1.3 !important; display: inline-flex !important; align-items: center !important; gap: 5px !important; box-shadow: 0 1px 3px rgba(0,0,0,0.1) !important;">
+ <i class="fa fa-check-double" title="name" style="font-size: 11px !important;"/> 
+                                            </span>
+                                        </t>
+                                        <t t-elif="record.state.raw_value == 'cancelled'">
+                                            <span style="background: #dc2626 !important; color: white !important; padding: 5px 10px !important; border-radius: 7px !important; font-size: 12px !important; font-weight: 600 !important; line-height: 1.3 !important; display: inline-flex !important; align-items: center !important; gap: 5px !important; box-shadow: 0 1px 3px rgba(0,0,0,0.1) !important;">
+                                                <i class="fa fa-ban" title="name" style="font-size: 11px !important;"/> Cancelled
+                                            </span>
+                                        </t>
+                                        <t t-else="">
+                                            <span style="background: #6b7280 !important; color: white !important; padding: 5px 10px !important; border-radius: 7px !important; font-size: 12px !important; font-weight: 600 !important; line-height: 1.3 !important; display: inline-flex !important; align-items: center !important; gap: 5px !important; box-shadow: 0 1px 3px rgba(0,0,0,0.1) !important;">
+                                                <field name="state"/>
+                                            </span>
+                                        </t>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </t>
+                </templates>
+            </kanban>
+        </field>
+    </record>
+    <!-- Pivot View for Analytics -->
+    <record id="view_agricultural_production_request_pivot" model="ir.ui.view">
+        <field name="name">agricultural.production.request.pivot</field>
+        <field name="model">agricultural.production.request</field>
+        <field name="arch" type="xml">
+            <pivot string="Production Request Analysis">
+                <field name="farm_id" type="row"/>
+                <field name="state" type="col"/>
+                <field name="total_cost" type="measure"/>
+                <field name="estimated_cost" type="measure"/>
+            </pivot>
+        </field>
+    </record>
+    <!-- Graph View -->
+    <record id="view_agricultural_production_request_graph" model="ir.ui.view">
+        <field name="name">agricultural.production.request.graph</field>
+        <field name="model">agricultural.production.request</field>
+        <field name="arch" type="xml">
+            <graph string="Production Request Analysis" type="bar">
+                <field name="farm_id"/>
+                <field name="total_cost" type="measure"/>
+            </graph>
+        </field>
+    </record>
+
+    <!-- Action: Production Requests -->
+    <record id="action_agricultural_production_request" model="ir.actions.act_window">
+        <field name="name">Production Requests</field>
+        <field name="res_model">agricultural.production.request</field>
+        <field name="view_mode">list,kanban,form,pivot,graph</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                Create your first production request
+            </p>
+            <p>
+                Production requests manage material needs for your farm operations.
+            </p>
+        </field>
+    </record>
+
+</odoo>

@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <data noupdate="1">
+
+    <!-- Production Request Approval Email -->
+    <record id="email_template_production_request_approval" model="mail.template">
+        <field name="name">Production Request Approval</field>
+        <field name="model_id" ref="model_agricultural_production_request"/>
+        <field name="subject">Production Request ${object.name} - Approval Required</field>
+        <field name="body_html" type="html">
+            <div style="margin: 0px; padding: 0px;">
+                <p>Hello,</p>
+                <p>Production Request <strong>${object.name}</strong> requires your approval.</p>
+                <p><strong>Details:</strong></p>
+                <ul>
+                    <li>Farm: ${object.farm_id.name}</li>
+                    <li>Requested By: ${object.requested_by.name}</li>
+                    <li>Total Amount: ${object.total_estimated_cost}</li>
+                </ul>
+                <p>Please review and approve the request at your earliest convenience.</p>
+                <p>Thank you,<br/>Agricultural Management System</p>
+            </div>
+        </field>
+        <field name="auto_delete" eval="True"/>
+    </record>
+
+    <!-- Harvest Schedule Notification -->
+    <record id="email_template_harvest_schedule" model="mail.template">
+        <field name="name">Harvest Schedule Notification</field>
+        <field name="model_id" ref="model_agricultural_harvest_schedule"/>
+        <field name="subject">Harvest Schedule: ${object.name}</field>
+        <field name="body_html" type="html">
+            <div style="margin: 0px; padding: 0px;">
+                <p>Hello,</p>
+                <p>A harvest has been scheduled: <strong>${object.display_name}</strong></p>
+                <p>Please prepare the necessary resources and equipment.</p>
+                <p>Thank you,<br/>Agricultural Management System</p>
+            </div>
+        </field>
+        <field name="auto_delete" eval="True"/>
+    </record>
+
+    </data>
+</odoo>

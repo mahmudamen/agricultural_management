@@ -1,0 +1,42 @@
+<odoo>
+<data>
+
+    <!-- Cost Allocation -->
+    <record id="cost_alpha_01" model="agri.cost.allocation">
+        <field name="name">COST-ALPHA-001</field>
+        <field name="farm_id" ref="farm_main_1"/>
+        <field name="project_id" ref="project_alpha_tomato"/>
+        <field name="cost_category">seeds</field>
+        <field name="total_amount">20000</field>
+        <field name="state">allocated</field>
+    </record>
+
+    <record id="cost_beta_01" model="agri.cost.allocation">
+        <field name="name">COST-BETA-001</field>
+        <field name="farm_id" ref="farm_main_2"/>
+        <field name="project_id" ref="project_beta_cucumber"/>
+        <field name="cost_category">fertilizer</field>
+        <field name="total_amount">15000</field>
+        <field name="state">allocated</field>
+    </record>
+
+    <!-- Cost Calculation & Profit -->
+    <record id="calc_alpha_01" model="agri.cost.calculation">
+        <field name="name">Calc Alpha Tomato</field>
+        <field name="farm_id" ref="farm_main_1"/>
+        <field name="project_id" ref="project_alpha_tomato"/>
+        <field name="state">calculated</field>
+    </record>
+
+    <record id="calc_line_alpha_01" model="agri.production.calculation.line">
+        <field name="calculation_id" ref="calc_alpha_01"/>
+        <field name="product_id" ref="product_tomato"/>
+        <field name="quantity">4800</field>
+        <field name="unit_price">10</field>
+        <field name="revenue">48000</field>
+        <field name="cost">20000</field>
+        <field name="profit">28000</field>
+    </record>
+
+</data>
+</odoo>

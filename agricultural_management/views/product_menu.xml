@@ -1,0 +1,371 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+
+<!-- Root Products menu under Production -->
+<menuitem id="menu_agri_products_root"
+          groups="group_agricultural_user"
+          name="Products"
+          parent="menu_agricultural_management"
+          sequence="1"/>
+
+<!-- Sub-categories -->
+<menuitem id="menu_agri_products_all_menu"
+          name="All Products"
+          parent="menu_agri_products_root"
+          sequence="0"/>
+<menuitem id="menu_agri_products_by_request_type"
+          name="By Request Type"
+          parent="menu_agri_products_root"
+          sequence="10"/>
+<menuitem id="menu_agri_products_by_type"
+          name="By Agri Type"
+          parent="menu_agri_products_root"
+          sequence="20"/>
+<menuitem id="menu_agri_products_by_available_in"
+          name="By Available In"
+          parent="menu_agri_products_root"
+          sequence="30"/>
+<!-- All products action -->
+<record id="action_agri_products_all" model="ir.actions.act_window">
+  <field name="name">All Products</field>
+  <field name="res_model">product.template</field>
+  <field name="view_mode">list,kanban,form</field>
+  <field name="domain">[]</field>
+  <field name="context">{}</field>
+</record>
+<menuitem id="menu_agri_products_all"
+          name="All Products"
+          action="action_agri_products_all"
+          parent="menu_agri_products_all_menu"
+          sequence="0"/>
+
+<!-- By Request Type -->
+<record id="action_agri_products_req_seeds" model="ir.actions.act_window">
+  <field name="name">Seeds Requests</field>
+  <field name="res_model">product.template</field>
+  <field name="view_mode">list,kanban,form</field>
+  <field name="domain">[('request_type','=','seeds')]</field>
+  <field name="context">{'default_request_type':'seeds'}</field>
+</record>
+<menuitem id="menu_agri_products_req_seeds"
+          name="Seeds"
+          action="action_agri_products_req_seeds"
+          parent="menu_agri_products_by_request_type"
+          sequence="10"/>
+
+<record id="action_agri_products_req_fertilizers" model="ir.actions.act_window">
+  <field name="name">Fertilizers Requests</field>
+  <field name="res_model">product.template</field>
+  <field name="view_mode">list,kanban,form</field>
+  <field name="domain">[('request_type','=','fertilizers')]</field>
+  <field name="context">{'default_request_type':'fertilizers'}</field>
+</record>
+<menuitem id="menu_agri_products_req_fertilizers"
+          name="Fertilizers"
+          action="action_agri_products_req_fertilizers"
+          parent="menu_agri_products_by_request_type"
+          sequence="20"/>
+
+<record id="action_agri_products_req_pesticides" model="ir.actions.act_window">
+  <field name="name">Pesticides Requests</field>
+  <field name="res_model">product.template</field>
+  <field name="view_mode">list,kanban,form</field>
+  <field name="domain">[('request_type','=','pesticides')]</field>
+  <field name="context">{'default_request_type':'pesticides'}</field>
+</record>
+<menuitem id="menu_agri_products_req_pesticides"
+          name="Pesticides"
+          action="action_agri_products_req_pesticides"
+          parent="menu_agri_products_by_request_type"
+          sequence="30"/>
+
+<record id="action_agri_products_req_equipment" model="ir.actions.act_window">
+  <field name="name">Equipment Requests</field>
+  <field name="res_model">product.template</field>
+  <field name="view_mode">list,kanban,form</field>
+  <field name="domain">[('request_type','=','equipment')]</field>
+  <field name="context">{'default_request_type':'equipment'}</field>
+</record>
+<menuitem id="menu_agri_products_req_equipment"
+          name="Equipment"
+          action="action_agri_products_req_equipment"
+          parent="menu_agri_products_by_request_type"
+          sequence="40"/>
+
+<record id="action_agri_products_req_labor" model="ir.actions.act_window">
+  <field name="name">Labor Requests</field>
+  <field name="res_model">product.template</field>
+  <field name="view_mode">list,kanban,form</field>
+  <field name="domain">[('request_type','=','labor')]</field>
+  <field name="context">{'default_request_type':'labor'}</field>
+</record>
+<menuitem id="menu_agri_products_req_labor"
+          name="Labor"
+          action="action_agri_products_req_labor"
+          parent="menu_agri_products_by_request_type"
+          sequence="50"/>
+
+<record id="action_agri_products_req_mixed" model="ir.actions.act_window">
+  <field name="name">Mixed Requests</field>
+  <field name="res_model">product.template</field>
+  <field name="view_mode">list,kanban,form</field>
+  <field name="domain">[('request_type','=','mixed')]</field>
+  <field name="context">{'default_request_type':'mixed'}</field>
+</record>
+<menuitem id="menu_agri_products_req_mixed"
+          name="Mixed"
+          action="action_agri_products_req_mixed"
+          parent="menu_agri_products_by_request_type"
+          sequence="60"/>
+
+<!-- By Agri Type (agricultural_product_type) -->
+<record id="action_agri_products_type_product" model="ir.actions.act_window">
+ <field name="name">Product Type: </field>
+  <field name="res_model">product.template</field>
+  <field name="view_mode">list,kanban,form</field>
+  <field name="domain">[('agricultural_product_type','=','Product')]</field>
+  <field name="context">{'default_agricultural_product_type':'Product'}</field>
+</record>
+<menuitem id="menu_agri_products_type_product"
+ name=""
+          action="action_agri_products_type_product"
+          parent="menu_agri_products_by_type"
+          sequence="10"/>
+
+<record id="action_agri_products_type_rawmaterials" model="ir.actions.act_window">
+ <field name="name">Product Type: </field>
+  <field name="res_model">product.template</field>
+  <field name="view_mode">list,kanban,form</field>
+  <field name="domain">[('agricultural_product_type','=','RawMaterials')]</field>
+  <field name="context">{'default_agricultural_product_type':'RawMaterials'}</field>
+</record>
+<menuitem id="menu_agri_products_type_rawmaterials"
+ name=""
+          action="action_agri_products_type_rawmaterials"
+          parent="menu_agri_products_by_type"
+          sequence="20"/>
+
+<record id="action_agri_products_type_seeds" model="ir.actions.act_window">
+  <field name="name">Product Type: Seeds</field>
+  <field name="res_model">product.template</field>
+  <field name="view_mode">list,kanban,form</field>
+  <field name="domain">[('agricultural_product_type','=','seeds')]</field>
+  <field name="context">{'default_agricultural_product_type':'seeds'}</field>
+</record>
+<menuitem id="menu_agri_products_type_seeds"
+          name="Seeds"
+          action="action_agri_products_type_seeds"
+          parent="menu_agri_products_by_type"
+          sequence="30"/>
+
+<record id="action_agri_products_type_pesticides" model="ir.actions.act_window">
+  <field name="name">Product Type: Pesticides</field>
+  <field name="res_model">product.template</field>
+  <field name="view_mode">list,kanban,form</field>
+  <field name="domain">[('agricultural_product_type','=','Pesticides')]</field>
+  <field name="context">{'default_agricultural_product_type':'Pesticides'}</field>
+</record>
+<menuitem id="menu_agri_products_type_pesticides"
+          name="Pesticides"
+          action="action_agri_products_type_pesticides"
+          parent="menu_agri_products_by_type"
+          sequence="40"/>
+
+<record id="action_agri_products_type_spareparts" model="ir.actions.act_window">
+  <field name="name">Product Type: Spare Parts</field>
+  <field name="res_model">product.template</field>
+  <field name="view_mode">list,kanban,form</field>
+  <field name="domain">[('agricultural_product_type','=','SpareParts')]</field>
+  <field name="context">{'default_agricultural_product_type':'SpareParts'}</field>
+</record>
+<menuitem id="menu_agri_products_type_spareparts"
+          name="Spare Parts"
+          action="action_agri_products_type_spareparts"
+          parent="menu_agri_products_by_type"
+          sequence="50"/>
+
+<record id="action_agri_products_type_fillingpackaging" model="ir.actions.act_window">
+  <field name="name">Product Type: Packaging Materials</field>
+  <field name="res_model">product.template</field>
+  <field name="view_mode">list,kanban,form</field>
+  <field name="domain">[('agricultural_product_type','=','FillingPackaging')]</field>
+  <field name="context">{'default_agricultural_product_type':'FillingPackaging'}</field>
+</record>
+<menuitem id="menu_agri_products_type_fillingpackaging"
+          name="Packaging Materials"
+          action="action_agri_products_type_fillingpackaging"
+          parent="menu_agri_products_by_type"
+          sequence="60"/>
+
+<record id="action_agri_products_type_assets" model="ir.actions.act_window">
+ <field name="name">Product Type: </field>
+  <field name="res_model">product.template</field>
+  <field name="view_mode">list,kanban,form</field>
+  <field name="domain">[('agricultural_product_type','=','Assets')]</field>
+  <field name="context">{'default_agricultural_product_type':'Assets'}</field>
+</record>
+<menuitem id="menu_agri_products_type_assets"
+ name=""
+          action="action_agri_products_type_assets"
+          parent="menu_agri_products_by_type"
+          sequence="70"/>
+
+<!-- By Available In -->
+<record id="action_agri_products_avl_production_ops" model="ir.actions.act_window">
+  <field name="name">Available In: Production &amp; Operations</field>
+  <field name="res_model">product.template</field>
+  <field name="view_mode">list,kanban,form</field>
+  <field name="domain">[('available_in','=','ProductionOperationsManagement')]</field>
+  <field name="context">{'default_available_in':'ProductionOperationsManagement'}</field>
+</record>
+<menuitem id="menu_agri_products_avl_production_ops"
+          name="Production &amp; Operations"
+          action="action_agri_products_avl_production_ops"
+          parent="menu_agri_products_by_available_in"
+          sequence="10"/>
+
+<record id="action_agri_products_avl_cost_center" model="ir.actions.act_window">
+  <field name="name">Available In: Cost Centers</field>
+  <field name="res_model">product.template</field>
+  <field name="view_mode">list,kanban,form</field>
+  <field name="domain">[('available_in','=','CostCenter')]</field>
+  <field name="context">{'default_available_in':'CostCenter'}</field>
+</record>
+<menuitem id="menu_agri_products_avl_cost_center"
+          name="Cost Centers"
+          action="action_agri_products_avl_cost_center"
+          parent="menu_agri_products_by_available_in"
+          sequence="20"/>
+
+<record id="action_agri_products_avl_accounting" model="ir.actions.act_window">
+  <field name="name">Available In: Accounts General</field>
+  <field name="res_model">product.template</field>
+  <field name="view_mode">list,kanban,form</field>
+  <field name="domain">[('available_in','=','Accounting')]</field>
+  <field name="context">{'default_available_in':'Accounting'}</field>
+</record>
+<menuitem id="menu_agri_products_avl_accounting"
+          name="Accounts General"
+          action="action_agri_products_avl_accounting"
+          parent="menu_agri_products_by_available_in"
+          sequence="30"/>
+
+<record id="action_agri_products_avl_finished_goods" model="ir.actions.act_window">
+  <field name="name">Available In: Finished Goods Warehouses</field>
+  <field name="res_model">product.template</field>
+  <field name="view_mode">list,kanban,form</field>
+  <field name="domain">[('available_in','=','FinishedGoodsWarehouses')]</field>
+  <field name="context">{'default_available_in':'FinishedGoodsWarehouses'}</field>
+</record>
+<menuitem id="menu_agri_products_avl_finished_goods"
+          name="Finished Goods Warehouses"
+          action="action_agri_products_avl_finished_goods"
+          parent="menu_agri_products_by_available_in"
+          sequence="40"/>
+
+<record id="action_agri_products_avl_sort_pack" model="ir.actions.act_window">
+ <field name="name">Available In: Sorting Packaging</field>
+  <field name="res_model">product.template</field>
+  <field name="view_mode">list,kanban,form</field>
+  <field name="domain">[('available_in','=','SortingAndPackingArea')]</field>
+  <field name="context">{'default_available_in':'SortingAndPackingArea'}</field>
+</record>
+<menuitem id="menu_agri_products_avl_sort_pack"
+ name="Sorting Packaging"
+          action="action_agri_products_avl_sort_pack"
+          parent="menu_agri_products_by_available_in"
+          sequence="50"/>
+
+<record id="action_agri_products_avl_raw_materials" model="ir.actions.act_window">
+ <field name="name">Available In: Management </field>
+  <field name="res_model">product.template</field>
+  <field name="view_mode">list,kanban,form</field>
+  <field name="domain">[('available_in','=','RawMaterialsWarehouses')]</field>
+  <field name="context">{'default_available_in':'RawMaterialsWarehouses'}</field>
+</record>
+<menuitem id="menu_agri_products_avl_raw_materials"
+ name="Management"
+          action="action_agri_products_avl_raw_materials"
+          parent="menu_agri_products_by_available_in"
+          sequence="60"/>
+
+<record id="action_agri_products_avl_workers" model="ir.actions.act_window">
+  <field name="name">Available In: Workers Agricultural</field>
+  <field name="res_model">product.template</field>
+  <field name="view_mode">list,kanban,form</field>
+  <field name="domain">[('available_in','=','AgriculturalWorkers')]</field>
+  <field name="context">{'default_available_in':'AgriculturalWorkers'}</field>
+</record>
+<menuitem id="menu_agri_products_avl_workers"
+          name="Workers Agricultural"
+          action="action_agri_products_avl_workers"
+          parent="menu_agri_products_by_available_in"
+          sequence="70"/>
+
+<record id="action_agri_products_avl_pre_sale" model="ir.actions.act_window">
+  <field name="name">Available In: Loading Warehouses</field>
+  <field name="res_model">product.template</field>
+  <field name="view_mode">list,kanban,form</field>
+  <field name="domain">[('available_in','=','PreSaleWarehouses')]</field>
+  <field name="context">{'default_available_in':'PreSaleWarehouses'}</field>
+</record>
+<menuitem id="menu_agri_products_avl_pre_sale"
+          name="Loading Warehouses"
+          action="action_agri_products_avl_pre_sale"
+          parent="menu_agri_products_by_available_in"
+          sequence="80"/>
+
+<record id="action_agri_products_avl_rfq" model="ir.actions.act_window">
+ <field name="name">Available In: Requests </field>
+  <field name="res_model">product.template</field>
+  <field name="view_mode">list,kanban,form</field>
+  <field name="domain">[('available_in','=','Rfq')]</field>
+  <field name="context">{'default_available_in':'Rfq'}</field>
+</record>
+<menuitem id="menu_agri_products_avl_rfq"
+ name="Requests"
+          action="action_agri_products_avl_rfq"
+          parent="menu_agri_products_by_available_in"
+          sequence="90"/>
+
+<record id="action_agri_products_avl_harvest" model="ir.actions.act_window">
+  <field name="name">Available In: Harvest</field>
+  <field name="res_model">product.template</field>
+  <field name="view_mode">list,kanban,form</field>
+  <field name="domain">[('available_in','=','Harvest')]</field>
+  <field name="context">{'default_available_in':'Harvest'}</field>
+</record>
+<menuitem id="menu_agri_products_avl_harvest"
+          name="Harvest"
+          action="action_agri_products_avl_harvest"
+          parent="menu_agri_products_by_available_in"
+          sequence="100"/>
+
+<record id="action_agri_products_avl_car_workshops" model="ir.actions.act_window">
+  <field name="name">Available In: Vehicle Workshop</field>
+  <field name="res_model">product.template</field>
+  <field name="view_mode">list,kanban,form</field>
+  <field name="domain">[('available_in','=','CarWorkshops')]</field>
+  <field name="context">{'default_available_in':'CarWorkshops'}</field>
+</record>
+<menuitem id="menu_agri_products_avl_car_workshops"
+          name="Vehicle Workshop"
+          action="action_agri_products_avl_car_workshops"
+          parent="menu_agri_products_by_available_in"
+          sequence="110"/>
+
+<record id="action_agri_products_avl_maintenance" model="ir.actions.act_window">
+ <field name="name">Available In: </field>
+  <field name="res_model">product.template</field>
+  <field name="view_mode">list,kanban,form</field>
+  <field name="domain">[('available_in','=','MaintenanceWorkshops')]</field>
+  <field name="context">{'default_available_in':'MaintenanceWorkshops'}</field>
+</record>
+<menuitem id="menu_agri_products_avl_maintenance"
+ name=""
+          action="action_agri_products_avl_maintenance"
+          parent="menu_agri_products_by_available_in"
+          sequence="120"/>
+    </data>
+</odoo>

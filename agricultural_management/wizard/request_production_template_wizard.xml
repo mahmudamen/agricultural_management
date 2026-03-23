@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <record id="view_production_request_template_wizard_enhanced" model="ir.ui.view">
+            <field name="name">request.template.wizard.enhanced</field>
+            <field name="model">request.template.wizard</field>
+            <field name="arch" type="xml">
+                <form>
+                    <sheet>
+                        <div class="alert alert-info" role="alert" invisible="not request_id">
+                            <strong>Current Request:</strong>
+                            <field name="request_id" readonly="1" nolabel="1"/>
+                            <span invisible="not farm_id">for Farm: <field name="farm_id" readonly="1" nolabel="1"/></span>
+                            <br/>
+                            <span invisible="current_line_count == 0">Current lines: <field name="current_line_count" readonly="1" nolabel="1"/></span>
+                        </div>
+
+                        <group>
+                            <field name="merge_mode" widget="radio"/>
+                        </group>
+
+                        <separator string="Select Templates"/>
+                        <field name="template_ids">
+                            <list>
+                                <field name="name"/>
+                                <field name="description"/>
+                                <field name="line_count"/>
+                                <field name="total_estimated_cost" widget="monetary" sum="Total Cost"/>
+                                <field name="usage_count" string="Times Used"/>
+                                <field name="last_used_date"/>
+                            </list>
+                        </field>
+                    </sheet>
+
+                    <footer>
+                        <button name="action_apply_templates"
+                                string="Apply Templates"
+                                type="object"
+                                class="btn-primary"
+                                invisible="not template_ids"/>
+                        <button name="action_preview_templates"
+                                string="Preview"
+                                type="object"
+                                class="btn-secondary"
+                                invisible="not template_ids"/>
+                        <button string="Cancel" class="btn-secondary" special="cancel"/>
+                    </footer>
+                </form>
+            </field>
+        </record>
+    </data>
+</odoo>

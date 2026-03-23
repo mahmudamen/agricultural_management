@@ -1,0 +1,619 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <!-- Main Action - All Agricultural Lots -->
+    <record id="action_stock_production_lot_agricultural" model="ir.actions.act_window">
+        <field name="name">Production Lots</field>
+        <field name="res_model">stock.lot</field>
+        <field name="view_mode">kanban,list,form</field>
+        <field name="domain">[('harvest_schedule_id', '!=', False)]</field>
+        <field name="context">{
+            'search_default_from_harvest': 1,
+            'display_complete': True
+        }</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                Create your first Agricultural Lot
+            </p>
+            <p>
+                Track harvest lots from farm to final destination.<br/>
+                Monitor quality, location, and expiration dates.
+            </p>
+        </field>
+    </record>
+
+    <!-- All Lots (Agricultural + Standard) -->
+    <record id="action_stock_production_lot_all" model="ir.actions.act_window">
+        <field name="name">All Lots/Serial Numbers</field>
+        <field name="res_model">stock.lot</field>
+        <field name="view_mode">list,kanban,form</field>
+        <field name="context">{'display_complete': True}</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                Create your first Lot/Serial Number
+            </p>
+        </field>
+    </record>
+
+    <!-- Quarantined Lots -->
+    <record id="action_stock_production_lot_quarantine" model="ir.actions.act_window">
+        <field name="name">Quarantined Lots</field>
+        <field name="res_model">stock.lot</field>
+        <field name="view_mode">list,form</field>
+        <field name="domain">[('quarantine','=',True)]</field>
+        <field name="context">{'search_default_quarantined': 1}</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                No lots in quarantine
+            </p>
+        </field>
+    </record>
+
+    <!-- Premium Quality (Grade A) -->
+    <record id="action_stock_production_lot_premium" model="ir.actions.act_window">
+        <field name="name">Premium Quality (Grade A)</field>
+        <field name="res_model">stock.lot</field>
+        <field name="view_mode">kanban,list,form</field>
+        <field name="domain">[('quality_grade','=','a'), ('harvest_schedule_id', '!=', False)]</field>
+        <field name="context">{'search_default_grade_a': 1}</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                No premium quality lots
+            </p>
+        </field>
+    </record>
+
+    <!-- Standard Quality (Grade B) -->
+    <record id="action_stock_production_lot_standard" model="ir.actions.act_window">
+        <field name="name">Standard Quality (Grade B)</field>
+        <field name="res_model">stock.lot</field>
+        <field name="view_mode">kanban,list,form</field>
+        <field name="domain">[('quality_grade','=','b'), ('harvest_schedule_id', '!=', False)]</field>
+        <field name="context">{'search_default_grade_b': 1}</field>
+    </record>
+
+    <!-- Economy Quality (Grade C) -->
+    <record id="action_stock_production_lot_economy" model="ir.actions.act_window">
+        <field name="name">Economy Quality (Grade C)</field>
+        <field name="res_model">stock.lot</field>
+        <field name="view_mode">kanban,list</field>
+        <field name="context">{'search_default_grade_c': 1}</field>
+    </record>
+
+    <!-- Organic Certified Lots -->
+    <record id="action_stock_production_lot_organic" model="ir.actions.act_window">
+        <field name="name">Organic Certified Lots</field>
+        <field name="res_model">stock.lot</field>
+        <field name="view_mode">kanban,list</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                No organic certified lots
+            </p>
+        </field>
+    </record>
+
+    <!-- Lots by Farm -->
+    <record id="action_stock_production_lot_by_farm" model="ir.actions.act_window">
+        <field name="name">Lots by Farm</field>
+        <field name="res_model">stock.lot</field>
+        <field name="view_mode">list,kanban</field>
+        <field name="context">{
+            'search_default_group_farm': 1,
+            'display_complete': True
+        }</field>
+    </record>
+
+    <!-- Lots by Project -->
+    <record id="action_stock_production_lot_by_project" model="ir.actions.act_window">
+        <field name="name">Lots by Project</field>
+        <field name="res_model">stock.lot</field>
+        <field name="view_mode">list,kanban</field>
+    </record>
+
+    <!-- Harvested This Month -->
+    <record id="action_stock_production_lot_this_month" model="ir.actions.act_window">
+        <field name="name">Harvested This Month</field>
+        <field name="res_model">stock.lot</field>
+        <field name="view_mode">list,kanban</field>
+    </record>
+
+    <!-- Pivot Analysis -->
+    <record id="action_stock_production_lot_analysis" model="ir.actions.act_window">
+        <field name="name">Lot Analysis</field>
+        <field name="res_model">stock.lot</field>
+        <field name="view_mode">pivot,graph,list</field>
+    </record>
+
+    <!-- Add Pivot View for Analysis -->
+    <record id="view_stock_production_lot_pivot" model="ir.ui.view">
+        <field name="name">stock.lot.pivot</field>
+        <field name="model">stock.lot</field>
+        <field name="arch" type="xml">
+            <pivot string="Lot Analysis" sample="1">
+                <field name="product_id" type="row"/>
+                <field name="farm_id" type="row"/>
+                <field name="quality_grade" type="col"/>
+                <field name="harvest_date" interval="month" type="col"/>
+                <field name="product_qty" type="measure"/>
+                <field name="total_value" type="measure"/>
+            </pivot>
+        </field>
+    </record>
+
+    <!-- Add Graph View for Analysis -->
+    <record id="view_stock_production_lot_graph" model="ir.ui.view">
+        <field name="name">stock.lot.graph</field>
+        <field name="model">stock.lot</field>
+        <field name="arch" type="xml">
+            <graph string="Lot Statistics" sample="1" type="bar">
+                <field name="harvest_date" interval="month"/>
+                <field name="product_qty" type="measure"/>
+                <field name="total_value" type="measure"/>
+            </graph>
+        </field>
+    </record>
+
+    <!-- ========================================= -->
+    <!-- MENUS -->
+    <!-- ========================================= -->
+
+    <!-- Main Menu -->
+    <menuitem id="menu_stock_production_lot_root"
+              name="Production Lots"
+              parent="menu_agricultural_management"
+              sequence="25"/>
+
+    <!-- All Lots -->
+    <menuitem id="menu_stock_production_lot_all"
+              name="All Lots"
+              parent="menu_stock_production_lot_root"
+              action="action_stock_production_lot_all"
+              sequence="1"/>
+
+    <!-- Agricultural Lots -->
+    <menuitem id="menu_stock_production_lot_agricultural"
+              name="Agricultural Lots"
+              parent="menu_stock_production_lot_root"
+              action="action_stock_production_lot_agricultural"
+              sequence="2"/>
+
+    <!-- Submenu: By Status -->
+    <menuitem id="menu_stock_production_lot_status"
+              name="By Status"
+              parent="menu_stock_production_lot_root"
+              sequence="10"/>
+
+    <menuitem id="menu_stock_production_lot_quarantine"
+              name="Quarantined"
+              parent="menu_stock_production_lot_status"
+              action="action_stock_production_lot_quarantine"
+              sequence="1"/>
+
+    <menuitem id="menu_stock_production_lot_this_month"
+              name="Harvested This Month"
+              parent="menu_stock_production_lot_status"
+              action="action_stock_production_lot_this_month"
+              sequence="2"/>
+
+    <!-- Submenu: By Quality -->
+    <menuitem id="menu_stock_production_lot_quality"
+              name="By Quality"
+              parent="menu_stock_production_lot_root"
+              sequence="20"/>
+
+    <menuitem id="menu_stock_production_lot_premium"
+              name="Grade A - Premium"
+              parent="menu_stock_production_lot_quality"
+              action="action_stock_production_lot_premium"
+              sequence="1"/>
+
+    <menuitem id="menu_stock_production_lot_standard"
+              name="Grade B - Standard"
+              parent="menu_stock_production_lot_quality"
+              action="action_stock_production_lot_standard"
+              sequence="2"/>
+
+    <menuitem id="menu_stock_production_lot_economy"
+              name="Grade C - Economy"
+              parent="menu_stock_production_lot_quality"
+              action="action_stock_production_lot_economy"
+              sequence="3"/>
+
+    <menuitem id="menu_stock_production_lot_organic"
+              name="Organic Certified"
+              parent="menu_stock_production_lot_quality"
+              action="action_stock_production_lot_organic"
+              sequence="4"/>
+
+    <!-- Submenu: By Organization -->
+    <menuitem id="menu_stock_production_lot_organization"
+              name="By Organization"
+              parent="menu_stock_production_lot_root"
+              sequence="30"/>
+
+    <menuitem id="menu_stock_production_lot_by_farm"
+              name="By Farm"
+              parent="menu_stock_production_lot_organization"
+              action="action_stock_production_lot_by_farm"
+              sequence="1"/>
+
+    <menuitem id="menu_stock_production_lot_by_project"
+              name="By Project"
+              parent="menu_stock_production_lot_organization"
+              action="action_stock_production_lot_by_project"
+              sequence="2"/>
+
+    <!-- Reports &amp; Analysis -->
+    <menuitem id="menu_stock_production_lot_reports"
+              name="Reports"
+              parent="menu_stock_production_lot_root"
+              sequence="40"/>
+
+    <menuitem id="menu_stock_production_lot_analysis"
+              name="Lot Analysis"
+              parent="menu_stock_production_lot_reports"
+              action="action_stock_production_lot_analysis"
+              sequence="1"/>
+
+    <!-- ========================================= -->
+    <!-- QWEB REPORTS -->
+    <!-- ========================================= -->
+
+    <!-- Lot Label Report -->
+    <report id="report_lot_label"
+            name="agricultural_management.report_lot_label_document"
+            string="Lot Label"
+            model="stock.lot"
+            report_type="qweb-pdf"
+            file="agricultural_management.report_lot_label"
+            print_report_name="'Lot Label - %s' % object.name"/>
+
+    <template id="report_lot_label_document">
+        <t t-call="web.html_container">
+            <t t-foreach="docs" t-as="lot">
+                <t t-call="web.external_layout">
+                    <div class="page" style="text-align: center; padding: 20px;">
+                        <h2><span t-field="lot.name"/></h2>
+                        <div style="margin: 20px 0;">
+                            <img t-att-src="'/report/barcode/?type=%s&amp;value=%s&amp;width=%s&amp;height=%s' % ('Code128', lot.name, 600, 100)"
+                                 style="width:300px;height:50px;"/>
+                        </div>
+                        <table class="table table-sm" style="margin: 20px auto; max-width: 500px;">
+                            <tr>
+                                <th style="text-align: left;">Product:</th>
+                                <td style="text-align: right;"><span t-field="lot.product_id.name"/></td>
+                            </tr>
+                            <tr t-if="lot.quality_grade">
+                                <th style="text-align: left;">Quality:</th>
+                                <td style="text-align: right;"><span t-field="lot.quality_grade"/></td>
+                            </tr>
+                            <tr t-if="lot.harvest_date">
+                                <th style="text-align: left;">Harvest Date:</th>
+                                <td style="text-align: right;"><span t-field="lot.harvest_date"/></td>
+                            </tr>
+                            <tr t-if="lot.expiration_date">
+                                <th style="text-align: left;">Expiration:</th>
+                                <td style="text-align: right;"><span t-field="lot.expiration_date"/></td>
+                            </tr>
+                            <tr t-if="lot.farm_id">
+                                <th style="text-align: left;">Farm:</th>
+                                <td style="text-align: right;"><span t-field="lot.farm_id.name"/></td>
+                            </tr>
+                            <tr t-if="lot.organic_certified">
+                                <th style="text-align: left;">Organic:</th>
+                                <td style="text-align: right;">
+                                    <span class="badge badge-success">Certified</span>
+                                </td>
+                            </tr>
+                        </table>
+                    </div>
+                </t>
+            </t>
+        </t>
+    </template>
+
+    <!-- Quality Certificate Report -->
+    <report id="report_lot_quality_certificate"
+            name="agricultural_management.report_lot_certificate_document"
+            string="Quality Certificate"
+            model="stock.lot"
+            report_type="qweb-pdf"
+            file="agricultural_management.report_lot_certificate"
+            print_report_name="'Quality Certificate - %s' % object.name"/>
+
+    <template id="report_lot_certificate_document">
+        <t t-call="web.html_container">
+            <t t-foreach="docs" t-as="lot">
+                <t t-call="web.external_layout">
+                    <div class="page">
+                        <div class="text-center mb-4">
+                            <h2>QUALITY CERTIFICATE</h2>
+                            <h3>Lot: <span t-field="lot.name"/></h3>
+                        </div>
+
+                        <div class="row mt-4">
+                            <div class="col-6">
+                                <h4>Product Information</h4>
+                                <table class="table table-sm">
+                                    <tr>
+                                        <th>Product:</th>
+                                        <td><span t-field="lot.product_id.name"/></td>
+                                    </tr>
+                                    <tr>
+                                        <th>Lot Number:</th>
+                                        <td><span t-field="lot.name"/></td>
+                                    </tr>
+                                    <tr t-if="lot.quality_grade">
+                                        <th>Quality Grade:</th>
+                                        <td>
+                                            <span t-if="lot.quality_grade == 'a'" class="badge badge-success">Grade A - Premium</span>
+                                            <span t-elif="lot.quality_grade == 'b'" class="badge badge-info">Grade B - Standard</span>
+                                            <span t-elif="lot.quality_grade == 'c'" class="badge badge-warning">Grade C - Economy</span>
+                                            <span t-else="" class="badge badge-danger">Rejected</span>
+                                        </td>
+                                    </tr>
+                                    <tr t-if="lot.quality_score">
+                                        <th>Quality Score:</th>
+                                        <td><span t-field="lot.quality_score"/> / 100</td>
+                                    </tr>
+                                </table>
+                            </div>
+
+                            <div class="col-6">
+                                <h4>Origin</h4>
+                                <table class="table table-sm">
+                                    <tr t-if="lot.farm_id">
+                                        <th>Farm:</th>
+                                        <td><span t-field="lot.farm_id.name"/></td>
+                                    </tr>
+                                    <tr t-if="lot.project_id">
+                                        <th>Project:</th>
+                                        <td><span t-field="lot.project_id.name"/></td>
+                                    </tr>
+                                    <tr t-if="lot.harvest_date">
+                                        <th>Harvest Date:</th>
+                                        <td><span t-field="lot.harvest_date"/></td>
+                                    </tr>
+                                    <tr t-if="lot.production_date">
+                                        <th>Production Date:</th>
+                                        <td><span t-field="lot.production_date"/></td>
+                                    </tr>
+                                    <tr t-if="lot.growing_method">
+                                        <th>Growing Method:</th>
+                                        <td><span t-field="lot.growing_method"/></td>
+                                    </tr>
+                                </table>
+                            </div>
+                        </div>
+
+                        <div class="row mt-4" t-if="lot.organic_certification or lot.food_safety_certification">
+                            <div class="col-12">
+                                <h4>Certifications</h4>
+                                <table class="table table-sm">
+                                    <tr t-if="lot.organic_certification">
+                                        <th>Organic Certification:</th>
+                                        <td>
+                                            <i class="fa fa-certificate text-success" title="certificate"/>
+                                            <span t-field="lot.organic_certification"/>
+                                        </td>
+                                    </tr>
+                                    <tr t-if="lot.food_safety_certification">
+                                        <th>Food Safety:</th>
+                                        <td>
+                                            <i class="fa fa-shield text-info" title="shield"/>
+                                            <span t-field="lot.food_safety_certification"/>
+                                        </td>
+                                    </tr>
+                                </table>
+                            </div>
+                        </div>
+
+                        <div class="row mt-4">
+                            <div class="col-12">
+                                <h4>Compliance</h4>
+                                <table class="table table-sm">
+                                    <tr t-if="lot.pesticide_residue_level">
+                                        <th>Pesticide Residue:</th>
+                                        <td>
+                                            <span t-field="lot.pesticide_residue_level"/> ppm
+                                            <span t-if="lot.pesticide_compliant" class="badge badge-success ml-2">
+                                                <i class="fa fa-check" title="check"/> Compliant
+                                            </span>
+                                            <span t-else="" class="badge badge-danger ml-2">
+                                                <i class="fa fa-times" title="times"/> Non-Compliant
+                                            </span>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <th>Heavy Metal Testing:</th>
+                                        <td>
+                                            <span t-if="lot.heavy_metal_tested" class="text-success">
+                                                <i class="fa fa-check-circle" title="check"/> Tested
+                                            </span>
+                                            <span t-else="" class="text-muted">
+                                                <i class="fa fa-circle-o" title="circle"/> Not Tested
+                                            </span>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <th>Microbial Testing:</th>
+                                        <td>
+                                            <span t-if="lot.microbial_tested" class="text-success">
+                                                <i class="fa fa-check-circle" title="check circle"/> Tested
+                                            </span>
+                                            <span t-else="" class="text-muted">
+                                                <i class="fa fa-circle-o" title="circle"/> Not Tested
+                                            </span>
+                                        </td>
+                                    </tr>
+                                </table>
+                            </div>
+                        </div>
+
+                        <div class="row mt-5">
+                            <div class="col-12 text-center">
+                                <p class="mt-4">
+                                    <strong>This certificate confirms that the above lot meets our quality standards.</strong>
+                                </p>
+                                <p>
+                                    Issued on: <span t-esc="context_timestamp(datetime.datetime.now()).strftime('%Y-%m-%d %H:%M')"/>
+                                </p>
+
+                                <div class="mt-4">
+                                    <img t-att-src="'/report/barcode/?type=%s&amp;value=%s&amp;width=%s&amp;height=%s' % ('Code128', lot.name, 600, 100)"
+                                         style="width:300px;height:50px;"/>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </t>
+            </t>
+        </t>
+    </template>
+
+    <!-- Traceability Report -->
+    <report id="report_lot_traceability"
+            name="agricultural_management.report_lot_traceability_document"
+            string="Traceability Report"
+            model="stock.lot"
+            report_type="qweb-pdf"
+            file="agricultural_management.report_lot_traceability"
+            print_report_name="'Traceability - %s' % object.name"/>
+
+    <template id="report_lot_traceability_document">
+        <t t-call="web.html_container">
+            <t t-foreach="docs" t-as="lot">
+                <t t-call="web.external_layout">
+                    <div class="page">
+                        <div class="text-center mb-4">
+                            <h2>TRACEABILITY REPORT</h2>
+                            <h3>Lot: <span t-field="lot.name"/></h3>
+                        </div>
+
+                        <!-- Product Info -->
+                        <div class="row">
+                            <div class="col-12">
+                                <h4>Product Information</h4>
+                                <table class="table table-bordered">
+                                    <tr>
+                                        <th width="30%">Product</th>
+                                        <td><span t-field="lot.product_id.name"/></td>
+                                    </tr>
+                                    <tr>
+                                        <th>Lot Number</th>
+                                        <td><span t-field="lot.name"/></td>
+                                    </tr>
+                                    <tr t-if="lot.ref">
+                                        <th>Reference</th>
+                                        <td><span t-field="lot.ref"/></td>
+                                    </tr>
+                                    <tr>
+                                        <th>On Hand Quantity</th>
+                                        <td><span t-field="lot.product_qty"/> <span t-field="lot.product_uom_id.name"/></td>
+                                    </tr>
+                                </table>
+                            </div>
+                        </div>
+
+                        <!-- Origin Traceability -->
+                        <div class="row mt-3">
+                            <div class="col-12">
+                                <h4>Origin Traceability</h4>
+                                <table class="table table-bordered">
+                                    <tr t-if="lot.farm_id">
+                                        <th width="30%">Farm</th>
+                                        <td><span t-field="lot.farm_id.name"/></td>
+                                    </tr>
+                                    <tr t-if="lot.project_id">
+                                        <th>Agricultural Project</th>
+                                        <td><span t-field="lot.project_id.name"/></td>
+                                    </tr>
+                                    <tr t-if="lot.harvest_schedule_id">
+                                        <th>Harvest Schedule</th>
+                                        <td><span t-field="lot.harvest_schedule_id.name"/></td>
+                                    </tr>
+                                    <tr t-if="lot.harvest_date">
+                                        <th>Harvest Date</th>
+                                        <td><span t-field="lot.harvest_date"/></td>
+                                    </tr>
+                                    <tr t-if="lot.growing_method">
+                                        <th>Growing Method</th>
+                                        <td><span t-field="lot.growing_method"/></td>
+                                    </tr>
+                                </table>
+                            </div>
+                        </div>
+
+                        <!-- Quality Information -->
+                        <div class="row mt-3">
+                            <div class="col-12">
+                                <h4>Quality Information</h4>
+                                <table class="table table-bordered">
+                                    <tr>
+                                        <th width="30%">Quality Grade</th>
+                                        <td><span t-field="lot.quality_grade"/></td>
+                                    </tr>
+                                    <tr t-if="lot.quality_score">
+                                        <th>Quality Score</th>
+                                        <td><span t-field="lot.quality_score"/> / 100</td>
+                                    </tr>
+                                    <tr>
+                                        <th>Organic Certified</th>
+                                        <td>
+                                            <span t-if="lot.organic_certified" class="text-success">
+                                                <i class="fa fa-check" title="check"/> Yes
+                                            </span>
+                                            <span t-else="">No</span>
+                                        </td>
+                                    </tr>
+                                </table>
+                            </div>
+                        </div>
+
+                        <!-- Current Status -->
+                        <div class="row mt-3">
+                            <div class="col-12">
+                                <h4>Current Status</h4>
+                                <table class="table table-bordered">
+                                    <tr t-if="lot.location_id">
+                                        <th width="30%">Location</th>
+                                        <td><span t-field="lot.location_id.complete_name"/></td>
+                                    </tr>
+                                    <tr t-if="lot.warehouse_id">
+                                        <th>Warehouse</th>
+                                        <td><span t-field="lot.warehouse_id.name"/></td>
+                                    </tr>
+                                    <tr t-if="lot.expiration_date">
+                                        <th>Expiration Date</th>
+                                        <td><span t-field="lot.expiration_date"/></td>
+                                    </tr>
+                                    <tr>
+                                        <th>Quarantine Status</th>
+                                        <td>
+                                            <span t-if="lot.quarantine" class="badge badge-warning">
+                                                <i class="fa fa-exclamation-triangle" title="exclamation triangle"/> Under Quarantine
+                                            </span>
+                                            <span t-else="" class="badge badge-success">
+                                                <i class="fa fa-check" title="check"/> Active
+                                            </span>
+                                        </td>
+                                    </tr>
+                                </table>
+                            </div>
+                        </div>
+
+                        <!-- Footer -->
+                        <div class="row mt-5">
+                            <div class="col-12 text-center">
+                                <p class="text-muted">
+                                    Report Generated: <span t-esc="context_timestamp(datetime.datetime.now()).strftime('%Y-%m-%d %H:%M:%S')"/>
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </t>
+            </t>
+        </t>
+    </template>
+
+</odoo>

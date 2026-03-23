@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+
+        <!-- ============================================================ -->
+        <!--  TOP-LEVEL APP MENUS (with custom icons)                     -->
+        <!-- ============================================================ -->
+
+        <!-- Main AgriMan app - visible to all agricultural users -->
+        <menuitem id="menu_agricultural_management"
+              name="AgriMan"
+              web_icon="agricultural_management,static/src/img/agriman.png"
+              groups="group_agricultural_user"
+              sequence="10"/>
+
+        <!-- Agricultural Tasks - Engineers and Managers -->
+        <menuitem id="menu_agricultural_tasks"
+              name="Agricultural Tasks"
+              web_icon="agricultural_management,static/src/img/agriman.png"
+              groups="group_agricultural_engineer"
+              sequence="11"/>
+
+        <!-- Purchase Task - Purchase Managers -->
+        <menuitem id="menu_purchase_task"
+              name="Purchase Task"
+              web_icon="agricultural_management,static/src/img/purchase.png"
+              groups="group_purchase_manager"
+              sequence="12"/>
+
+        <!-- Inventory Task - Warehouse Managers -->
+        <menuitem id="menu_inventory_task"
+              name="Inventory Task"
+              web_icon="agricultural_management,static/src/img/inventory.png"
+              groups="group_inventory_manager"
+              sequence="13"/>
+
+        <!-- Accountant Task - Agricultural Accountants -->
+        <menuitem id="menu_accountant_task"
+              name="Accountant Task"
+              web_icon="agricultural_management,static/src/img/accountanttask.png"
+              groups="group_accounts"
+              sequence="14"/>
+
+        <!-- ============================================================ -->
+        <!--  DASHBOARD ACTION                                            -->
+        <!-- ============================================================ -->
+
+        <record id="action_agri_dashboard" model="ir.actions.client">
+            <field name="name">Agricultural Dashboard</field>
+            <field name="tag">agricultural_dashboard</field>
+        </record>
+
+        <!-- ============================================================ -->
+        <!--  SUB-MENUS under AgriMan (Level 1)                           -->
+        <!-- ============================================================ -->
+
+        <menuitem id="menu_dashboard"
+              name="Dashboard"
+              action="action_agri_dashboard"
+              parent="menu_agricultural_management"
+              groups="group_agricultural_user"
+              sequence="1"/>
+
+        <menuitem id="menu_agricultural_production"
+              name="Production"
+              parent="menu_agricultural_management"
+              groups="group_agricultural_user"
+              sequence="10"/>
+
+        <menuitem id="menu_farms"
+              name="Farms"
+              parent="menu_agricultural_management"
+              groups="group_agricultural_user"
+              sequence="20"/>
+
+        <menuitem id="menu_harvest"
+              name="Harvest"
+              parent="menu_agricultural_management"
+              groups="group_agricultural_user"
+              sequence="30"/>
+
+        <menuitem id="menu_projects"
+              name="Projects"
+              parent="menu_agricultural_management"
+              groups="group_agricultural_engineer"
+              sequence="40"/>
+
+        <menuitem id="menu_cost_management"
+              name="Cost Management"
+              parent="menu_agricultural_management"
+              groups="group_accounts,group_agricultural_manager"
+              sequence="50"/>
+
+        <menuitem id="menu_reports"
+              name="Reports"
+              parent="menu_agricultural_management"
+              groups="group_agricultural_engineer"
+              sequence="60"/>
+
+        <menuitem id="menu_configuration"
+              name="Configuration"
+              parent="menu_agricultural_management"
+              groups="group_agricultural_manager"
+              sequence="100"/>
+
+    </data>
+</odoo>

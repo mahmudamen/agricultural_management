@@ -1,0 +1,182 @@
+// Agricultural Dashboard - Enterprise Grade Theme
+// Dark + Light Mode | Responsive | Animated
+
+.agri-dashboard {
+    // Light mode defaults
+    --agri-bg: #f5f6f8;
+    --agri-card: #ffffff;
+    --agri-border: #e4e7eb;
+    --agri-text: #1f2937;
+    --agri-text2: #6b7280;
+    --agri-text3: #9ca3af;
+    --agri-shadow: 0 1px 3px rgba(0,0,0,0.06), 0 1px 2px rgba(0,0,0,0.04);
+    --agri-shadow-lg: 0 10px 30px rgba(0,0,0,0.08);
+    --agri-green: #16a34a;
+    --agri-green-bg: #dcfce7;
+    --agri-blue: #2563eb;
+    --agri-blue-bg: #dbeafe;
+    --agri-red: #dc2626;
+    --agri-red-bg: #fee2e2;
+    --agri-orange: #ea580c;
+    --agri-orange-bg: #ffedd5;
+    --agri-purple: #7c3aed;
+    --agri-purple-bg: #ede9fe;
+    --agri-teal: #0d9488;
+    --agri-teal-bg: #ccfbf1;
+    --agri-amber: #d97706;
+    --agri-amber-bg: #fef3c7;
+    --agri-radius: 12px;
+    --agri-transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+
+    padding: 24px 28px;
+    background: var(--agri-bg);
+    min-height: 100vh;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+}
+
+// Dark Mode
+html[data-color-scheme="dark"] .agri-dashboard, .o_dark .agri-dashboard {
+    --agri-bg: #0f172a;
+    --agri-card: #1e293b;
+    --agri-border: #334155;
+    --agri-text: #f1f5f9;
+    --agri-text2: #94a3b8;
+    --agri-text3: #64748b;
+    --agri-shadow: 0 1px 3px rgba(0,0,0,0.3);
+    --agri-shadow-lg: 0 10px 30px rgba(0,0,0,0.4);
+    --agri-green-bg: #14532d;
+    --agri-blue-bg: #1e3a5f;
+    --agri-red-bg: #450a0a;
+    --agri-orange-bg: #431407;
+    --agri-purple-bg: #2e1065;
+    --agri-teal-bg: #134e4a;
+    --agri-amber-bg: #451a03;
+}
+
+// Header
+.agri-dashboard .agri-dash-header {
+    display: flex; justify-content: space-between; align-items: center;
+    margin-bottom: 28px; flex-wrap: wrap; gap: 12px;
+    h2 { margin: 0; font-weight: 800; font-size: 22px; color: var(--agri-green); i { opacity: 0.8; } }
+    p { font-size: 13px; }
+}
+
+.agri-dashboard .agri-loading {
+    text-align: center; padding: 80px 0; color: var(--agri-text2);
+    .spinner-border { width: 3rem; height: 3rem; }
+}
+
+// ===== KPI CARDS =====
+.agri-dashboard .agri-kpi-grid {
+    display: grid; gap: 14px; margin-bottom: 20px;
+    &.agri-kpi-primary { grid-template-columns: repeat(4, 1fr); }
+    &.agri-kpi-secondary { grid-template-columns: repeat(4, 1fr); }
+}
+
+.agri-dashboard .agri-kpi-card {
+    background: var(--agri-card); border: 1px solid var(--agri-border);
+    border-radius: var(--agri-radius); padding: 18px 20px;
+    display: flex; align-items: center; gap: 14px;
+    box-shadow: var(--agri-shadow);
+    transition: var(--agri-transition);
+    position: relative; overflow: hidden;
+
+    &:hover { box-shadow: var(--agri-shadow-lg); transform: translateY(-2px); }
+    &[t-on-click], &:has(.kpi-arrow) { cursor: pointer; }
+
+    .kpi-icon {
+        width: 46px; height: 46px; border-radius: 10px;
+        display: flex; align-items: center; justify-content: center;
+        font-size: 18px; flex-shrink: 0;
+    }
+    .kpi-body { flex: 1; min-width: 0; }
+    .kpi-value { display: block; font-size: 22px; font-weight: 800; color: var(--agri-text); line-height: 1.2; }
+    .kpi-label { display: block; font-size: 11px; font-weight: 600; color: var(--agri-text3); text-transform: uppercase; letter-spacing: 0.5px; margin-top: 2px; }
+    .kpi-arrow { color: var(--agri-text3); font-size: 12px; opacity: 0; transition: var(--agri-transition); }
+    &:hover .kpi-arrow { opacity: 1; transform: translateX(3px); }
+
+    &.kpi-farms .kpi-icon { background: var(--agri-green-bg); color: var(--agri-green); }
+    &.kpi-area .kpi-icon { background: var(--agri-blue-bg); color: var(--agri-blue); }
+    &.kpi-revenue .kpi-icon { background: var(--agri-teal-bg); color: var(--agri-teal); }
+    &.kpi-cost .kpi-icon { background: var(--agri-red-bg); color: var(--agri-red); }
+    &.kpi-profit .kpi-icon { background: var(--agri-green-bg); color: var(--agri-green); }
+    &.kpi-margin .kpi-icon { background: var(--agri-amber-bg); color: var(--agri-amber); }
+    &.kpi-projects .kpi-icon { background: var(--agri-purple-bg); color: var(--agri-purple); }
+    &.kpi-requests .kpi-icon { background: var(--agri-orange-bg); color: var(--agri-orange); }
+}
+
+// ===== CHARTS =====
+.agri-dashboard .agri-charts-row {
+    display: grid; gap: 16px; margin-bottom: 20px;
+    &:has(.agri-chart-wide) { grid-template-columns: 5fr 3fr; }
+    &:has(.agri-chart-full) { grid-template-columns: 1fr; }
+}
+
+.agri-dashboard .agri-chart-card {
+    background: var(--agri-card); border: 1px solid var(--agri-border);
+    border-radius: var(--agri-radius); box-shadow: var(--agri-shadow);
+    overflow: hidden;
+
+    .chart-header {
+        padding: 16px 20px 0;
+        h4 { margin: 0; font-size: 14px; font-weight: 700; color: var(--agri-text); i { color: var(--agri-text3); } }
+    }
+    .chart-body { padding: 12px 16px 16px; height: 300px; position: relative; }
+    .chart-body-sm { height: 240px; }
+}
+
+// ===== TABLE =====
+.agri-dashboard .agri-table-card {
+    background: var(--agri-card); border: 1px solid var(--agri-border);
+    border-radius: var(--agri-radius); box-shadow: var(--agri-shadow); overflow: hidden;
+
+    .table-header {
+        padding: 16px 20px;
+        h4 { margin: 0; font-size: 14px; font-weight: 700; color: var(--agri-text); i { color: var(--agri-text3); } }
+    }
+}
+
+.agri-dashboard .agri-table {
+    width: 100%; border-collapse: collapse;
+    th { padding: 10px 16px; font-size: 11px; font-weight: 700; color: var(--agri-text3); text-transform: uppercase; letter-spacing: 0.5px; border-bottom: 2px solid var(--agri-border); background: var(--agri-bg); }
+    td { padding: 12px 16px; font-size: 13px; color: var(--agri-text); border-bottom: 1px solid var(--agri-border); }
+    tr:last-child td { border-bottom: none; }
+    tbody tr { transition: var(--agri-transition); &:hover td { background: rgba(22, 163, 74, 0.04); } }
+    .text-success { color: var(--agri-green) !important; }
+    .text-danger { color: var(--agri-red) !important; }
+
+    .level-badge {
+        display: inline-block; padding: 2px 10px; border-radius: 20px;
+        font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.3px;
+        &[data-level="farm"] { background: var(--agri-green-bg); color: var(--agri-green); }
+        &[data-level="sector"] { background: var(--agri-blue-bg); color: var(--agri-blue); }
+        &[data-level="unit"] { background: var(--agri-orange-bg); color: var(--agri-orange); }
+        &[data-level="house"] { background: var(--agri-purple-bg); color: var(--agri-purple); }
+    }
+}
+
+// ===== ANIMATIONS =====
+@keyframes agri-slide-up { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+
+.agri-dashboard .agri-kpi-card { animation: agri-slide-up 0.4s ease both; }
+.agri-dashboard .agri-kpi-primary .agri-kpi-card:nth-child(1) { animation-delay: 0.05s; }
+.agri-dashboard .agri-kpi-primary .agri-kpi-card:nth-child(2) { animation-delay: 0.1s; }
+.agri-dashboard .agri-kpi-primary .agri-kpi-card:nth-child(3) { animation-delay: 0.15s; }
+.agri-dashboard .agri-kpi-primary .agri-kpi-card:nth-child(4) { animation-delay: 0.2s; }
+.agri-dashboard .agri-kpi-secondary .agri-kpi-card:nth-child(1) { animation-delay: 0.25s; }
+.agri-dashboard .agri-kpi-secondary .agri-kpi-card:nth-child(2) { animation-delay: 0.3s; }
+.agri-dashboard .agri-kpi-secondary .agri-kpi-card:nth-child(3) { animation-delay: 0.35s; }
+.agri-dashboard .agri-kpi-secondary .agri-kpi-card:nth-child(4) { animation-delay: 0.4s; }
+.agri-dashboard .agri-chart-card { animation: agri-slide-up 0.5s ease 0.35s both; }
+.agri-dashboard .agri-table-card { animation: agri-slide-up 0.5s ease 0.5s both; }
+
+// ===== RESPONSIVE =====
+@media (max-width: 1024px) {
+    .agri-dashboard { padding: 16px; }
+    .agri-dashboard .agri-kpi-grid { grid-template-columns: repeat(2, 1fr) !important; }
+    .agri-dashboard .agri-charts-row { grid-template-columns: 1fr !important; }
+}
+@media (max-width: 480px) {
+    .agri-dashboard .agri-kpi-grid { grid-template-columns: 1fr !important; }
+    .agri-dashboard .agri-kpi-card .kpi-value { font-size: 18px; }
+}

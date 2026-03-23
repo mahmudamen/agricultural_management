@@ -1,0 +1,49 @@
+<odoo>
+<data>
+
+    <!-- Inventory Stages -->
+    <record id="stage_alpha_seeding" model="agri.inventory.stage">
+        <field name="name">Seeding A1</field>
+        <field name="farm_id" ref="gh_alpha_1"/>
+        <field name="product_id" ref="product_tomato"/>
+        <field name="quantity_in">1000</field>
+        <field name="quantity_out">950</field>
+        <field name="stage_type">seeding</field>
+        <field name="state">completed</field>
+    </record>
+
+    <record id="stage_beta_seeding" model="agri.inventory.stage">
+        <field name="name">Seeding B1</field>
+        <field name="farm_id" ref="gh_beta_1"/>
+        <field name="product_id" ref="product_cucumber"/>
+        <field name="quantity_in">800</field>
+        <field name="quantity_out">780</field>
+        <field name="stage_type">seeding</field>
+        <field name="state">completed</field>
+    </record>
+
+    <!-- Harvest -->
+    <record id="harvest_alpha_01" model="agricultural.harvest.schedule">
+        <field name="name">HARV-ALPHA-001</field>
+        <field name="project_id" ref="project_alpha_tomato"/>
+        <field name="farm_id" ref="gh_alpha_1"/>
+        <field name="crop_id" ref="product_tomato"/>
+        <field name="scheduled_date" eval="Date.today()"/>
+        <field name="estimated_quantity">5000</field>
+        <field name="actual_quantity">4800</field>
+        <field name="state">completed</field>
+    </record>
+
+    <record id="harvest_beta_01" model="agricultural.harvest.schedule">
+        <field name="name">HARV-BETA-001</field>
+        <field name="project_id" ref="project_beta_cucumber"/>
+        <field name="farm_id" ref="gh_beta_1"/>
+        <field name="crop_id" ref="product_cucumber"/>
+        <field name="scheduled_date" eval="Date.today()"/>
+        <field name="estimated_quantity">4000</field>
+        <field name="actual_quantity">3900</field>
+        <field name="state">completed</field>
+    </record>
+
+</data>
+</odoo>

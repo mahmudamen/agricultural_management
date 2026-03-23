@@ -1,0 +1,205 @@
+<?xml version='1.0' encoding='utf-8'?>
+<odoo>
+<data noupdate="1">
+
+
+
+    <!-- Products: Raw Materials -->
+    <record id="product_tomato_seeds" model="product.product">
+        <field name="name">Tomato Seeds - Premium</field>
+        <field name="type">goods</field>
+        <field name="standard_price">45.00</field>
+        <field name="uom_id" ref="uom.product_uom_kgm"/>
+    </record>
+    <record id="product_npk_fertilizer" model="product.product">
+        <field name="name">NPK Fertilizer 20-20-20</field>
+        <field name="type">goods</field>
+        <field name="standard_price">28.00</field>
+        <field name="uom_id" ref="uom.product_uom_kgm"/>
+    </record>
+    <record id="product_organic_fert" model="product.product">
+        <field name="name">Organic Compost Fertilizer</field>
+        <field name="type">goods</field>
+        <field name="standard_price">15.00</field>
+        <field name="uom_id" ref="uom.product_uom_kgm"/>
+    </record>
+    <record id="product_pesticide" model="product.product">
+        <field name="name">General Purpose Pesticide</field>
+        <field name="type">goods</field>
+        <field name="standard_price">120.00</field>
+        <field name="uom_id" ref="uom.product_uom_unit"/>
+    </record>
+
+    <!-- Farm Hierarchy -->
+    <record id="farm_main" model="agricultural.farm">
+        <field name="name">XAMLTech Demo Farm</field>
+        <field name="code">FARM-001</field>
+        <field name="location">Aswan Agricultural Zone, Sahary, Egypt</field>
+        <field name="level">farm</field>
+        <field name="area_hectares">2400</field>
+    </record>
+    <record id="sector_north" model="agricultural.farm">
+        <field name="name">North Sector - Vegetables</field>
+        <field name="code">FARM-001-N</field>
+        <field name="location">North Zone</field>
+        <field name="level">sector</field>
+        <field name="parent_id" ref="farm_main"/>
+        <field name="area_hectares">1200</field>
+    </record>
+    <record id="sector_south" model="agricultural.farm">
+        <field name="name">South Sector - Greenhouses</field>
+        <field name="code">FARM-001-S</field>
+        <field name="location">South Zone</field>
+        <field name="level">sector</field>
+        <field name="parent_id" ref="farm_main"/>
+        <field name="area_hectares">1200</field>
+    </record>
+    <record id="unit_tomato" model="agricultural.farm">
+        <field name="name">Unit A - Tomato Fields</field>
+        <field name="code">FARM-N-A</field>
+        <field name="location">North A Block</field>
+        <field name="level">unit</field>
+        <field name="parent_id" ref="sector_north"/>
+        <field name="area_hectares">600</field>
+    </record>
+    <record id="unit_cucumber" model="agricultural.farm">
+        <field name="name">Unit B - Cucumber Fields</field>
+        <field name="code">FARM-N-B</field>
+        <field name="location">North B Block</field>
+        <field name="level">unit</field>
+        <field name="parent_id" ref="sector_north"/>
+        <field name="area_hectares">600</field>
+    </record>
+    <record id="house_t1" model="agricultural.farm">
+        <field name="name">Greenhouse T1</field>
+        <field name="code">GH-T1</field>
+        <field name="location">North A Row 1</field>
+        <field name="level">house</field>
+        <field name="parent_id" ref="unit_tomato"/>
+        <field name="area_hectares">200</field>
+    </record>
+    <record id="house_t2" model="agricultural.farm">
+        <field name="name">Greenhouse T2</field>
+        <field name="code">GH-T2</field>
+        <field name="location">North A Row 2</field>
+        <field name="level">house</field>
+        <field name="parent_id" ref="unit_tomato"/>
+        <field name="area_hectares">200</field>
+    </record>
+    <record id="house_c1" model="agricultural.farm">
+        <field name="name">Greenhouse C1</field>
+        <field name="code">GH-C1</field>
+        <field name="location">North B Row 1</field>
+        <field name="level">house</field>
+        <field name="parent_id" ref="unit_cucumber"/>
+        <field name="area_hectares">300</field>
+    </record>
+    <record id="house_p1" model="agricultural.farm">
+        <field name="name">Greenhouse P1 - Pepper</field>
+        <field name="code">GH-P1</field>
+        <field name="location">South Row 1</field>
+        <field name="level">house</field>
+        <field name="parent_id" ref="sector_south"/>
+        <field name="area_hectares">400</field>
+    </record>
+
+    <!-- 12 Sections -->
+    <record id="sec_prod" model="res.sections">
+        <field name="name">Production &amp; Operations</field>
+        <field name="type">ProductionOperationsManagement</field>
+        <field name="code">SEC-PROD</field>
+        <field name="priority">2</field>
+        <field name="sequence">10</field>
+    </record>
+    <record id="sec_cost" model="res.sections">
+        <field name="name">Cost Centers</field>
+        <field name="type">CostCenter</field>
+        <field name="code">SEC-COST</field>
+        <field name="sequence">20</field>
+    </record>
+    <record id="sec_acct" model="res.sections">
+        <field name="name">General Accounting</field>
+        <field name="type">Accounting</field>
+        <field name="code">SEC-ACCT</field>
+        <field name="sequence">30</field>
+    </record>
+    <record id="sec_fgw" model="res.sections">
+        <field name="name">Finished Goods Warehouse</field>
+        <field name="type">FinishedGoodsWarehouses</field>
+        <field name="code">SEC-FGW</field>
+        <field name="sequence">40</field>
+    </record>
+    <record id="sec_sort" model="res.sections">
+        <field name="name">Sorting &amp; Packing</field>
+        <field name="type">SortingAndPackingArea</field>
+        <field name="code">SEC-SORT</field>
+        <field name="sequence">50</field>
+    </record>
+    <record id="sec_raw" model="res.sections">
+        <field name="name">Raw Materials Warehouse</field>
+        <field name="type">RawMaterialsWarehouses</field>
+        <field name="code">SEC-RAW</field>
+        <field name="sequence">60</field>
+    </record>
+    <record id="sec_work" model="res.sections">
+        <field name="name">Agricultural Workers</field>
+        <field name="type">AgriculturalWorkers</field>
+        <field name="code">SEC-WORK</field>
+        <field name="sequence">70</field>
+    </record>
+    <record id="sec_load" model="res.sections">
+        <field name="name">Pre-Sale Loading</field>
+        <field name="type">PreSaleWarehouses</field>
+        <field name="code">SEC-LOAD</field>
+        <field name="sequence">80</field>
+    </record>
+    <record id="sec_pur" model="res.sections">
+        <field name="name">Purchasing</field>
+        <field name="type">Rfq</field>
+        <field name="code">SEC-PUR</field>
+        <field name="sequence">90</field>
+    </record>
+    <record id="sec_harv" model="res.sections">
+        <field name="name">Harvest Operations</field>
+        <field name="type">Harvest</field>
+        <field name="code">SEC-HARV</field>
+        <field name="priority">2</field>
+        <field name="sequence">100</field>
+    </record>
+    <record id="sec_veh" model="res.sections">
+        <field name="name">Vehicle Workshop</field>
+        <field name="type">CarWorkshops</field>
+        <field name="code">SEC-VEH</field>
+        <field name="sequence">110</field>
+    </record>
+    <record id="sec_mnt" model="res.sections">
+        <field name="name">Maintenance Workshop</field>
+        <field name="type">MaintenanceWorkshops</field>
+        <field name="code">SEC-MNT</field>
+        <field name="sequence">120</field>
+    </record>
+        <!-- Products: Finished Crops -->
+    <record id="product_tomato" model="product.product">
+        <field name="name">Tomato - Grade A</field>
+        <field name="type">goods</field>
+        <field name="list_price">12.00</field>
+        <field name="standard_price">5.50</field>
+        <field name="uom_id" ref="uom.product_uom_kgm"/>
+    </record>
+    <record id="product_cucumber" model="product.product">
+        <field name="name">Cucumber - Grade A</field>
+        <field name="type">goods</field>
+        <field name="list_price">8.00</field>
+        <field name="standard_price">3.50</field>
+        <field name="uom_id" ref="uom.product_uom_kgm"/>
+    </record>
+    <record id="product_pepper" model="product.product">
+        <field name="name">Bell Pepper - Grade A</field>
+        <field name="type">goods</field>
+        <field name="list_price">15.00</field>
+        <field name="standard_price">7.00</field>
+        <field name="uom_id" ref="uom.product_uom_kgm"/>
+    </record>
+
+</data>
+</odoo>

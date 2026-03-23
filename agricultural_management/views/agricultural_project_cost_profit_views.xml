@@ -1,0 +1,1147 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <!-- ==================== ENHANCED PROJECT FORM VIEW ==================== -->
+        <record id="view_agricultural_project_cost_profit_form" model="ir.ui.view">
+            <field name="name">agricultural.project.cost.profit.form</field>
+            <field name="model">agricultural.project</field>
+            <field name="arch" type="xml">
+                <form string="Agricultural Project - Cost &amp; Profit Analysis">
+                    <header>
+                        <!-- Hidden Fields -->
+                        <field name="company_id" invisible="1"/>
+                        <field name="currency_id" invisible="1"/>
+
+                        <!-- Action Buttons -->
+                        <button name="action_allocate_costs_to_farms"
+                                string="Allocate Costs to Farms"
+                                type="object"
+                                class="btn-primary"
+                                invisible="state not in ['active', 'completed']"
+                                confirm="This will recalculate cost allocation for all farm levels. Continue?"/>
+
+                        <button name="action_calculate_farm_profits"
+                                string="Calculate Farm Profits"
+                                type="object"
+                                class="btn-success"
+                                invisible="state not in ['active', 'completed']"/>
+
+                        <button name="action_recalculate_all_metrics"
+                                string="Recalculate All Metrics"
+                                type="object"
+                                class="btn-warning"/>
+
+                        <!-- State Pipeline -->
+                        <button name="action_submit_for_review"
+                                string="Submit for Review"
+                                type="object"
+                                invisible="state != 'draft'"
+                                class="btn-primary"/>
+
+                        <button name="action_approve"
+                                string="Approve"
+                                type="object"
+                                invisible="state != 'under_review'"
+                                class="btn-success"/>
+
+                        <button name="action_start_project"
+                                string="Start Project"
+                                type="object"
+                                invisible="state != 'approved'"
+                                class="btn-primary"/>
+
+                        <button name="action_complete_project"
+                                string="Complete Project"
+                                type="object"
+                                invisible="state != 'active'"
+                                class="btn-success"/>
+
+                        <field name="state" widget="statusbar"
+                               statusbar_visible="draft,under_review,approved,active,completed"/>
+                    </header>
+
+                    <sheet>
+                        <!-- Smart Buttons -->
+                        <div class="oe_button_box" name="button_box">
+                            <!-- Production Requests -->
+                            <button name="agricultural_production_request_action"
+                                    type="object"
+                                    class="oe_stat_button"
+                                    icon="fa-tasks">
+                                <div class="o_field_widget o_stat_info">
+                                    <span class="o_stat_value">
+                                        <field name="total_production_requests" widget="integer"/>
+                                    </span>
+                                    <span class="o_stat_text">Production Requests</span>
+                                </div>
+                            </button>
+
+                            <!-- Harvest Schedules -->
+                            <button name="action_view_harvest_schedules"
+                                    type="object"
+                                    class="oe_stat_button"
+                                    icon="fa-leaf"
+                                    invisible="total_harvests == 0">
+                                <div class="o_field_widget o_stat_info">
+                                    <span class="o_stat_value">
+                                        <field name="completed_harvests" widget="integer"/>
+                                        /
+                                        <field name="total_harvests" widget="integer"/>
+                                    </span>
+                                    <span class="o_stat_text">Harvests</span>
+                                </div>
+                            </button>
+
+                            <!-- Cost Allocations -->
+                            <button name="action_view_cost_allocation_report"
+                                    type="object"
+                                    class="oe_stat_button"
+                                    icon="fa-pie-chart">
+                                <div class="o_field_widget o_stat_info">
+                                    <span class="o_stat_value">
+                                        <field name="total_project_area" widget="float"/>
+                                    </span>
+                                    <span class="o_stat_text">m² Area</span>
+                                </div>
+                            </button>
+
+                            <!-- Farm Profits -->
+                            <button name="action_view_profit_analysis"
+                                    type="object"
+                                    class="oe_stat_button"
+                                    icon="fa-line-chart">
+                                <div class="o_field_widget o_stat_info">
+                                    <span class="o_stat_value">
+                                        <field name="profit_margin_percent" widget="percentage"/>
+                                    </span>
+                                    <span class="o_stat_text">Profit Margin</span>
+                                </div>
+                            </button>
+
+                            <!-- Purchase Orders -->
+                            <button name="action_view_purchases"
+                                    type="object"
+                                    class="oe_stat_button"
+                                    icon="fa-shopping-cart"
+                                    invisible="total_purchase_orders == 0">
+                                <div class="o_field_widget o_stat_info">
+                                    <span class="o_stat_value">
+                                        <field name="total_purchase_orders" widget="integer"/>
+                                    </span>
+                                    <span class="o_stat_text">Purchase Orders</span>
+                                </div>
+                            </button>
+                        </div>
+
+                        <!-- Title -->
+                        <div class="oe_title">
+                            <h1>
+                                <field name="code" readonly="1" class="text-muted"/>
+                            </h1>
+                            <h2>
+                                <field name="name" placeholder="Project Name..." required="1"/>
+                            </h2>
+                        </div>
+
+                        <!-- Alert Banners -->
+                        <div class="alert alert-info" role="alert"
+                             invisible="state not in ['draft', 'under_review']">
+                            <i class="fa fa-info-circle" title="info"/>
+                            <strong>Info:</strong> Complete project setup and submit for review to activate cost tracking.
+                        </div>
+
+                        <div class="alert alert-success" role="alert"
+                             invisible="net_profit &lt;= 0 or state != 'completed'">
+                            <i class="fa fa-check-circle" title="check circle"/>
+                            <strong>Success:</strong> Project completed with
+                            <field name="net_profit" widget="monetary" readonly="1"/> profit!
+                        </div>
+
+                        <div class="alert alert-danger" role="alert"
+                             invisible="net_profit &gt;= 0 or state != 'completed'">
+                            <i class="fa fa-exclamation-triangle" title="exclamation triangle"/>
+                            <strong>Warning:</strong> Project completed with
+                            <field name="net_profit" widget="monetary" readonly="1"/> loss!
+                        </div>
+
+                        <!-- Main Information -->
+                        <group>
+                            <group string="Basic Information">
+                                <field name="project_type" widget="badge"/>
+                                <field name="farm_id" required="1"
+                                       options="{'no_create': True, 'no_create_edit': True}"/>
+                                <field name="manager_id" widget="many2one_avatar_employee"/>
+                                <field name="priority" widget="priority"/>
+                            </group>
+
+                            <group string="Timeline">
+                                <field name="start_date"/>
+                                <field name="end_date"/>
+                                <field name="duration_months" readonly="1"/>
+                                <field name="remaining_days" readonly="1"
+                                       decoration-danger="remaining_days &lt; 0"
+                                       decoration-warning="remaining_days &lt; 7 and remaining_days &gt;= 0"/>
+                                <field name="progress" widget="progressbar"/>
+                            </group>
+                        </group>
+
+                        <!-- Financial KPIs -->
+                        <group>
+                            <group string="Budget &amp; Costs" class="oe_form_group_label_background">
+                                <field name="total_budget" widget="monetary"/>
+                                <field name="total_direct_cost" widget="monetary" readonly="1"/>
+                                <field name="total_indirect_cost" widget="monetary" readonly="1"/>
+                                <field name="actual_cost" widget="monetary" readonly="1"
+                                       decoration-danger="actual_cost &gt; total_budget"/>
+                                <field name="remaining_budget" widget="monetary" readonly="1"
+                                       decoration-success="remaining_budget &gt; 0"
+                                       decoration-danger="remaining_budget &lt; 0"/>
+                                <field name="budget_utilization" widget="percentage" readonly="1"/>
+                            </group>
+
+                            <group string="Revenue &amp; Profit" class="oe_form_group_label_background">
+                                <field name="expected_revenue" widget="monetary"/>
+                                <field name="actual_revenue" widget="monetary" readonly="1"/>
+                                <field name="gross_profit" widget="monetary" readonly="1"
+                                       decoration-success="gross_profit &gt; 0"
+                                       decoration-danger="gross_profit &lt; 0"/>
+                                <field name="net_profit" widget="monetary" readonly="1"
+                                       decoration-success="net_profit &gt; 0"
+                                       decoration-danger="net_profit &lt; 0"/>
+                                <field name="profit_margin_percent" widget="percentage" readonly="1"
+                                       decoration-success="profit_margin_percent &gt; 20"
+                                       decoration-warning="profit_margin_percent &gt; 10 and profit_margin_percent &lt;= 20"
+                                       decoration-danger="profit_margin_percent &lt;= 10"/>
+                                <field name="roi" widget="percentage" readonly="1"/>
+                            </group>
+                        </group>
+
+                        <!-- Cost Breakdown -->
+                        <group string="Detailed Cost Analysis">
+                            <group string="Direct Costs">
+                                <field name="direct_material_cost" widget="monetary" readonly="1"/>
+                                <field name="direct_labor_cost" widget="monetary" readonly="1"/>
+                                <field name="direct_equipment_cost" widget="monetary" readonly="1"/>
+                            </group>
+
+                            <group string="Indirect Costs">
+                                <field name="indirect_overhead_cost" widget="monetary" readonly="1"/>
+                                <field name="allocated_overhead" widget="monetary" readonly="1"/>
+                            </group>
+                        </group>
+
+                        <!-- Area-Based Metrics -->
+                        <group string="Per-Area Performance Metrics">
+                            <group>
+                                <field name="cost_per_square_meter" widget="monetary" readonly="1"/>
+                                <field name="revenue_per_square_meter" widget="monetary" readonly="1"/>
+                            </group>
+                            <group>
+                                <field name="profit_per_square_meter" widget="monetary" readonly="1"
+                                       decoration-success="profit_per_square_meter &gt; 0"
+                                       decoration-danger="profit_per_square_meter &lt; 0"/>
+                            </group>
+                        </group>
+
+                        <!-- Notebook -->
+                        <notebook>
+                            <!-- Farm Cost Allocation -->
+                            <page string="Farm Cost Allocation" name="cost_allocation">
+                                <div class="oe_title">
+                                    <h3>Cost Distribution Across Farm Levels</h3>
+                                    <p class="text-muted">
+                                        Costs are allocated proportionally based on area (m²) usage at each farm level.
+                                    </p>
+                                </div>
+
+                                <group>
+                                    <button name="action_allocate_costs_to_farms"
+                                            string="Recalculate Allocations"
+                                            type="object"
+                                            class="btn-primary"/>
+                                    <button name="action_export_cost_allocation_excel"
+                                            string="Export to Excel"
+                                            type="object"
+                                            class="btn-info"/>
+                                </group>
+
+                                <field name="farm_cost_allocation_ids" nolabel="1">
+                                    <list decoration-info="farm_level == 'farm'"
+                                          decoration-success="farm_level == 'sector'"
+                                          decoration-warning="farm_level == 'unit'"
+                                          decoration-muted="farm_level == 'house'"
+                                          create="false" delete="false">
+                                        <field name="child_count" invisible="1"/>
+                                        <field name="farm_level" string="Level"/>
+                                        <field name="farm_id" string="Farm Location"/>
+                                        <field name="area_square_meters" string="Area (m²)" sum="Total Area"/>
+                                        <field name="area_ratio" string="Area %" widget="percentage"/>
+                                        <field name="allocated_cost" string="Allocated Cost"
+                                               sum="Total Cost" widget="monetary"/>
+                                        <field name="cost_per_square_meter" string="Cost/m²"
+                                               widget="monetary" avg="Average"/>
+                                        <field name="direct_cost_portion" string="Direct Cost"
+                                               widget="monetary" optional="hide"/>
+                                        <field name="indirect_cost_portion" string="Indirect Cost"
+                                               widget="monetary" optional="hide"/>
+                                        <field name="state" widget="badge"/>
+                                        <button name="action_view_children"
+                                                type="object"
+                                                string="View Children"
+                                                icon="fa-sitemap"
+                                                invisible="child_count == 0"/>
+                                    </list>
+                                </field>
+                            </page>
+
+                            <!-- Farm Level Profits -->
+                            <page string="Farm Level Profits" name="farm_profits">
+                                <div class="oe_title">
+                                    <h3>Profit Analysis by Farm Level</h3>
+                                    <p class="text-muted">
+                                        Detailed profit calculation for each farm location based on actual harvests and allocated costs.
+                                    </p>
+                                </div>
+
+                                <group>
+                                    <button name="action_calculate_farm_profits"
+                                            string="Recalculate Profits"
+                                            type="object"
+                                            class="btn-success"/>
+                                    <button name="action_view_profit_analysis"
+                                            string="Open Pivot Analysis"
+                                            type="object"
+                                            class="btn-info"/>
+                                </group>
+
+                                <field name="farm_level_profit_ids" nolabel="1">
+                                    <list decoration-success="net_profit &gt; 0"
+                                          decoration-danger="net_profit &lt; 0"
+                                          decoration-warning="net_profit == 0"
+                                          create="false" delete="false">
+                                        <field name="farm_level" string="Level"/>
+                                        <field name="farm_id" string="Farm Location"/>
+                                        <field name="total_cost" string="Total Cost"
+                                               sum="Total Cost" widget="monetary"/>
+                                        <field name="total_revenue" string="Revenue"
+                                               sum="Total Revenue" widget="monetary"/>
+                                        <field name="net_profit" string="Net Profit"
+                                               sum="Total Profit" widget="monetary"/>
+                                        <field name="profit_margin_percent" string="Margin %"
+                                               widget="percentage" avg="Average"/>
+                                        <field name="roi_percent" string="ROI %"
+                                               widget="percentage" avg="Average"/>
+                                        <field name="total_yield_quantity" string="Yield"
+                                               sum="Total Yield"/>
+                                        <field name="yield_efficiency_percent" string="Yield Efficiency %"
+                                               widget="percentage" avg="Average" optional="hide"/>
+                                        <field name="performance_rating" widget="badge"/>
+                                        <field name="color" invisible="1"/>
+                                        <button name="action_show_insights"
+                                                type="object"
+                                                string="Insights"
+                                                icon="fa-lightbulb-o"/>
+                                    </list>
+                                </field>
+                            </page>
+
+                            <!-- Production Requests -->
+                            <page string="Production Requests" name="production_requests">
+                                <field name="production_request_ids" nolabel="1">
+                                    <list decoration-info="state == 'draft'"
+                                          decoration-success="state == 'completed'"
+                                          decoration-warning="state in ['submitted', 'dr_approved']">
+                                        <field name="name" string="Request #"/>
+                                        <field name="farm_id" string="Farm"/>
+                                        <field name="request_date"/>
+                                        <field name="required_date"/>
+                                        <field name="request_type" widget="badge"/>
+                                        <field name="estimated_cost" widget="monetary" sum="Total Estimated"/>
+                                        <field name="actual_cost" widget="monetary" sum="Total Actual"/>
+                                        <field name="availability_status" widget="badge"/>
+                                        <field name="state" widget="badge"/>
+                                        <field name="line_count" string="Lines"/>
+                                    </list>
+                                </field>
+                            </page>
+
+                            <!-- Harvest Schedules -->
+                            <page string="Harvests" name="harvests">
+                                <field name="harvest_schedule_ids" nolabel="1">
+                                    <list decoration-success="state == 'completed'"
+                                          decoration-info="state in ['scheduled', 'confirmed']"
+                                          decoration-warning="state == 'in_progress'">
+                                        <field name="name" string="Schedule #"/>
+                                        <field name="farm_id" string="Farm"/>
+                                        <field name="crop_id" string="Crop"/>
+                                        <field name="scheduled_date" string="Scheduled"/>
+                                        <field name="estimated_quantity" string="Estimated" sum="Total Estimated"/>
+                                        <field name="actual_quantity" string="Actual" sum="Total Actual"/>
+                                        <field name="yield_efficiency" widget="percentage" avg="Avg Efficiency"/>
+                                        <field name="quality_grade" widget="badge" optional="show"/>
+                                        <field name="state" widget="badge"/>
+                                    </list>
+                                </field>
+                            </page>
+
+                            <!-- Purchase Orders -->
+                            <page string="Purchases" name="purchases">
+                                <div class="oe_title">
+                                    <h3>Purchase Orders</h3>
+                                    <p class="text-muted">
+                                        All purchase orders related to this project
+                                    </p>
+                                </div>
+
+                                <field name="purchase_order_ids" nolabel="1">
+                                    <list decoration-info="state == 'draft'"
+                                          decoration-success="state == 'purchase'"
+                                          decoration-muted="state == 'done'">
+                                        <field name="name" string="PO #"/>
+                                        <field name="partner_id" string="Vendor"/>
+                                        <field name="date_order" string="Order Date"/>
+                                        <field name="amount_total" widget="monetary" sum="Total"/>
+                                        <field name="currency_id" invisible="1"/>
+                                        <field name="state" widget="badge"/>
+                                    </list>
+                                </field>
+                            </page>
+
+                            <!-- Team Members -->
+                            <page string="Team" name="team">
+                                <group>
+                                    <group string="Project Manager">
+                                        <field name="manager_id" widget="many2one_avatar_employee"/>
+                                    </group>
+                                    <group string="Technical Team">
+                                        <field name="agricultural_engineer_id" widget="many2one_avatar_employee"/>
+                                        <field name="financial_controller_id" widget="many2one_avatar_employee"/>
+                                    </group>
+                                </group>
+
+                                <separator string="Team Members"/>
+                                <field name="team_member_ids">
+                                    <list editable="bottom">
+                                        <field name="company_id" invisible="1"/>
+                                        <field name="name" string="Employee"/>
+                                        <field name="job_id" string="Position"/>
+                                        <field name="department_id" string="Department"/>
+                                        <field name="work_email" widget="email"/>
+                                        <field name="mobile_phone" widget="phone"/>
+                                    </list>
+                                </field>
+                            </page>
+
+                            <!-- Financial Details -->
+                            <page string="Financial Details" name="financial_details">
+                                <group>
+                                    <group string="Budget Details">
+                                        <field name="planned_budget" widget="monetary"/>
+                                        <field name="approved_budget" widget="monetary"/>
+                                        <field name="allocated_budget" widget="monetary" readonly="1"/>
+                                        <field name="budget_variance" widget="monetary" readonly="1"
+                                               decoration-success="budget_variance &gt;= 0"
+                                               decoration-danger="budget_variance &lt; 0"/>
+                                    </group>
+
+                                    <group string="Cost Details">
+                                        <field name="material_cost" widget="monetary" readonly="1"/>
+                                        <field name="labor_cost" widget="monetary" readonly="1"/>
+                                        <field name="equipment_cost" widget="monetary" readonly="1"/>
+                                        <field name="overhead_cost" widget="monetary" readonly="1"/>
+                                    </group>
+                                </group>
+
+                                <separator string="Revenue Details"/>
+                                <group>
+                                    <group>
+                                        <field name="expected_revenue" widget="monetary"/>
+                                        <field name="actual_revenue" widget="monetary" readonly="1"/>
+                                    </group>
+                                    <group>
+                                        <field name="expected_profit" widget="monetary" readonly="1"/>
+                                        <field name="actual_profit" widget="monetary" readonly="1"/>
+                                    </group>
+                                </group>
+
+                                <separator string="Analytic Account"/>
+                                <group>
+                                    <field name="budget_allocation"
+                                           options="{'no_create': True, 'no_create_edit': True}"/>
+                                    <field name="analytic_account_id"
+                                           options="{'no_create': True, 'no_create_edit': True}"/>
+                                </group>
+                            </page>
+
+                            <!-- Performance Dashboard -->
+                            <page string="Performance Dashboard" name="dashboard">
+                                <div class="row">
+                                    <div class="col-lg-6">
+                                        <div class="card border-primary mb-3">
+                                            <div class="card-header bg-primary text-white">
+                                                <strong>Progress Metrics</strong>
+                                            </div>
+                                            <div class="card-body">
+                                                <group>
+                                                    <field name="progress" widget="progressbar"/>
+                                                    <field name="milestone_completion_rate" widget="percentage" readonly="1"/>
+                                                    <field name="approval_progress" widget="percentage" readonly="1"/>
+                                                </group>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-lg-6">
+                                        <div class="card border-success mb-3">
+                                            <div class="card-header bg-success text-white">
+                                                <strong>Financial Performance</strong>
+                                            </div>
+                                            <div class="card-body">
+                                                <group>
+                                                    <field name="budget_utilization" widget="percentage" readonly="1"/>
+                                                    <field name="cost_efficiency" widget="percentage" readonly="1"/>
+                                                    <field name="roi" widget="percentage" readonly="1"/>
+                                                </group>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="row">
+                                    <div class="col-lg-6">
+                                        <div class="card border-info mb-3">
+                                            <div class="card-header bg-info text-white">
+                                                <strong>Production Metrics</strong>
+                                            </div>
+                                            <div class="card-body">
+                                                <group>
+                                                    <field name="harvest_efficiency" widget="percentage" readonly="1"/>
+                                                    <field name="average_yield_per_hectare" readonly="1"/>
+                                                    <field name="yield_efficiency" widget="percentage" readonly="1"/>
+                                                </group>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-lg-6">
+                                        <div class="card border-warning mb-3">
+                                            <div class="card-header bg-warning text-white">
+                                                <strong>Risk &amp; Quality</strong>
+                                            </div>
+                                            <div class="card-body">
+                                                <group>
+                                                    <field name="health_status" widget="badge"/>
+                                                    <field name="risk_level" widget="badge"/>
+                                                    <field name="quality_score" widget="percentage" readonly="1"/>
+                                                </group>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </page>
+
+                            <!-- Description &amp; Notes -->
+                            <page string="Description" name="description">
+                                <group>
+                                    <field name="description" nolabel="1"
+                                           placeholder="Describe the project objectives, scope, and key deliverables..."/>
+                                </group>
+                            </page>
+
+                            <!-- Attachments -->
+                            <page string="Attachments" name="attachments">
+                                <field name="attachment_ids" widget="many2many_binary"
+                                       nolabel="1"/>
+                            </page>
+                        </notebook>
+                    </sheet>
+
+                    <!-- Chatter -->
+                    <chatter/>
+                </form>
+            </field>
+        </record>
+        <!-- ==================== PROJECT list VIEW ==================== -->
+        <record id="view_agricultural_project_cost_profit_list" model="ir.ui.view">
+            <field name="name">agricultural.project.cost.profit.list</field>
+            <field name="model">agricultural.project</field>
+            <field name="arch" type="xml">
+                <list string="Agricultural Projects"
+                      decoration-info="state == 'draft'"
+                      decoration-success="state == 'completed'"
+                      decoration-warning="state in ['under_review', 'approved']"
+                      decoration-primary="state == 'active'"
+                      multi_edit="1">
+                    <field name="code" string="Code"/>
+                    <field name="name" string="Project Name"/>
+                    <field name="farm_id" string="Farm"/>
+                    <field name="project_type" widget="badge"/>
+                    <field name="start_date"/>
+                    <field name="end_date"/>
+                    <field name="progress" widget="progressbar"/>
+                    <field name="total_budget" widget="monetary" sum="Total Budget"/>
+                    <field name="actual_cost" widget="monetary" sum="Actual Cost"/>
+                    <field name="actual_revenue" widget="monetary" sum="Revenue" optional="hide"/>
+                    <field name="net_profit" widget="monetary" sum="Net Profit"
+                           decoration-success="net_profit &gt; 0"
+                           decoration-danger="net_profit &lt; 0"/>
+                    <field name="profit_margin_percent" widget="percentage" avg="Avg Margin"
+                           optional="show"/>
+                    <field name="budget_utilization" widget="percentage" avg="Avg Budget Use"
+                           optional="hide"/>
+                    <field name="health_status" widget="badge" optional="show"/>
+                    <field name="state" widget="badge"/>
+                    <field name="priority" widget="priority" optional="hide"/>
+                    <field name="currency_id" invisible="1"/>
+                </list>
+            </field>
+        </record>
+        <!-- ==================== PROJECT KANBAN VIEW ==================== -->
+        <record id="view_agricultural_project_cost_profit_kanban" model="ir.ui.view">
+            <field name="name">agricultural.project.cost.profit.kanban</field>
+            <field name="model">agricultural.project</field>
+            <field name="arch" type="xml">
+                <kanban default_group_by="state" class="o_kanban_small_column">
+                    <field name="code"/>
+                    <field name="name"/>
+                    <field name="farm_id"/>
+                    <field name="progress"/>
+                    <field name="actual_cost"/>
+                    <field name="net_profit"/>
+                    <field name="profit_margin_percent"/>
+                    <field name="health_status"/>
+                    <field name="state"/>
+                    <field name="priority"/>
+                    <field name="color"/>
+                    <templates>
+                        <t t-name="card">
+                            <div t-attf-class="oe_kanban_color_#{kanban_getcolor(record.color.raw_value)} oe_kanban_card oe_kanban_global_click">
+                                <div class="o_dropdown_kanban dropdown">
+                                    <a role="button" class="dropdown-toggle o-no-caret btn" data-toggle="dropdown" href="#" aria-label="Dropdown menu" title="Dropdown menu">
+                                        <span class="fa fa-ellipsis-v" title="ellipsis"/>
+                                    </a>
+                                    <div class="dropdown-menu" role="menu">
+                                        <a role="menuitem" type="edit" class="dropdown-item">Edit</a>
+                                        <a role="menuitem" type="delete" class="dropdown-item">Delete</a>
+                                        <div role="separator" class="dropdown-divider"/>
+                                        <div class="dropdown-item-text">
+                                            <div>Color</div>
+                                            <ul class="oe_kanban_colorpicker"/>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="oe_kanban_content">
+                                    <div class="o_kanban_record_top">
+                                        <div class="o_kanban_record_headings">
+                                            <strong class="o_kanban_record_title">
+                                                <field name="code"/> - <field name="name"/>
+                                            </strong>
+                                        </div>
+                                        <field name="priority" widget="priority"/>
+                                    </div>
+
+                                    <div class="o_kanban_record_body">
+                                        <div>
+                                            <i class="fa fa-map-marker" title="map maker"/> <field name="farm_id"/>
+                                        </div>
+                                        <div class="mt-2">
+                                            <div class="o_kanban_tags">
+                                                <field name="health_status" widget="badge"/>
+                                            </div>
+                                        </div>
+                                        <div class="mt-2">
+                                            <field name="progress" widget="progressbar" title="Progress"/>
+                                        </div>
+                                    </div>
+
+                                    <div class="o_kanban_record_bottom">
+                                        <div class="oe_kanban_bottom_left">
+                                            <div class="o_kanban_inline_block">
+                                                <field name="actual_cost" widget="monetary"/>
+                                            </div>
+                                        </div>
+                                        <div class="oe_kanban_bottom_right">
+                                            <div t-if="record.net_profit.raw_value &gt; 0"
+                                                 class="text-success">
+                                                <field name="profit_margin_percent" widget="percentage"/>
+                                            </div>
+                                            <div t-elif="record.net_profit.raw_value &lt; 0"
+                                                 class="text-danger">
+                                                <field name="profit_margin_percent" widget="percentage"/>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </t>
+                    </templates>
+                </kanban>
+            </field>
+        </record>
+        <!-- ==================== PROJECT PIVOT VIEW ==================== -->
+        <record id="view_agricultural_project_cost_profit_pivot" model="ir.ui.view">
+            <field name="name">agricultural.project.cost.profit.pivot</field>
+            <field name="model">agricultural.project</field>
+            <field name="arch" type="xml">
+                <pivot string="Project Analysis" sample="1">
+                    <field name="farm_id" type="row"/>
+                    <field name="project_type" type="row"/>
+                    <field name="state" type="col"/>
+                    <field name="total_budget" type="measure"/>
+                    <field name="actual_cost" type="measure"/>
+                    <field name="actual_revenue" type="measure"/>
+                    <field name="net_profit" type="measure"/>
+                    <field name="profit_margin_percent" type="measure"/>
+                    <field name="roi" type="measure"/>
+                    <field name="progress" type="measure" invisible="1"/>
+                </pivot>
+            </field>
+        </record>
+        <!-- ==================== PROJECT GRAPH VIEW ==================== -->
+        <record id="view_agricultural_project_cost_profit_graph" model="ir.ui.view">
+            <field name="name">agricultural.project.cost.profit.graph</field>
+            <field name="model">agricultural.project</field>
+            <field name="arch" type="xml">
+                <graph string="Project Performance" sample="1" type="bar">
+                    <field name="name"/>
+                    <field name="net_profit" type="measure"/>
+                    <field name="actual_cost" type="measure"/>
+                    <field name="actual_revenue" type="measure"/>
+                </graph>
+            </field>
+        </record>
+        <!-- ==================== PROJECT ACTION ==================== -->
+        <record id="action_agricultural_project_cost_profit" model="ir.actions.act_window">
+            <field name="name">Agricultural Projects</field>
+            <field name="res_model">agricultural.project</field>
+            <field name="view_mode">list,kanban,form,pivot,graph</field>
+            <field name="context">{
+                'search_default_active': 1,
+            }</field>
+            <field name="help" type="html">
+                <p class="o_view_nocontent_smiling_face">
+                    Create your first Agricultural Project
+                </p>
+                <p>
+                    Track costs, allocate expenses by farm levels, and analyze profitability.
+                </p>
+            </field>
+        </record>
+        <!-- list View -->
+        <record id="view_farm_cost_allocation_list" model="ir.ui.view">
+            <field name="name">farm.cost.allocation.list</field>
+            <field name="model">farm.cost.allocation</field>
+            <field name="arch" type="xml">
+                <list string="Farm Cost Allocations"
+                      decoration-info="farm_level == 'farm'"
+                      decoration-success="farm_level == 'sector'"
+                      decoration-warning="farm_level == 'unit'"
+                      decoration-muted="farm_level == 'house'"
+                      create="false">
+                    <field name="project_id" string="Project"/>
+                    <field name="farm_level" string="Level"/>
+                    <field name="farm_id" string="Farm Location"/>
+                    <field name="area_square_meters" string="Area (m²)" sum="Total Area"/>
+                    <field name="area_ratio" string="Area %" widget="percentage"/>
+                    <field name="allocated_cost" string="Total Cost" sum="Total" widget="monetary"/>
+                    <field name="direct_cost_portion" string="Direct Cost" widget="monetary" optional="show"/>
+                    <field name="indirect_cost_portion" string="Indirect Cost" widget="monetary" optional="show"/>
+                    <field name="cost_per_square_meter" string="Cost/m²" widget="monetary" avg="Average"/>
+                    <field name="allocation_date" optional="hide"/>
+                    <field name="state" widget="badge"/>
+                    <field name="currency_id" invisible="1"/>
+                </list>
+            </field>
+        </record>
+        <!-- Form View -->
+        <record id="view_farm_cost_allocation_form" model="ir.ui.view">
+            <field name="name">farm.cost.allocation.form</field>
+            <field name="model">farm.cost.allocation</field>
+            <field name="arch" type="xml">
+                <form string="Farm Cost Allocation">
+                    <header>
+                        <button name="action_finalize"
+                                string="Finalize"
+                                type="object"
+                                class="btn-primary"
+                                invisible="state == 'finalized'"/>
+                        <field name="state" widget="statusbar" statusbar_visible="draft,allocated,finalized"/>
+                    </header>
+                    <sheet>
+                        <div class="oe_button_box" name="button_box">
+                            <field name="child_count" widget="statinfo" string="Children"/>
+                            <button name="action_view_children"
+                                    type="object"
+                                    class="oe_stat_button"
+                                    icon="fa-sitemap"
+                                    invisible="child_count == 0">
+                            </button>
+                            <button name="action_view_farm"
+                                    type="object"
+                                    class="oe_stat_button"
+                                    icon="fa-map-marker">
+                                <div class="o_field_widget o_stat_info">
+                                    <span class="o_stat_text">View Farm</span>
+                                </div>
+                            </button>
+                        </div>
+
+                        <div class="oe_title">
+                            <h1>
+                                <field name="display_name"/>
+                            </h1>
+                        </div>
+
+                        <group>
+                            <group>
+                                <field name="project_id" readonly="1"/>
+                                <field name="farm_id" readonly="1"/>
+                                <field name="farm_level" readonly="1"/>
+                                <field name="allocation_date"/>
+                            </group>
+                            <group>
+                                <field name="currency_id" invisible="1"/>
+                                <field name="area_square_meters" readonly="1"/>
+                                <field name="area_ratio" widget="percentage" readonly="1"/>
+                                <field name="parent_allocation_id" readonly="1"/>
+                            </group>
+                        </group>
+
+                        <group string="Cost Breakdown">
+                            <group>
+                                <field name="allocated_cost" widget="monetary"/>
+                                <field name="direct_cost_portion" widget="monetary" readonly="1"/>
+                                <field name="indirect_cost_portion" widget="monetary" readonly="1"/>
+                            </group>
+                            <group>
+                                <field name="cost_per_square_meter" widget="monetary" readonly="1"/>
+                                <field name="material_cost" widget="monetary" readonly="1"/>
+                                <field name="labor_cost" widget="monetary" readonly="1"/>
+                                <field name="equipment_cost" widget="monetary" readonly="1"/>
+                                <field name="overhead_cost" widget="monetary" readonly="1"/>
+                            </group>
+                        </group>
+
+                        <notebook>
+                            <page string="Child Allocations" invisible="child_count == 0">
+                                <field name="child_allocation_ids" nolabel="1">
+                                    <list>
+                                        <field name="farm_level"/>
+                                        <field name="farm_id"/>
+                                        <field name="area_square_meters"/>
+                                        <field name="allocated_cost" widget="monetary"/>
+                                        <field name="state" widget="badge"/>
+                                    </list>
+                                </field>
+                            </page>
+                            <page string="Notes">
+                                <field name="notes" nolabel="1" placeholder="Add allocation notes..."/>
+                            </page>
+                        </notebook>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+        <!-- Pivot View -->
+        <record id="view_farm_cost_allocation_pivot" model="ir.ui.view">
+            <field name="name">farm.cost.allocation.pivot</field>
+            <field name="model">farm.cost.allocation</field>
+            <field name="arch" type="xml">
+                <pivot string="Cost Allocation Analysis">
+                    <field name="farm_level" type="row"/>
+                    <field name="farm_id" type="row"/>
+                    <field name="project_id" type="col"/>
+                    <field name="allocated_cost" type="measure"/>
+                    <field name="area_square_meters" type="measure"/>
+                    <field name="cost_per_square_meter" type="measure"/>
+                </pivot>
+            </field>
+        </record>
+        <!-- Graph View -->
+        <record id="view_farm_cost_allocation_graph" model="ir.ui.view">
+            <field name="name">farm.cost.allocation.graph</field>
+            <field name="model">farm.cost.allocation</field>
+            <field name="arch" type="xml">
+                <graph string="Cost Allocation" type="bar">
+                    <field name="farm_id"/>
+                    <field name="allocated_cost" type="measure"/>
+                    <field name="direct_cost_portion" type="measure"/>
+                    <field name="indirect_cost_portion" type="measure"/>
+                </graph>
+            </field>
+        </record>
+        <!-- Action -->
+        <record id="action_farm_cost_allocation" model="ir.actions.act_window">
+            <field name="name">Farm Cost Allocations</field>
+            <field name="res_model">farm.cost.allocation</field>
+            <field name="view_mode">list,form,pivot,graph</field>
+            <field name="help" type="html">
+                <p class="o_view_nocontent_smiling_face">
+                    No cost allocations yet
+                </p>
+                <p>
+                    Cost allocations are created automatically when you allocate project costs to farms.
+                </p>
+            </field>
+        </record>
+        <!-- list View -->
+        <record id="view_farm_level_profit_list" model="ir.ui.view">
+            <field name="name">farm.level.profit.list</field>
+            <field name="model">farm.level.profit</field>
+            <field name="arch" type="xml">
+                <list string="Farm Level Profits"
+                      decoration-success="net_profit &gt; 0"
+                      decoration-danger="net_profit &lt; 0"
+                      decoration-warning="net_profit == 0"
+                      create="false">
+                    <field name="project_id" string="Project"/>
+                    <field name="farm_level" string="Level"/>
+                    <field name="farm_id" string="Farm Location"/>
+                    <field name="area_square_meters" string="Area (m²)"/>
+                    <field name="total_cost" string="Cost" sum="Total Cost" widget="monetary"/>
+                    <field name="total_revenue" string="Revenue" sum="Total Revenue" widget="monetary"/>
+                    <field name="gross_profit" string="Gross Profit" sum="Total Gross" widget="monetary" optional="show"/>
+                    <field name="net_profit" string="Net Profit" sum="Total Net" widget="monetary"/>
+                    <field name="profit_margin_percent" string="Margin %" widget="percentage" avg="Average"/>
+                    <field name="roi_percent" string="ROI %" widget="percentage" avg="Average"/>
+                    <field name="total_yield_quantity" string="Yield" sum="Total Yield"/>
+                    <field name="yield_efficiency_percent" string="Yield Eff %" widget="percentage" avg="Average" optional="hide"/>
+                    <field name="performance_rating" widget="badge"/>
+                    <field name="state" widget="badge" optional="show"/>
+                    <field name="currency_id" invisible="1"/>
+                    <field name="color" invisible="1"/>
+                    <button name="action_show_insights"
+                            type="object"
+                            string="Insights"
+                            icon="fa-lightbulb-o"/>
+                </list>
+            </field>
+        </record>
+        <!-- Form View -->
+        <record id="view_farm_level_profit_form" model="ir.ui.view">
+            <field name="name">farm.level.profit.form</field>
+            <field name="model">farm.level.profit</field>
+            <field name="arch" type="xml">
+                <form string="Farm Level Profit">
+                    <header>
+                        <button name="action_approve"
+                                string="Approve"
+                                type="object"
+                                class="btn-success"
+                                invisible="state != 'calculated'"/>
+                        <button name="action_finalize"
+                                string="Finalize"
+                                type="object"
+                                class="btn-primary"
+                                invisible="state != 'approved'"/>
+                        <button name="action_reset_to_draft"
+                                string="Reset to Draft"
+                                type="object"
+                                invisible="state == 'draft'"/>
+                        <field name="state" widget="statusbar"
+                               statusbar_visible="draft,calculated,approved,finalized"/>
+                    </header>
+                    <sheet>
+                        <div class="oe_button_box" name="button_box">
+                            <button name="action_view_farm"
+                                    type="object"
+                                    class="oe_stat_button"
+                                    icon="fa-map-marker">
+                                <div class="o_field_widget o_stat_info">
+                                    <span class="o_stat_text">View Farm</span>
+                                </div>
+                            </button>
+                            <button name="action_view_project"
+                                    type="object"
+                                    class="oe_stat_button"
+                                    icon="fa-tasks">
+                                <div class="o_field_widget o_stat_info">
+                                    <span class="o_stat_text">View Project</span>
+                                </div>
+                            </button>
+                            <button name="action_view_cost_allocation"
+                                    type="object"
+                                    class="oe_stat_button"
+                                    icon="fa-pie-chart">
+                                <div class="o_field_widget o_stat_info">
+                                    <span class="o_stat_text">Cost Allocation</span>
+                                </div>
+                            </button>
+                        </div>
+
+                        <widget name="web_ribbon"
+                                title="Excellent Performance"
+                                bg_color="bg-success"
+                                invisible="performance_rating != 'excellent'"/>
+                        <widget name="web_ribbon"
+                                title="Loss Making"
+                                bg_color="bg-danger"
+                                invisible="performance_rating != 'loss'"/>
+
+                        <div class="oe_title">
+                            <h1>
+                                <field name="display_name"/>
+                            </h1>
+                            <h3>
+                                <field name="performance_rating" widget="badge"/>
+                            </h3>
+                        </div>
+
+                        <group>
+                            <group string="Basic Information">
+                                <field name="project_id" readonly="1"/>
+                                <field name="farm_id" readonly="1"/>
+                                <field name="farm_level" readonly="1"/>
+                                <field name="calculation_date"/>
+                                <field name="area_square_meters" readonly="1"/>
+                            </group>
+                            <group string="Performance Metrics">
+                                <field name="currency_id" invisible="1"/>
+                                <field name="profit_margin_percent" widget="percentage"/>
+                                <field name="roi_percent" widget="percentage"/>
+                                <field name="yield_efficiency_percent" widget="percentage"/>
+                            </group>
+                        </group>
+
+                        <group>
+                            <group string="Costs">
+                                <field name="total_cost" widget="monetary"/>
+                                <field name="direct_cost" widget="monetary"/>
+                                <field name="indirect_cost" widget="monetary"/>
+                            </group>
+                            <group string="Revenue">
+                                <field name="total_revenue" widget="monetary"/>
+                                <field name="expected_revenue" widget="monetary"/>
+                                <field name="revenue_variance" widget="monetary"
+                                       decoration-success="revenue_variance &gt;= 0"
+                                       decoration-danger="revenue_variance &lt; 0"/>
+                            </group>
+                        </group>
+
+                        <group>
+                            <group string="Profit">
+                                <field name="gross_profit" widget="monetary"
+                                       decoration-success="gross_profit &gt; 0"
+                                       decoration-danger="gross_profit &lt; 0"/>
+                                <field name="net_profit" widget="monetary"
+                                       decoration-success="net_profit &gt; 0"
+                                       decoration-danger="net_profit &lt; 0"/>
+                            </group>
+                            <group string="Yield">
+                                <field name="total_yield_quantity"/>
+                                <field name="expected_yield_quantity"/>
+                                <field name="yield_variance"
+                                       decoration-success="yield_variance &gt;= 0"
+                                       decoration-danger="yield_variance &lt; 0"/>
+                            </group>
+                        </group>
+
+                        <group string="Per-Unit Metrics">
+                            <group>
+                                <field name="cost_per_unit" widget="monetary"/>
+                                <field name="revenue_per_unit" widget="monetary"/>
+                                <field name="profit_per_unit" widget="monetary"/>
+                            </group>
+                            <group>
+                                <field name="cost_per_square_meter" widget="monetary"/>
+                                <field name="revenue_per_square_meter" widget="monetary"/>
+                                <field name="profit_per_square_meter" widget="monetary"/>
+                            </group>
+                        </group>
+
+                        <notebook>
+                            <page string="Analysis">
+                                <group>
+                                    <button name="action_show_insights"
+                                            string="Show Performance Insights"
+                                            type="object"
+                                            class="btn-info btn-lg"/>
+                                    <button name="action_compare_with_siblings"
+                                            string="Compare with Siblings"
+                                            type="object"
+                                            class="btn-primary btn-lg"/>
+                                    <button name="action_generate_profit_report"
+                                            string="Generate Report"
+                                            type="object"
+                                            class="btn-success btn-lg"/>
+                                </group>
+                            </page>
+                            <page string="Notes">
+                                <field name="notes" nolabel="1" placeholder="Add analysis notes..."/>
+                            </page>
+                        </notebook>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+        <!-- Pivot View -->
+        <record id="view_farm_level_profit_pivot" model="ir.ui.view">
+            <field name="name">farm.level.profit.pivot</field>
+            <field name="model">farm.level.profit</field>
+            <field name="arch" type="xml">
+                <pivot string="Profit Analysis">
+                    <field name="farm_level" type="row"/>
+                    <field name="farm_id" type="row"/>
+                    <field name="project_id" type="col"/>
+                    <field name="total_cost" type="measure"/>
+                    <field name="total_revenue" type="measure"/>
+                    <field name="net_profit" type="measure"/>
+                    <field name="profit_margin_percent" type="measure"/>
+                    <field name="roi_percent" type="measure"/>
+                </pivot>
+            </field>
+        </record>
+        <!-- Graph View -->
+        <record id="view_farm_level_profit_graph" model="ir.ui.view">
+            <field name="name">farm.level.profit.graph</field>
+            <field name="model">farm.level.profit</field>
+            <field name="arch" type="xml">
+                <graph string="Farm Profits" type="bar">
+                    <field name="farm_id"/>
+                    <field name="net_profit" type="measure"/>
+                    <field name="total_revenue" type="measure"/>
+                    <field name="total_cost" type="measure"/>
+                </graph>
+            </field>
+        </record>
+        <record id="action_farm_level_profit" model="ir.actions.act_window">
+            <field name="name">Farm Level Profits</field>
+            <field name="res_model">farm.level.profit</field>
+            <field name="view_mode">list,form,pivot,graph</field>
+            <field name="help" type="html">
+                <p class="o_view_nocontent_smiling_face">
+                    No profit data yet
+                </p>
+                <p>
+                    Profit data is calculated automatically when you complete project harvests and allocate costs.
+                </p>
+            </field>
+        </record>
+        <menuitem id="menu_agricultural_project_list"
+                  name="All Projects"
+                  parent="menu_agricultural_production"
+                  action="action_agricultural_project_cost_profit"
+                  sequence="10"/>
+        <menuitem id="menu_agricultural_project_active"
+                  name="Active Projects"
+                  parent="menu_agricultural_production"
+                  action="action_agricultural_project_cost_profit"
+                  sequence="20"/>
+        <menuitem id="menu_agricultural_project_my"
+                  name="My Projects"
+                  parent="menu_agricultural_production"
+                  action="action_agricultural_project_cost_profit"
+                  sequence="30"/>
+        <menuitem id="menu_farm_cost_allocation"
+                  name="Cost Allocations"
+                  parent="menu_agricultural_production"
+                  action="action_farm_cost_allocation"
+                  sequence="10"/>
+        <menuitem id="menu_farm_level_profit"
+                  name="Farm Level Profits"
+                  parent="menu_agricultural_production"
+                  action="action_farm_level_profit"
+                  sequence="20"/>
+    </data>
+</odoo>

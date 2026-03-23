@@ -1,0 +1,52 @@
+<odoo>
+<data>
+
+    <!-- Farms -->
+    <record id="farm_main_1" model="agricultural.farm">
+        <field name="name">Smart Farm Alpha</field>
+        <field name="code">FARM-ALPHA</field>
+        <field name="level">farm</field>
+        <field name="area_hectares">1000</field>
+    </record>
+
+    <record id="farm_main_2" model="agricultural.farm">
+        <field name="name">Smart Farm Beta</field>
+        <field name="code">FARM-BETA</field>
+        <field name="level">farm</field>
+        <field name="area_hectares">800</field>
+    </record>
+
+    <!-- Houses/Greenhouses -->
+    <record id="gh_alpha_1" model="agricultural.farm">
+        <field name="name">Greenhouse A1</field>
+        <field name="parent_id" ref="farm_main_1"/>
+        <field name="level">house</field>
+        <field name="area_hectares">100</field>
+    </record>
+
+    <record id="gh_beta_1" model="agricultural.farm">
+        <field name="name">Greenhouse B1</field>
+        <field name="parent_id" ref="farm_main_2"/>
+        <field name="level">house</field>
+        <field name="area_hectares">80</field>
+    </record>
+
+    <!-- Products -->
+    <record id="product_tomato" model="product.product">
+        <field name="name">Tomato Premium</field>
+        <field name="detailed_type">product</field>
+        <field name="uom_id" ref="uom.product_uom_kgm"/>
+        <field name="list_price">10</field>
+        <field name="standard_price">5</field>
+    </record>
+
+    <record id="product_cucumber" model="product.product">
+        <field name="name">Cucumber Organic</field>
+        <field name="detailed_type">product</field>
+        <field name="uom_id" ref="uom.product_uom_kgm"/>
+        <field name="list_price">8</field>
+        <field name="standard_price">4</field>
+    </record>
+
+</data>
+</odoo>

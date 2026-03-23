@@ -1,0 +1,700 @@
+# Translation of Odoo Server.
+# This file contains the translation of the following modules:
+#     * agricultural_management
+#
+# Translators:
+# XAMLTech <support@xamltech.com>
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Odoo Server 18.0\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2026-03-19 00:00+0000\n"
+"PO-Revision-Date: 2026-03-19 00:00+0000\n"
+"Last-Translator: XAMLTech <support@xamltech.com>\n"
+"Language-Team: Arabic <support@xamltech.com>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Language: ar\n"
+"Plural-Forms: nplurals=6; plural=n==0 ? 0 : n==1 ? 1 : n==2 ? 2 : n%100>=3 && n%100<=10 ? 3 : n%100>=11 ? 4 : 5;\n"
+
+#. module: agricultural_management
+msgid "Accountant"
+msgstr "محاسب"
+
+#. module: agricultural_management
+msgid "Active"
+msgstr "نشط"
+
+#. module: agricultural_management
+msgid "Actual Cost"
+msgstr "التكلفة الفعلية"
+
+#. module: agricultural_management
+msgid "Actual End Date"
+msgstr "تاريخ الانتهاء الفعلي"
+
+#. module: agricultural_management
+msgid "Actual Quantity"
+msgstr "الكمية الفعلية"
+
+#. module: agricultural_management
+msgid "Actual Start Date"
+msgstr "تاريخ البداية الفعلي"
+
+#. module: agricultural_management
+msgid "Add final weight in kilograms"
+msgstr "اضف الوزن النهائي بالكيلو جرام"
+
+#. module: agricultural_management
+msgid "Administrative Expense Account"
+msgstr "حساب مصروفات إدارية"
+
+#. module: agricultural_management
+msgid "Agricultural"
+msgstr "زراعي"
+
+#. module: agricultural_management
+msgid "Agricultural Engineer"
+msgstr "مهندس زراعي"
+
+#. module: agricultural_management
+msgid "Agricultural Workers"
+msgstr "العمالة الزراعية"
+
+#. module: agricultural_management
+msgid "Allocated"
+msgstr "مخصص"
+
+#. module: agricultural_management
+msgid "Approved"
+msgstr "معتمد"
+
+#. module: agricultural_management
+msgid "Archived"
+msgstr "مؤرشف"
+
+#. module: agricultural_management
+msgid "Assets"
+msgstr "أصول"
+
+#. module: agricultural_management
+msgid "Assigned Users"
+msgstr "المستخدمين المعينين"
+
+#. module: agricultural_management
+msgid "Auto-Post Stock Entries"
+msgstr "ترحيل قيود المخزون تلقائياً"
+
+#. module: agricultural_management
+msgid "Available In"
+msgstr "متاح في"
+
+#. module: agricultural_management
+msgid "Cancelled"
+msgstr "ملغي"
+
+#. module: agricultural_management
+msgid "Cash Customers"
+msgstr "عملاء نقدي"
+
+#. module: agricultural_management
+msgid "Category Expense Account"
+msgstr "حساب مصروفات الفئة"
+
+#. module: agricultural_management
+msgid "Committed Cost"
+msgstr "التكلفة الملتزم بها"
+
+#. module: agricultural_management
+msgid "Company"
+msgstr "الشركة"
+
+#. module: agricultural_management
+msgid "Company Account"
+msgstr "حساب الشركة"
+
+#. module: agricultural_management
+msgid "Completed"
+msgstr "مكتمل"
+
+#. module: agricultural_management
+msgid "Contract Company"
+msgstr "شركة تعاقد"
+
+#. module: agricultural_management
+msgid "Contracts Journal"
+msgstr "يومية التعاقدات"
+
+#. module: agricultural_management
+msgid "Cost Allocation"
+msgstr "تخصيص التكاليف"
+
+#. module: agricultural_management
+msgid "Cost Centers"
+msgstr "مراكز التكلفة"
+
+#. module: agricultural_management
+msgid "Critical"
+msgstr "حرج"
+
+#. module: agricultural_management
+msgid "Critical Issues"
+msgstr "مشاكل حرجة"
+
+#. module: agricultural_management
+msgid "Critical Section"
+msgstr "قسم حرج"
+
+#. module: agricultural_management
+msgid "Critical section requiring special follow-up"
+msgstr "قسم حرج يتطلب متابعة خاصة"
+
+#. module: agricultural_management
+msgid "Crop Count"
+msgstr "عدد المحاصيل"
+
+#. module: agricultural_management
+msgid "Crop Production"
+msgstr "إنتاج المحاصيل"
+
+#. module: agricultural_management
+msgid "Currency"
+msgstr "العملة"
+
+#. module: agricultural_management
+msgid "Customer"
+msgstr "العميل"
+
+#. module: agricultural_management
+msgid "Customer Cash Account"
+msgstr "حساب كاش العملاء"
+
+#. module: agricultural_management
+msgid "Description"
+msgstr "الوصف"
+
+#. module: agricultural_management
+msgid "Destination Location"
+msgstr "موقع الوجهة"
+
+#. module: agricultural_management
+msgid "Draft"
+msgstr "مسودة"
+
+#. module: agricultural_management
+msgid "Duration (Hours)"
+msgstr "المدة (بالساعات)"
+
+#. module: agricultural_management
+msgid "Duration (Months)"
+msgstr "المدة (شهور)"
+
+#. module: agricultural_management
+msgid "Enable Automatic Stock Accounting"
+msgstr "تفعيل المحاسبة التلقائية للمخزون"
+
+#. module: agricultural_management
+msgid "Engineer Account"
+msgstr "حساب المهندس"
+
+#. module: agricultural_management
+msgid "Engineer Discount Account"
+msgstr "حساب خصم المهندسين"
+
+#. module: agricultural_management
+msgid "Engineer Expense Account"
+msgstr "حساب مصاريف المهندسين"
+
+#. module: agricultural_management
+msgid "Expected End Date"
+msgstr "تاريخ الانتهاء المتوقع"
+
+#. module: agricultural_management
+msgid "Expected Quantity"
+msgstr "الكميات المتوقعة"
+
+#. module: agricultural_management
+msgid "Farm Count"
+msgstr "عدد المزارع"
+
+#. module: agricultural_management
+msgid "Fertilizer Cost Used"
+msgstr "تكلفة أسمدة مستخدمة"
+
+#. module: agricultural_management
+msgid "Fertilizer Stock - Main Warehouse"
+msgstr "مخزون أسمدة - مخزن رئيسي"
+
+#. module: agricultural_management
+msgid "Final Weight (KG)"
+msgstr "الوزن النهائي بالكيلو"
+
+#. module: agricultural_management
+msgid "Finished Goods Warehouses"
+msgstr "مستودعات الانتاج التام"
+
+#. module: agricultural_management
+msgid "Finished Product"
+msgstr "منتج للبيع"
+
+#. module: agricultural_management
+msgid "Fully Available"
+msgstr "متوفر بالكامل"
+
+#. module: agricultural_management
+msgid "General Accounting"
+msgstr "الحسابات العامة"
+
+#. module: agricultural_management
+msgid "General Journal"
+msgstr "يومية عامة"
+
+#. module: agricultural_management
+msgid "General Purchases Account"
+msgstr "حساب المشتريات العام"
+
+#. module: agricultural_management
+msgid "Good"
+msgstr "جيد"
+
+#. module: agricultural_management
+msgid "Goods in Transit"
+msgstr "بضاعة تحت النقل"
+
+#. module: agricultural_management
+msgid "Grade Price"
+msgstr "سعر الدرجة"
+
+#. module: agricultural_management
+msgid "Greenhouses"
+msgstr "الصوبات الزراعية"
+
+#. module: agricultural_management
+msgid "Harvest"
+msgstr "الحصاد"
+
+#. module: agricultural_management
+msgid "Harvest Batches"
+msgstr "دفعات الحصاد"
+
+#. module: agricultural_management
+msgid "Harvest Schedules"
+msgstr "جداول الحصاد"
+
+#. module: agricultural_management
+msgid "Has Access"
+msgstr "لديك حق الوصول"
+
+#. module: agricultural_management
+msgid "High"
+msgstr "عالي"
+
+#. module: agricultural_management
+msgid "Household Harvest"
+msgstr "حصاد الأسر"
+
+#. module: agricultural_management
+msgid "If enabled, all users can see this section"
+msgstr "إذا كان مفعل، يمكن لجميع المستخدمين رؤية هذا القسم"
+
+#. module: agricultural_management
+msgid "Important"
+msgstr "مهم"
+
+#. module: agricultural_management
+msgid "In Progress"
+msgstr "قيد التنفيذ"
+
+#. module: agricultural_management
+msgid "Inactive"
+msgstr "غير نشط"
+
+#. module: agricultural_management
+msgid "Infrastructure"
+msgstr "البنية التحتية"
+
+#. module: agricultural_management
+msgid "Input Deposit Account"
+msgstr "حساب تأمين المدخلات"
+
+#. module: agricultural_management
+msgid "Interim Stock Account"
+msgstr "حساب مخزون مؤقت"
+
+#. module: agricultural_management
+msgid "Internal Transfer Clearing"
+msgstr "تسوية النقل الداخلي"
+
+#. module: agricultural_management
+msgid "Internal Transfer Journal"
+msgstr "يومية النقل الداخلي"
+
+#. module: agricultural_management
+msgid "Inventory Adjustment"
+msgstr "تسوية فروقات الجرد"
+
+#. module: agricultural_management
+msgid "Inventory Gain"
+msgstr "أرباح فروقات جرد"
+
+#. module: agricultural_management
+msgid "Inventory Loss"
+msgstr "خسائر فروقات جرد"
+
+#. module: agricultural_management
+msgid "Inventory Valuation Method"
+msgstr "طريقة تقييم المخزون"
+
+#. module: agricultural_management
+msgid "Irrigation Systems"
+msgstr "أنظمة الري"
+
+#. module: agricultural_management
+msgid "Livestock"
+msgstr "الثروة الحيوانية"
+
+#. module: agricultural_management
+msgid "Locations"
+msgstr "المواقع"
+
+#. module: agricultural_management
+msgid "Low"
+msgstr "منخفض"
+
+#. module: agricultural_management
+msgid "Main Cash Account"
+msgstr "حساب الخزينة الرئيسية"
+
+#. module: agricultural_management
+msgid "Main Cash Journal"
+msgstr "يومية الخزينة الرئيسية"
+
+#. module: agricultural_management
+msgid "Main Warehouse"
+msgstr "المخزن الرئيسي"
+
+#. module: agricultural_management
+msgid "Main Warehouse Stock Account"
+msgstr "حساب المخزون في المخزن الرئيسي"
+
+#. module: agricultural_management
+msgid "Main section manager"
+msgstr "مدير القسم الرئيسي"
+
+#. module: agricultural_management
+msgid "Maintenance Workshop"
+msgstr "ورشة الصيانة"
+
+#. module: agricultural_management
+msgid "Mixed Project"
+msgstr "مشروع مختلط"
+
+#. module: agricultural_management
+msgid "Name"
+msgstr "الاسم"
+
+#. module: agricultural_management
+msgid "New Production Requests"
+msgstr "طلبات انتاج جديدة"
+
+#. module: agricultural_management
+msgid "New Purchase Requests"
+msgstr "طلبات المشتريات الجديدة"
+
+#. module: agricultural_management
+msgid "No items"
+msgstr "لا توجد بنود"
+
+#. module: agricultural_management
+msgid "Normal"
+msgstr "عادي"
+
+#. module: agricultural_management
+msgid "Not Allocated"
+msgstr "غير مخصص"
+
+#. module: agricultural_management
+msgid "Not Available"
+msgstr "غير متوفر"
+
+#. module: agricultural_management
+msgid "Notes"
+msgstr "ملاحظات"
+
+#. module: agricultural_management
+msgid "Oils & Fuel Stock"
+msgstr "مخزون زيوت ومحروقات"
+
+#. module: agricultural_management
+msgid "On Hold"
+msgstr "معلق"
+
+#. module: agricultural_management
+msgid "Operations Journal"
+msgstr "يومية العمليات"
+
+#. module: agricultural_management
+msgid "Output Deposit Account"
+msgstr "حساب المخرجات"
+
+#. module: agricultural_management
+msgid "Packaging"
+msgstr "تعبئة وتغليف"
+
+#. module: agricultural_management
+msgid "Partially Available"
+msgstr "متوفر جزئياً"
+
+#. module: agricultural_management
+msgid "Pesticide Cost Used"
+msgstr "تكلفة مبيدات مستخدمة"
+
+#. module: agricultural_management
+msgid "Pesticide Stock - Branch Warehouses"
+msgstr "مخزون مبيدات - مخازن فرعية"
+
+#. module: agricultural_management
+msgid "Pesticide Stock - Main Warehouse"
+msgstr "مخزون مبيدات - مخزن رئيسي"
+
+#. module: agricultural_management
+msgid "Pesticides"
+msgstr "مبيدات"
+
+#. module: agricultural_management
+msgid "Pre-Sale Warehouses"
+msgstr "مخازن التحميل"
+
+#. module: agricultural_management
+msgid "Priority"
+msgstr "الأولوية"
+
+#. module: agricultural_management
+msgid "Product Processing"
+msgstr "تصنيع المنتجات"
+
+#. module: agricultural_management
+msgid "Product Type"
+msgstr "نوع الصنف"
+
+#. module: agricultural_management
+msgid "Production & Operations Management"
+msgstr "ادارة الانتاج و التشغيل"
+
+#. module: agricultural_management
+msgid "Progress (%)"
+msgstr "نسبة الإنجاز (%)"
+
+#. module: agricultural_management
+msgid "Project Health"
+msgstr "حالة المشروع"
+
+#. module: agricultural_management
+msgid "Project Type"
+msgstr "نوع المشروع"
+
+#. module: agricultural_management
+msgid "Public Section"
+msgstr "قسم عام"
+
+#. module: agricultural_management
+msgid "Purchase Requests"
+msgstr "طلبات الشراء"
+
+#. module: agricultural_management
+msgid "Purchases"
+msgstr "المشتريات"
+
+#. module: agricultural_management
+msgid "Rating"
+msgstr "التقييم"
+
+#. module: agricultural_management
+msgid "Raw Materials"
+msgstr "مواد أولية"
+
+#. module: agricultural_management
+msgid "Raw Materials Cost Account"
+msgstr "حساب تكلفة المواد الأولية المستخدمة"
+
+#. module: agricultural_management
+msgid "Reception Journal"
+msgstr "يومية الاستقبال"
+
+#. module: agricultural_management
+msgid "Remaining Days"
+msgstr "الأيام المتبقية"
+
+#. module: agricultural_management
+msgid "Research & Development"
+msgstr "البحث والتطوير"
+
+#. module: agricultural_management
+msgid "Schedule Date"
+msgstr "تاريخ الجدولة"
+
+#. module: agricultural_management
+msgid "Schedule Time"
+msgstr "وقت الجدولة"
+
+#. module: agricultural_management
+msgid "Section Code"
+msgstr "رمز القسم"
+
+#. module: agricultural_management
+msgid "Section Manager"
+msgstr "مدير القسم"
+
+#. module: agricultural_management
+msgid "Section Type"
+msgstr "نوع القسم"
+
+#. module: agricultural_management
+msgid "Seed Cost Used"
+msgstr "تكلفة بذور مستخدمة"
+
+#. module: agricultural_management
+msgid "Seed Stock - Branch Warehouses"
+msgstr "مخزون بذور - مخازن فرعية"
+
+#. module: agricultural_management
+msgid "Seed Stock - Main Warehouse"
+msgstr "مخزون بذور - مخزن رئيسي"
+
+#. module: agricultural_management
+msgid "Seeds"
+msgstr "بذور"
+
+#. module: agricultural_management
+msgid "Sequence"
+msgstr "الترتيب"
+
+#. module: agricultural_management
+msgid "Service Expense Account"
+msgstr "حساب مصروفات الخدمات"
+
+#. module: agricultural_management
+msgid "Service Provider"
+msgstr "مقدم خدمة"
+
+#. module: agricultural_management
+msgid "Service Tax Account"
+msgstr "حساب الضريبة على الخدمات"
+
+#. module: agricultural_management
+msgid "Sorting & Packing Area"
+msgstr "منطقة الفرز و التعبئة"
+
+#. module: agricultural_management
+msgid "Sorting Lines"
+msgstr "خطوط الفرز"
+
+#. module: agricultural_management
+msgid "Spare Parts"
+msgstr "قطع غيار"
+
+#. module: agricultural_management
+msgid "Start Date"
+msgstr "تاريخ البداية"
+
+#. module: agricultural_management
+msgid "Status"
+msgstr "الحالة"
+
+#. module: agricultural_management
+msgid "Stock Movement Journal"
+msgstr "يومية حركة المخزون"
+
+#. module: agricultural_management
+msgid "Stock Valuation Difference"
+msgstr "فروقات تقييم المخزون"
+
+#. module: agricultural_management
+msgid "Stock Valuation Journal"
+msgstr "يومية تقييم المخزون"
+
+#. module: agricultural_management
+msgid "Stock availability check completed"
+msgstr "تم فحص توفر المخزون"
+
+#. module: agricultural_management
+msgid "Submitted for Review"
+msgstr "مقدم للمراجعة"
+
+#. module: agricultural_management
+msgid "Subsidiary Company"
+msgstr "شركة تابعة"
+
+#. module: agricultural_management
+msgid "Suppliers Payable Account"
+msgstr "حساب الموردين - دائنون"
+
+#. module: agricultural_management
+msgid "Total Budget"
+msgstr "إجمالي الميزانية"
+
+#. module: agricultural_management
+msgid "Total Grade"
+msgstr "اجمالي الدرجة"
+
+#. module: agricultural_management
+msgid "Total Harvest Quantity"
+msgstr "إجمالي كمية الحصاد"
+
+#. module: agricultural_management
+msgid "Total Waste Quantity"
+msgstr "إجمالي كمية النافلة"
+
+#. module: agricultural_management
+msgid "Under Review"
+msgstr "تحت المراجعة"
+
+#. module: agricultural_management
+msgid "Unique code for the section"
+msgstr "رمز فريد للقسم"
+
+#. module: agricultural_management
+msgid "Unit of Measure"
+msgstr "وحدة القياس"
+
+#. module: agricultural_management
+msgid "Urgent"
+msgstr "عاجل"
+
+#. module: agricultural_management
+msgid "User Count"
+msgstr "عدد المستخدمين"
+
+#. module: agricultural_management
+msgid "Users who have access to this section"
+msgstr "المستخدمين الذين لديهم حق الوصول لهذا القسم"
+
+#. module: agricultural_management
+msgid "Vehicle Workshop"
+msgstr "ورشة السيارات"
+
+#. module: agricultural_management
+msgid "Warehouse Management"
+msgstr "إدارة المخازن"
+
+#. module: agricultural_management
+msgid "Warning"
+msgstr "تحذير"
+
+#. module: agricultural_management
+msgid "Weighted Average"
+msgstr "المتوسط المرجح"
+
+#. module: agricultural_management
+msgid "Worker"
+msgstr "عامل"
+
+#. module: agricultural_management
+msgid "Worker Count"
+msgstr "عدد العمال"
+
+#. module: agricultural_management
+msgid "You do not have access to this section"
+msgstr "ليس لديك صلاحية للوصول لهذا القسم"

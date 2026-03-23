@@ -1,0 +1,133 @@
+// Agricultural Farm - Professional Theme with Dark/Light Mode
+
+:root {
+    --agri-farm: #1B7A3D;
+    --agri-farm-light: #E8F5E9;
+    --agri-sector: #1565C0;
+    --agri-sector-light: #E3F2FD;
+    --agri-unit: #E65100;
+    --agri-unit-light: #FFF3E0;
+    --agri-house: #AD1457;
+    --agri-house-light: #FCE4EC;
+    --agri-profit: #2E7D32;
+    --agri-loss: #C62828;
+    --agri-card-bg: #ffffff;
+    --agri-card-border: #e0e0e0;
+    --agri-text-primary: #212121;
+    --agri-text-secondary: #616161;
+    --agri-text-muted: #9e9e9e;
+    --agri-shadow: 0 2px 12px rgba(0,0,0,0.08);
+    --agri-shadow-hover: 0 8px 24px rgba(0,0,0,0.14);
+    --agri-radius: 12px;
+    --agri-transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+html[data-color-scheme="dark"], .o_dark {
+    --agri-farm: #4CAF50;
+    --agri-farm-light: #1B3A1B;
+    --agri-sector: #42A5F5;
+    --agri-sector-light: #0D2137;
+    --agri-unit: #FF9800;
+    --agri-unit-light: #3D2800;
+    --agri-house: #EC407A;
+    --agri-house-light: #3D0F1E;
+    --agri-card-bg: #1e1e2e;
+    --agri-card-border: #333346;
+    --agri-text-primary: #e4e4e7;
+    --agri-text-secondary: #a1a1aa;
+    --agri-text-muted: #71717a;
+    --agri-shadow: 0 2px 12px rgba(0,0,0,0.3);
+    --agri-shadow-hover: 0 8px 24px rgba(0,0,0,0.5);
+}
+
+// Kanban Cards
+.o_kanban_farm {
+    .o_kanban_group {
+        background: transparent !important;
+        .o_column_title { font-weight: 700; font-size: 14px; text-transform: uppercase; letter-spacing: 0.5px; color: var(--agri-text-primary); }
+    }
+
+    .o_farm_kanban_card {
+        background: var(--agri-card-bg);
+        border: 1px solid var(--agri-card-border);
+        border-radius: var(--agri-radius);
+        box-shadow: var(--agri-shadow);
+        transition: var(--agri-transition);
+        overflow: hidden;
+        position: relative;
+        margin-bottom: 12px;
+
+        &:hover { box-shadow: var(--agri-shadow-hover); transform: translateY(-3px); }
+        &::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 4px; transition: height 0.3s ease; }
+        &:hover::before { height: 6px; }
+
+        &[data-level="farm"] { border-left: 4px solid var(--agri-farm); &::before { background: linear-gradient(90deg, var(--agri-farm), #66BB6A); } .farm-level-badge { background: var(--agri-farm-light); color: var(--agri-farm); } }
+        &[data-level="sector"] { border-left: 4px solid var(--agri-sector); &::before { background: linear-gradient(90deg, var(--agri-sector), #64B5F6); } .farm-level-badge { background: var(--agri-sector-light); color: var(--agri-sector); } }
+        &[data-level="unit"] { border-left: 4px solid var(--agri-unit); &::before { background: linear-gradient(90deg, var(--agri-unit), #FFB74D); } .farm-level-badge { background: var(--agri-unit-light); color: var(--agri-unit); } }
+        &[data-level="house"] { border-left: 4px solid var(--agri-house); &::before { background: linear-gradient(90deg, var(--agri-house), #F06292); } .farm-level-badge { background: var(--agri-house-light); color: var(--agri-house); } }
+
+        .o_kanban_card_header { padding: 14px 16px 8px; }
+        .o_kanban_card_header_title .o_primary { font-weight: 700; font-size: 15px; color: var(--agri-text-primary); strong { display: block; margin-bottom: 2px; } }
+        .o_kanban_card_header_title .o_secondary { display: flex; gap: 6px; flex-wrap: wrap; margin-top: 6px; }
+        .o_kanban_card_content { padding: 8px 16px 14px; }
+
+        .farm-level-badge { display: inline-flex; align-items: center; padding: 3px 10px; border-radius: 20px; font-size: 11px; font-weight: 700; letter-spacing: 0.3px; text-transform: uppercase; }
+        .farm-type-badge { display: inline-flex; padding: 3px 10px; border-radius: 20px; font-size: 11px; font-weight: 600; background: rgba(128,128,128,0.12); color: var(--agri-text-secondary); }
+        .farm-location-text { font-size: 12px; color: var(--agri-text-muted); margin: 4px 0 8px; i { font-size: 10px; margin-right: 4px; } }
+
+        .farm-stats-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(75px, 1fr)); gap: 8px; margin: 8px 0; }
+        .farm-stat-item { border-radius: 8px; padding: 8px; text-align: center; transition: var(--agri-transition);
+            &:hover { transform: scale(1.05); }
+            .stat-value { font-size: 15px; font-weight: 800; color: var(--agri-text-primary); }
+            .stat-label { font-size: 9px; font-weight: 700; color: var(--agri-text-muted); text-transform: uppercase; letter-spacing: 0.4px; margin-top: 2px; }
+            &.area { background: var(--agri-farm-light); }
+            &.workers { background: var(--agri-sector-light); }
+            &.children { background: var(--agri-unit-light); }
+        }
+
+        .farm-financial-bar { margin: 8px 0; background: var(--agri-card-border); border-radius: 6px; overflow: hidden; height: 6px; .bar-fill { height: 100%; background: linear-gradient(90deg, #4CAF50, #66BB6A); border-radius: 6px; transition: width 0.8s ease; } }
+        .farm-financial-row { display: flex; justify-content: space-between; font-size: 11px; margin-top: 4px; .revenue { color: var(--agri-profit); font-weight: 700; } .cost { color: var(--agri-loss); font-weight: 700; } }
+        .farm-profit-badge { display: inline-block; padding: 3px 12px; border-radius: 20px; font-size: 11px; font-weight: 700; &.profit { background: #E8F5E9; color: #2E7D32; } &.loss { background: #FFEBEE; color: #C62828; } }
+
+        .farm-actions { display: flex; gap: 6px; padding: 8px 16px 12px; border-top: 1px solid var(--agri-card-border);
+            .btn { flex: 1; font-size: 11px; font-weight: 600; padding: 5px 8px; border-radius: 6px; transition: var(--agri-transition); &:hover { transform: translateY(-1px); } }
+        }
+    }
+
+    .o_kanban_archived .o_farm_kanban_card { opacity: 0.5; filter: grayscale(50%); &:hover { opacity: 0.8; filter: grayscale(0%); } }
+}
+
+// Form View
+.o_form_view[data-model="agricultural.farm"] {
+    .oe_title h1 { font-weight: 800; font-size: 26px; color: var(--agri-text-primary); letter-spacing: -0.5px; }
+    .oe_button_box .oe_stat_button { border-radius: 8px; transition: var(--agri-transition); &:hover { background: var(--agri-farm-light); transform: translateY(-1px); } .o_stat_info .o_stat_value { font-weight: 800; color: var(--agri-farm); } }
+    .oe_form_group_label_background { font-weight: 700; font-size: 13px; color: var(--agri-farm); border-bottom: 2px solid var(--agri-farm); padding-bottom: 3px; }
+    .o_notebook .nav-link { font-weight: 600; font-size: 13px; &.active { color: var(--agri-farm); border-bottom-color: var(--agri-farm); } }
+}
+
+// List View
+.o_list_view[data-model="agricultural.farm"] {
+    tbody tr { transition: var(--agri-transition); &:hover { background: var(--agri-farm-light) !important; } }
+}
+
+// Animations
+@keyframes fadeInUp { from { opacity: 0; transform: translateY(16px); } to { opacity: 1; transform: translateY(0); } }
+.o_kanban_farm .o_kanban_record { animation: fadeInUp 0.35s ease both; }
+.o_kanban_farm .o_kanban_record:nth-child(1) { animation-delay: 0.03s; }
+.o_kanban_farm .o_kanban_record:nth-child(2) { animation-delay: 0.06s; }
+.o_kanban_farm .o_kanban_record:nth-child(3) { animation-delay: 0.09s; }
+.o_kanban_farm .o_kanban_record:nth-child(4) { animation-delay: 0.12s; }
+.o_kanban_farm .o_kanban_record:nth-child(5) { animation-delay: 0.15s; }
+.o_kanban_farm .o_kanban_record:nth-child(6) { animation-delay: 0.18s; }
+.o_kanban_farm .o_kanban_record:nth-child(7) { animation-delay: 0.21s; }
+.o_kanban_farm .o_kanban_record:nth-child(8) { animation-delay: 0.24s; }
+
+// Responsive
+@media (max-width: 768px) {
+    .o_kanban_farm .o_farm_kanban_card {
+        .o_kanban_card_header { padding: 10px 12px 6px; .o_primary { font-size: 14px; } }
+        .o_kanban_card_content { padding: 6px 12px 10px; .farm-stats-grid { grid-template-columns: repeat(2, 1fr); } }
+        .farm-actions { padding: 6px 12px 10px; .btn { font-size: 10px; } }
+        .farm-manager-row { flex-direction: column; }
+    }
+}

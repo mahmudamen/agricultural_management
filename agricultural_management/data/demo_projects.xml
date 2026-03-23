@@ -1,0 +1,16 @@
+<odoo>
+<data>
+
+    <!-- Projects -->
+    <record id="project_alpha_tomato" model="agricultural.project">
+        <field name="name">Tomato Season 2026</field>
+        <field name="farm_id" ref="farm_main_1"/>
+    </record>
+
+    <record id="project_beta_cucumber" model="agricultural.project">
+        <field name="name">Cucumber Season 2026</field>
+        <field name="farm_id" ref="farm_main_2"/>
+    </record>
+
+</data>
+</odoo>

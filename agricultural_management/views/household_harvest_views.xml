@@ -1,0 +1,155 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- list View -->
+    <record id="view_household_harvest_list" model="ir.ui.view">
+        <field name="name">household.harvest.list</field>
+        <field name="model">household.harvest</field>
+        <field name="arch" type="xml">
+            <list string="Receipt Initial"
+                  decoration-success="state=='sorted'"
+                  decoration-info="state=='confirmed'"
+                  decoration-warning="state=='draft'">
+                <field name="name"/>
+                <field name="harvest_date"/>
+                <field name="harvest_batch_id"/>
+                <field name="schedule_id" optional="hide"/>
+                <field name="product_id"/>
+                <field name="total_quantity" sum="total_quantity" string="Quantity (kg)"/>
+                <field name="state" widget="badge"
+                       decoration-success="state=='sorted'"
+                       decoration-info="state=='confirmed'"
+                       decoration-warning="state=='draft'"/>
+            </list>
+        </field>
+    </record>
+    <!-- Form View -->
+    <record id="view_household_harvest_form" model="ir.ui.view">
+        <field name="name">household.harvest.form</field>
+        <field name="model">household.harvest</field>
+        <field name="arch" type="xml">
+            <form string="Receipt Initial">
+                <header>
+                    <!-- Draft State Button -->
+                    <button name="action_confirm"
+                            string="Confirm"
+                            type="object"
+                            class="oe_highlight"
+                            invisible="state != 'draft'"/>
+
+                    <!-- Confirmed State Button -->
+                    <button name="action_start_sorting"
+                            string="Start Sorting"
+                            type="object"
+                            class="oe_highlight"
+                            invisible="state != 'confirmed'"/>
+
+                    <!-- Cancel Button -->
+                    <button name="action_cancel"
+                            string="Cancel"
+                            type="object"
+                            invisible="state == 'sorted'"/>
+
+                    <!-- Reset Button -->
+                    <button name="action_reset_to_draft"
+                            string="Reset to Draft"
+                            type="object"
+                            invisible="state == 'draft'"
+                            groups="base.group_system"/>
+
+                    <field name="state" widget="statusbar"
+                           statusbar_visible="draft,confirmed,sorted"/>
+                </header>
+
+                <sheet>
+                    <!-- Smart Buttons -->
+                    <div class="oe_button_box" name="button_box">
+                        <button name="action_view_sorting_lines"
+                                type="object"
+                                class="oe_stat_button"
+                                icon="fa-sort-amount-desc"
+                                invisible="not sorting_line_ids">
+                            <field name="sorting_line_ids" widget="statinfo"
+                                   string="Sorting Lines"/>
+                        </button>
+
+                        <button name="action_view_batch"
+                                type="object"
+                                class="oe_stat_button"
+                                icon="fa-cubes">
+                            <div class="o_field_widget o_stat_info">
+                                <span class="o_stat_text">View</span>
+                                <span class="o_stat_text">Batch</span>
+                            </div>
+                        </button>
+                    </div>
+
+                    <div class="oe_title">
+                        <h1>
+                            <field name="name" readonly="1"/>
+                        </h1>
+                    </div>
+
+                    <group>
+                        <group name="harvest_info" string="Harvest Information">
+                            <field name="harvest_batch_id"
+                                   readonly="state != 'draft'"/>
+                            <field name="schedule_id" readonly="1"/>
+                            <field name="harvest_date"
+                                   readonly="state != 'draft'"/>
+                        </group>
+
+                        <group name="farmer_info" string="Farmer Information">
+
+                            <field name="product_id"
+                                   readonly="state != 'draft'"/>
+                            <field name="total_quantity"
+                                   readonly="state != 'draft'"/>
+                        </group>
+                    </group>
+
+                    <notebook>
+                        <page string="Sorting Details" name="sorting_details"
+                              invisible="not sorting_line_ids">
+                            <field name="sorting_line_ids" readonly="1">
+                                <list decoration-success="state=='done'"
+                                      decoration-info="state in ('confirmed','sorted')">
+                                    <field name="name"/>
+                                    <field name="date"/>
+                                    <field name="product_id"/>
+                                    <field name="grade" widget="badge"/>
+                                    <field name="quantity"/>
+                                    <field name="price_unit"/>
+                                    <field name="total_amount" sum="total"/>
+                                    <field name="state" widget="badge"/>
+                                </list>
+                            </field>
+                        </page>
+                    </notebook>
+                </sheet>
+
+                <chatter/>
+            </form>
+        </field>
+    </record>
+    <!-- Household Harvest Action -->
+    <record id="action_household_harvest" model="ir.actions.act_window">
+ <field name="name">Receipt Initial</field>
+        <field name="res_model">household.harvest</field>
+        <field name="view_mode">list,form</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+ Receipt Initial Houses Agricultural!
+            </p>
+            <p>
+ Harvest Management Batches Full Sorting Analysis Warehouse.
+            </p>
+        </field>
+    </record>
+    <menuitem
+            id="menu_household_harvest"
+ name="Receipt Initial"
+            parent="agricultural_management.menu_agricultural_operations"
+            sequence="30"
+            action="action_household_harvest"
+        />
+</odoo>

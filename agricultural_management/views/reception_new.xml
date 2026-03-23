@@ -1,0 +1,662 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+
+        <record id="sections_kanban" model="ir.ui.view">
+            <field name="name">Agricultural Sections Enhanced Kanban</field>
+            <field name="model">res.sections</field>
+            <field name="arch" type="xml">
+                <kanban class="o_kanban_dashboard o_agricultural_sections_kanban" create="False" edit="False">
+                    <field name="id"/>
+                    <field name="name"/>
+                    <field name="type"/>
+                    <field name="active"/>
+                    <field name="sequence"/>
+                    <field name="priority"/>
+                    <field name="status"/>
+                    <field name="is_critical"/>
+                    <field name="rating"/>
+                    <field name="assigned_users_count"/>
+                    <field name="manager_id"/>
+                    <templates>
+                        <t t-name="card">
+                            <div class="oe_kanban_card o_kanban_record o_agricultural_section_card"
+                                 t-att-data-type="record.type.raw_value"
+                                 t-att-data-priority="record.priority.raw_value">
+                                <!-- Header with gradient background and status indicators -->
+                                <div class="o_kanban_card_header" t-att-data-type="record.type.raw_value"
+                                    style="height: 80px !important;">
+                                    <div class="section-header-container">
+                                        <div class="section-title-row">
+                                            <h3 class="section-title">
+                                                <field name="name"/>
+                                            </h3>
+                                        </div>
+
+                                    </div>
+                                </div>
+                                <!-- Status floating indicator -->
+                                <div t-attf-class="status-floating-badge {{ record.active.raw_value ? 'active' : 'inactive' }}"
+                                     style="padding: 2px 6px; height: 30px !important; line-height: 1; font-size: 10px; display: inline-flex; align-items: right;">
+                                    <t t-if="record.active.raw_value">
+                                        <i class="fa fa-circle" title="Active" style="font-size: 8px;"/>
+                                    </t>
+                                    <t t-else="">
+                                        <i class="fa fa-circle-o" title="Inactive" style="font-size: 8px;"/>
+                                    </t>
+                                </div>
+                                <!-- Main Action Buttons Container -->
+                                <div class="container o_kanban_card_content" t-if="!selection_mode">
+                                    <!-- Production Operations Management Section -->
+                                    <t t-if="record.type.raw_value=='ProductionOperationsManagement'">
+                                        <div class="action-section production-section">
+                                            <div class="row">
+                                                <div class="col-12 section-title-small">
+                                                    <i class="fa fa-industry"/> Production &amp; Operations
+                                                </div>
+                                            </div>
+                                            <div class="row action-buttons">
+                                                <div class="col-4">
+                                                    <button class="btn btn-success btn-sm" name="action_create_production_request" type="object">
+                                                        <i class="fa fa-plus-circle"/> Requests Farm
+                                                    </button>
+                                                </div>
+                                                <div class="col-4">
+                                                    <button class="btn btn-primary btn-sm" name="get_engineers_action" type="object">
+                                                        <i class="fa fa-project-diagram"/> Houses &amp; Sectors
+                                                    </button>
+                                                </div>
+                                                <div class="col-4">
+                                                    <button class="btn btn-info btn-sm" name="agricultural_production_request_view" type="object">
+                                                        <i class="fa fa-cogs"/> View Previous Requests
+                                                    </button>
+                                                </div>
+                                            </div>
+                                            <div class="row action-buttons mt-2">
+                                                <div class="col-4">
+                                                    <button class="btn btn-warning btn-sm" name="action_view_harvest_schedule" type="object">
+                                                        <i class="fa fa-calendar-check"/> Harvest Scheduling
+                                                    </button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </t>
+                                    <!-- ACCOUNTING SECTION - UPDATED -->
+                                    <!-- ====================================== -->
+                                    <t t-if="record.type.raw_value=='Accounting'">
+                                        <div class="action-section accounting-section">
+                                            <div class="row">
+                                                <div class="col-12 section-title-small">
+                                                    <i class="fa fa-calculator" title="calculator"/> Accounts General
+                                                </div>
+                                            </div>
+
+                                            <!-- Row 1: Main Accounting Functions -->
+                                            <div class="row action-buttons">
+
+                                                <div class="col-3">
+                                                    <button class="btn btn-success btn-sm" name="action_invoices" type="object">
+                                                        <i class="fa fa-file-invoice" title="file invoice"/> Invoices
+                                                    </button>
+                                                </div>
+                                                <div class="col-3">
+                                                    <button class="btn btn-warning btn-sm" name="action_payments" type="object">
+ <i class="fa fa-credit-card" title="credit card"/> 
+                                                    </button>
+                                                </div>
+
+                                            </div>
+
+                                            <!-- Row 2: Project Cost Management -->
+
+
+                                            <!-- Row 3: Cost Allocation &amp; Reports -->
+                                            <div class="row action-buttons mt-2">
+
+                                            </div>
+                                        </div>
+                                    </t>
+                                    <!-- COST CENTER SECTION - UPDATED -->
+                                    <!-- ====================================== -->
+                                    <t t-if="record.type.raw_value=='CostCenter'">
+                                        <div class="action-section cost-center-section">
+                                            <div class="row">
+                                                <div class="col-12 section-title-small">
+ <i class="fa fa-building" title="building"/> Cost Centers Management Projects
+                                                </div>
+                                            </div>
+
+                                            <!-- Row 1: Project Cost Management -->
+                                            <div class="row action-buttons">
+                                                <div class="col-3">
+                                                    <button class="btn btn-primary btn-sm" name="action_view_projects_cost_management" type="object">
+                                                        <i class="fa fa-list" title="list"/> View Projects
+                                                    </button>
+                                                </div>
+                                                <div class="col-3">
+                                                    <button class="btn btn-success btn-sm" name="action_view_direct_expenses_all_projects" type="object">
+                                                        <i class="fa fa-industry" title="industry"/> Direct Expenses
+                                                    </button>
+                                                </div>
+                                                <div class="col-3">
+                                                    <button class="btn btn-info btn-sm" name="action_view_indirect_expenses_all_projects" type="object">
+                                                        <i class="fa fa-cogs" title="cogs"/> Indirect Expenses
+                                                    </button>
+                                                </div>
+                                                <div class="col-3">
+                                                    <button class="btn btn-warning btn-sm" name="action_view_cost_summary_dashboard" type="object">
+ <i class="fa fa-dashboard" title="dashboard"/> Costs
+                                                    </button>
+                                                </div>
+                                            </div>
+
+                                            <!-- Row 2: Cost Allocation &amp; Calculation -->
+
+                                            <!-- Row 3: Reports &amp; Analysis -->
+                                            <div class="row action-buttons mt-2">
+                                                <div class="col-3">
+                                                    <button class="btn btn-secondary btn-sm" name="action_cost_center_dashboard" type="object">
+ <i class="fa fa-tachometer-alt" title="tachometer alt"/> Cost Centers
+                                                    </button>
+                                                </div>
+                                                <div class="col-3">
+                                                    <button class="btn btn-dark btn-sm" name="action_cost_reports" type="object">
+                                                        <i class="fa fa-chart-bar" title="chart bar"/> Cost Reports
+                                                    </button>
+                                                </div>
+                                                <div class="col-3">
+                                                    <button class="btn btn-success btn-sm" name="action_cost_analysis" type="object">
+ <i class="fa fa-chart-line" title="chart line"/> Analysis 
+                                                    </button>
+                                                </div>
+                                                <div class="col-3">
+                                                    <button class="btn btn-warning btn-sm" name="action_budget_planning" type="object">
+ <i class="fa fa-money-bill" title="money bill"/> Budget
+                                                    </button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </t>
+                                    <!-- Purchase/RFQ Management Section -->
+                                    <t t-if="record.type.raw_value=='Rfq'">
+                                        <div class="action-section rfq-section">
+                                            <div class="row">
+                                                <div class="col-12 section-title-small">
+                                                    <i class="fa fa-shopping-cart" title="shopping cart"/> Management Purchases
+                                                </div>
+                                            </div>
+                                            <div class="row action-buttons">
+                                                <div class="col-3">
+                                                    <button class="btn btn-success btn-sm" name="action_create_purchase_request" type="object">
+ <i class="fa fa-plus" title="Active"/> 
+                                                    </button>
+                                                </div>
+                                                <div class="col-3">
+                                                    <button class="btn btn-primary btn-sm" name="get_rfq_needed_action" type="object">
+                                                        <i class="fa fa-file-text" title="Active"/> Purchase Orders
+                                                    </button>
+                                                </div>
+                                                <div class="col-3">
+                                                    <button class="btn btn-warning btn-sm" name="get_rfq_pending_action" type="object">
+                                                        <i class="fa fa-clock"/> Track Requests
+                                                    </button>
+                                                </div>
+                                                <div class="col-3">
+                                                    <button class="btn btn-info btn-sm" name="get_rfq_purchase_approved_action" type="object">
+ <i class="fa fa-truck"/> Delivery
+                                                    </button>
+                                                </div>
+                                            </div>
+                                            <div class="row action-buttons mt-2">
+                                                <div class="col-4">
+                                                    <button class="btn btn-secondary btn-sm" name="action_view_vendors" type="object">
+ <i class="fa fa-handshake"/> 
+                                                    </button>
+                                                </div>
+                                                <div class="col-4">
+                                                    <button class="btn btn-success btn-sm" name="action_purchase_analytics" type="object">
+ <i class="fa fa-analytics"/> Analysis 
+                                                    </button>
+                                                </div>
+                                                <div class="col-4">
+                                                    <button class="btn btn-dark btn-sm" name="action_purchase_reports" type="object">
+ <i class="fa fa-file-pdf"/> Purchases
+                                                    </button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </t>
+                                    <!-- Raw Materials Warehouses Section -->
+                                    <t t-if="record.type.raw_value=='RawMaterialsWarehouses'">
+                                        <div class="action-section warehouse-section">
+                                            <div class="row">
+                                                <div class="col-12 section-title-small">
+                                                    <i class="fa fa-warehouse"/> Raw Materials Warehouses
+                                                </div>
+                                            </div>
+                                            <div class="row action-buttons">
+                                                <div class="col-3">
+                                                    <button class="btn btn-primary btn-sm" name="action_material_request" type="object">
+ <i class="fa fa-hand-paper"/> 
+                                                    </button>
+                                                </div>
+                                                <div class="col-3">
+                                                    <button class="btn btn-info btn-sm" name="action_stock_levels" type="object">
+ <i class="fa fa-boxes"/> Inventory
+                                                    </button>
+                                                </div>
+                                                <div class="col-3">
+                                                    <button class="btn btn-warning btn-sm" name="action_stock_moves" type="object">
+                                                        <i class="fa fa-exchange-alt"/> Movements Inventory
+                                                    </button>
+                                                </div>
+                                                <div class="col-3">
+                                                    <button class="btn btn-success btn-sm" name="agricultural_production_request_view" type="object">
+                                                        <i class="fa fa-list"/> View Requests
+                                                    </button>
+                                                </div>
+                                            </div>
+                                            <div class="row action-buttons mt-2">
+                                                <div class="col-4">
+                                                    <button class="btn btn-secondary btn-sm" name="action_inventory_valuation" type="object">
+ <i class="fa fa-calculator"/> Inventory
+                                                    </button>
+                                                </div>
+                                                <div class="col-4">
+                                                    <button class="btn btn-danger btn-sm" name="action_stock_alerts" type="object">
+ <i class="fa fa-exclamation-triangle"/> Alerts 
+                                                    </button>
+                                                </div>
+                                                <div class="col-4">
+                                                    <button class="btn btn-dark btn-sm" name="action_warehouse_reports" type="object">
+ <i class="fa fa-chart-bar"/> Inventory
+                                                    </button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </t>
+                                    <!-- Accounting Section -->
+                                    <!-- Finished Goods Warehouses Section -->
+                                    <t t-if="record.type.raw_value=='FinishedGoodsWarehouses'">
+                                        <div class="action-section finished-goods-section">
+                                            <div class="row">
+                                                <div class="col-12 section-title-small">
+ <i class="fa fa-box"/> Production 
+                                                </div>
+                                            </div>
+                                            <div class="row action-buttons">
+                                                <div class="col-3">
+                                                    <button class="btn btn-success btn-sm" name="action_finished_goods_receipt" type="object">
+                                                        <i class="fa fa-arrow-down"/> Product Reception
+                                                    </button>
+                                                </div>
+
+                                                <div class="col-3">
+                                                    <button class="btn btn-warning btn-sm" name="action_packaging_operations" type="object">
+                                                        <i class="fa fa-cube"/> Operations Packaging
+                                                    </button>
+                                                </div>
+                                                <div class="col-3">
+                                                    <button class="btn btn-info btn-sm" name="action_dispatch_orders" type="object">
+ <i class="fa fa-shipping-fast"/> 
+                                                    </button>
+                                                </div>
+                                            </div>
+                                            <div class="row action-buttons mt-2">
+                                                <div class="col-6">
+                                                    <button class="btn btn-secondary btn-sm" name="action_inventory_tracking" type="object">
+ <i class="fa fa-clipboard-list"/> Inventory
+                                                    </button>
+                                                </div>
+                                                <div class="col-6">
+                                                    <button class="btn btn-dark btn-sm" name="action_expiry_management" type="object">
+                                                        <i class="fa fa-calendar-times"/> Management Expiry Date
+                                                    </button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </t>
+                                    <!-- Sorting and Packing Area Section -->
+                                    <t t-if="record.type.raw_value=='SortingAndPackingArea'">
+                                        <div class="action-section sorting-packing-section">
+                                            <div class="row">
+                                                <div class="col-12 section-title-small">
+ <i class="fa fa-sort"/> Area Sorting Packaging
+                                                </div>
+                                            </div>
+                                            <div class="row action-buttons">
+                                                <div class="col-3">
+                                                    <button class="btn btn-primary btn-sm" name="action_sorting_operations" type="object">
+                                                        <i class="fa fa-filter"/> Operations Sorting
+                                                    </button>
+                                                </div>
+                                                <div class="col-3">
+                                                    <button class="btn btn-success btn-sm" name="action_packing_operations" type="object">
+                                                        <i class="fa fa-box-open"/> Operations Packaging
+                                                    </button>
+                                                </div>
+                                                <div class="col-3">
+                                                    <button class="btn btn-warning btn-sm" name="action_quality_grades" type="object">
+ <i class="fa fa-star"/> Quality
+                                                    </button>
+                                                </div>
+                                                <div class="col-3">
+                                                    <button class="btn btn-info btn-sm" name="action_labeling" type="object">
+ <i class="fa fa-tags"/> 
+                                                    </button>
+                                                </div>
+                                            </div>
+                                            <div class="row action-buttons mt-2">
+                                                <div class="col-6">
+                                                    <button class="btn btn-secondary btn-sm" name="action_batch_tracking" type="object">
+ <i class="fa fa-barcode"/> Batches
+                                                    </button>
+                                                </div>
+                                                <div class="col-6">
+                                                    <button class="btn btn-dark btn-sm" name="action_packing_reports" type="object">
+ <i class="fa fa-chart-area"/> Packaging
+                                                    </button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </t>
+                                    <!-- Pre-Sale Warehouses Section -->
+                                    <t t-if="record.type.raw_value=='PreSaleWarehouses'">
+                                        <div class="action-section pre-sale-section">
+                                            <div class="row">
+                                                <div class="col-12 section-title-small">
+                                                    <i class="fa fa-truck-loading"/> Loading Warehouses
+                                                </div>
+                                            </div>
+                                            <div class="row action-buttons">
+                                                <div class="col-3">
+                                                    <button class="btn btn-primary btn-sm" name="action_loading_operations" type="object">
+ <i class="fa fa-dolly"/> Operations 
+                                                    </button>
+                                                </div>
+                                                <div class="col-3">
+                                                    <button class="btn btn-success btn-sm" name="action_delivery_schedule" type="object">
+ <i class="fa fa-calendar-alt"/> Delivery
+                                                    </button>
+                                                </div>
+                                                <div class="col-3">
+                                                    <button class="btn btn-warning btn-sm" name="action_transport_management" type="object">
+ <i class="fa fa-route"/> Management 
+                                                    </button>
+                                                </div>
+                                                <div class="col-3">
+                                                    <button class="btn btn-info btn-sm" name="action_delivery_tracking" type="object">
+ <i class="fa fa-map-marker-alt"/> Delivery
+                                                    </button>
+                                                </div>
+                                            </div>
+                                            <div class="row action-buttons mt-2">
+                                                <div class="col-6">
+                                                    <button class="btn btn-secondary btn-sm" name="action_customer_orders" type="object">
+                                                        <i class="fa fa-user-friends"/> Requests Customers
+                                                    </button>
+                                                </div>
+                                                <div class="col-6">
+                                                    <button class="btn btn-dark btn-sm" name="action_shipping_documents" type="object">
+                                                        <i class="fa fa-file-contract"/> Shipping Documents
+                                                    </button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </t>
+                                    <!-- Agricultural Workers Section -->
+                                    <t t-if="record.type.raw_value=='AgriculturalWorkers'">
+                                        <div class="action-section workers-section">
+                                            <div class="row">
+                                                <div class="col-12 section-title-small">
+                                                    <i class="fa fa-users" title="users"/> Workers Agricultural
+                                                </div>
+                                            </div>
+                                            <div class="row action-buttons">
+                                                <div class="col-3">
+                                                    <button class="btn btn-primary btn-sm" name="action_worker_management" type="object">
+                                                        <i class="fa fa-id-card"/> Management Workers
+                                                    </button>
+                                                </div>
+                                                <div class="col-3">
+                                                    <button class="btn btn-success btn-sm" name="action_work_assignments" type="object">
+ <i class="fa fa-tasks"/> 
+                                                    </button>
+                                                </div>
+                                                <div class="col-3">
+                                                    <button class="btn btn-warning btn-sm" name="action_attendance_tracking" type="object">
+ <i class="fa fa-clock"/> 
+                                                    </button>
+                                                </div>
+                                                <div class="col-3">
+                                                    <button class="btn btn-info btn-sm" name="action_payroll_management" type="object">
+ <i class="fa fa-money-check"/> Management 
+                                                    </button>
+                                                </div>
+                                            </div>
+                                            <div class="row action-buttons mt-2">
+                                                <div class="col-4">
+                                                    <button class="btn btn-secondary btn-sm" name="action_skills_training" type="object">
+                                                        <i class="fa fa-graduation-cap"/> Training &amp; Skills
+                                                    </button>
+                                                </div>
+                                                <div class="col-4">
+                                                    <button class="btn btn-danger btn-sm" name="action_safety_compliance" type="object">
+                                                        <i class="fa fa-hard-hat"/> Occupational Safety
+                                                    </button>
+                                                </div>
+                                                <div class="col-4">
+                                                    <button class="btn btn-dark btn-sm" name="action_performance_reports" type="object">
+                                                        <i class="fa fa-chart-line"/> Performance Reports
+                                                    </button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </t>
+                                    <!-- Harvest Section -->
+                                    <t t-if="record.type.raw_value=='Harvest'">
+                                        <div class="action-section harvest-section">
+                                            <div class="row">
+                                                <div class="col-12 section-title-small">
+                                                    <i class="fa fa-leaf"/> Harvest
+                                                </div>
+                                            </div>
+                                            <div class="row action-buttons">
+                                                <div class="col-3">
+                                                    <button class="btn btn-success btn-sm" name="action_harvest_planning" type="object">
+ <i class="fa fa-calendar-plus"/> Harvest
+                                                    </button>
+                                                </div>
+                                                <div class="col-3">
+                                                    <button class="btn btn-primary btn-sm" name="action_harvest_operations" type="object">
+                                                        <i class="fa fa-cut"/> Operations Harvest
+                                                    </button>
+                                                </div>
+                                                <div class="col-3">
+                                                    <button class="btn btn-warning btn-sm" name="action_yield_tracking" type="object">
+ <i class="fa fa-weight"/> Production
+                                                    </button>
+                                                </div>
+                                            </div>
+                                            <div class="row action-buttons mt-2">
+                                                <div class="col-6">
+                                                    <button class="btn btn-secondary btn-sm" name="action_post_harvest" type="object">
+ <i class="fa fa-snowflake"/> Operations Harvest
+                                                    </button>
+                                                </div>
+                                                <div class="col-6">
+                                                    <button class="btn btn-dark btn-sm" name="action_harvest_reports" type="object">
+ <i class="fa fa-file-alt"/> Harvest
+                                                    </button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </t>
+                                    <!-- Car Workshops Section -->
+                                    <t t-if="record.type.raw_value=='CarWorkshops'">
+                                        <div class="action-section car-workshop-section">
+                                            <div class="row">
+                                                <div class="col-12 section-title-small">
+                                                    <i class="fa fa-car"/> Vehicle Maintenance Workshops
+                                                </div>
+                                            </div>
+                                            <div class="row action-buttons">
+                                                <div class="col-3">
+                                                    <button class="btn btn-primary btn-sm" name="action_vehicle_maintenance" type="object">
+ <i class="fa fa-tools"/> Vehicles
+                                                    </button>
+                                                </div>
+                                                <div class="col-3">
+                                                    <button class="btn btn-success btn-sm" name="action_service_requests" type="object">
+ <i class="fa fa-wrench"/> Requests 
+                                                    </button>
+                                                </div>
+                                                <div class="col-3">
+                                                    <button class="btn btn-warning btn-sm" name="action_parts_inventory" type="object">
+                                                        <i class="fa fa-cog"/> Spare Parts Stock
+                                                    </button>
+                                                </div>
+                                                <div class="col-3">
+                                                    <button class="btn btn-info btn-sm" name="action_maintenance_schedule" type="object">
+ <i class="fa fa-calendar-check"/> Maintenance
+                                                    </button>
+                                                </div>
+                                            </div>
+                                            <div class="row action-buttons mt-2">
+                                                <div class="col-6">
+                                                    <button class="btn btn-secondary btn-sm" name="action_fuel_management" type="object">
+ <i class="fa fa-gas-pump"/> Management 
+                                                    </button>
+                                                </div>
+                                                <div class="col-6">
+                                                    <button class="btn btn-dark btn-sm" name="action_maintenance_costs" type="object">
+ <i class="fa fa-calculator"/> Maintenance
+                                                    </button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </t>
+                                    <!-- Maintenance Workshops Section -->
+                                    <t t-if="record.type.raw_value=='MaintenanceWorkshops'">
+                                        <div class="action-section maintenance-workshop-section">
+                                            <div class="row">
+                                                <div class="col-12 section-title-small">
+ <i class="fa fa-hammer"/> Maintenance General
+                                                </div>
+                                            </div>
+                                            <div class="row action-buttons">
+                                                <div class="col-3">
+                                                    <button class="btn btn-primary btn-sm" name="action_equipment_maintenance" type="object">
+ <i class="fa fa-industry"/> Equipment
+                                                    </button>
+                                                </div>
+                                                <div class="col-3">
+                                                    <button class="btn btn-success btn-sm" name="action_preventive_maintenance" type="object">
+ <i class="fa fa-shield-alt"/> Maintenance 
+                                                    </button>
+                                                </div>
+                                                <div class="col-3">
+                                                    <button class="btn btn-warning btn-sm" name="action_repair_orders" type="object">
+                                                        <i class="fa fa-clipboard-list"/> Repair Orders
+                                                    </button>
+                                                </div>
+                                                <div class="col-3">
+                                                    <button class="btn btn-info btn-sm" name="action_asset_management" type="object">
+ <i class="fa fa-building"/> Management 
+                                                    </button>
+                                                </div>
+                                            </div>
+                                            <div class="row action-buttons mt-2">
+                                                <div class="col-4">
+                                                    <button class="btn btn-secondary btn-sm" name="action_work_orders" type="object">
+ <i class="fa fa-list-ol"/> 
+                                                    </button>
+                                                </div>
+                                                <div class="col-4">
+                                                    <button class="btn btn-danger btn-sm" name="action_emergency_repairs" type="object">
+                                                        <i class="fa fa-exclamation-triangle"/> Emergency Repairs
+                                                    </button>
+                                                </div>
+                                                <div class="col-4">
+                                                    <button class="btn btn-dark btn-sm" name="action_maintenance_analytics" type="object">
+ <i class="fa fa-chart-pie"/> Analysis Maintenance
+                                                    </button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </t>
+                                </div>
+                                <div class="o_kanban_card_footer"
+                                        style="padding: 2px 6px; height: 40px !important; line-height: 2; font-size: 10px; display: inline-flex; align-items: center;">
+                                    <div class="footer-content">
+                                        <div class="section-stats">
+                                            <span class="stat-item">
+                                                <i class="fa fa-users" title="users"/> <field name="assigned_users_count"/>
+                                            </span>
+                                            <span class="stat-item">
+                                                <i class="fa fa-sort-numeric-up" title="sort-numeric-up"/> <field name="sequence"/>
+                                            </span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </t>
+                    </templates>
+                </kanban>
+            </field>
+        </record>
+        <record id="agricultural_engineer_sections_action" model="ir.actions.act_window">
+            <field name="name">Agricultural Tasks</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">res.sections</field>
+            <field name="view_mode">kanban</field>
+            <field name="view_ids" eval="[(5, 0, 0),
+                (0, 0, {'view_mode': 'kanban', 'view_id': ref('sections_kanban')})]"/>
+        </record>
+        <!-- Production Management Menu -->
+    <menuitem id="menu_agricultural_sections"
+              name="Agricultural Tasks"
+              action="agricultural_management.agricultural_engineer_sections_action"
+              parent="menu_agricultural_tasks"
+              sequence="1"/>
+        <record id="purchase_sections_action" model="ir.actions.act_window">
+            <field name="name">Purchase task</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">res.sections</field>
+            <field name="view_mode">kanban</field>
+            <field name="view_ids" eval="[(5, 0, 0),
+                (0, 0, {'view_mode': 'kanban', 'view_id': ref('sections_kanban')})]"/>
+        </record>
+        <record id="inventory_sections_action" model="ir.actions.act_window">
+            <field name="name">Inventory task</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">res.sections</field>
+            <field name="view_mode">kanban</field>
+            <field name="view_ids" eval="[(5, 0, 0),
+                (0, 0, {'view_mode': 'kanban', 'view_id': ref('sections_kanban')})]"/>
+        </record>
+        <record id="accountant_sections_action" model="ir.actions.act_window">
+            <field name="name">Accountant task</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">res.sections</field>
+            <field name="view_mode">kanban</field>
+            <field name="view_ids" eval="[(5, 0, 0),
+                (0, 0, {'view_mode': 'kanban', 'view_id': ref('sections_kanban')})]"/>
+        </record>
+        <menuitem id="menu_agricultural_sections_purchase"
+              name="Purchase task"
+              action="agricultural_management.purchase_sections_action"
+              parent="menu_purchase_task"
+              sequence="1"/>
+    <menuitem id="menu_agricultural_sections_inventory"
+              name="Inventory task"
+              action="agricultural_management.inventory_sections_action"
+              parent="menu_inventory_task"
+              sequence="1"/>
+    <menuitem id="menu_agricultural_sections_accountant"
+              name="Accountant task"
+              action="agricultural_management.accountant_sections_action"
+              parent="menu_accountant_task"
+              sequence="1"/>
+    </data>
+</odoo>

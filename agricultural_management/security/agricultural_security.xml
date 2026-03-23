@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data noupdate="0">
+
+        <!-- ============================================================ -->
+        <!--  MODULE CATEGORY: Shows as a section in Settings > Users     -->
+        <!--  Without needing developer mode                              -->
+        <!-- ============================================================ -->
+
+        <!-- ============================================================ -->
+        <!--  AGRICULTURAL MANAGEMENT GROUPS (Selection dropdown)         -->
+        <!--  User → Engineer → Manager (each implies the previous)      -->
+        <!-- ============================================================ -->
+
+        <!-- Level 1: Basic User - can view and create basic records -->
+        <record id="group_agricultural_user" model="res.groups">
+            <field name="name">User</field>
+            <field name="implied_ids" eval="[(4, ref('base.group_user'))]"/>
+            <field name="comment">Can view farms, create production requests, and access assigned sections</field>
+        </record>
+
+        <!-- Level 2: Engineer/Agronomist - can approve and manage -->
+        <record id="group_agricultural_engineer" model="res.groups">
+            <field name="name">Engineer / Agronomist</field>
+            <field name="implied_ids" eval="[(4, ref('group_agricultural_user'))]"/>
+            <field name="comment">Can approve production requests, manage farms, and oversee harvest operations</field>
+        </record>
+
+        <!-- Level 3: Manager - full access -->
+        <record id="group_agricultural_manager" model="res.groups">
+            <field name="name">Manager</field>
+            <field name="implied_ids" eval="[(4, ref('group_agricultural_engineer'))]"/>
+            <field name="comment">Full access to all agricultural operations, configuration, and reports</field>
+        </record>
+
+        <!-- ============================================================ -->
+        <!--  DEPARTMENTAL GROUPS (Independent checkboxes)                -->
+        <!--  These are additional permissions, not a selection            -->
+        <!-- ============================================================ -->
+
+        <!-- Inventory/Warehouse Manager -->
+        <record id="group_inventory_manager" model="res.groups">
+            <field name="name">Warehouse Manager</field>
+            <field name="implied_ids" eval="[(4, ref('base.group_user'))]"/>
+            <field name="comment">Can manage warehouse operations, check stock availability, create internal transfers, and approve warehouse steps</field>
+        </record>
+
+        <!-- Purchase Manager -->
+        <record id="group_purchase_manager" model="res.groups">
+            <field name="name">Purchase Manager</field>
+            <field name="implied_ids" eval="[(4, ref('base.group_user'))]"/>
+            <field name="comment">Can manage RFQs, create purchase orders, and evaluate vendors</field>
+        </record>
+
+        <!-- Agricultural Accountant -->
+        <record id="group_accounts" model="res.groups">
+            <field name="name">Agricultural Accountant</field>
+            <field name="implied_ids" eval="[(4, ref('base.group_user'))]"/>
+            <field name="comment">Can view costs, manage journal entries, approve accounting steps, and generate financial reports</field>
+        </record>
+
+        <!-- Journal Entry Permissions -->
+        <record id="group_post_journal_entry" model="res.groups">
+            <field name="name">Post Journal Entries</field>
+            <field name="comment">Can post (confirm) journal entries</field>
+        </record>
+
+        <record id="group_reset_journal_entry" model="res.groups">
+            <field name="name">Reset Journal Entries to Draft</field>
+            <field name="comment">Can reset posted journal entries back to draft</field>
+        </record>
+
+        <!-- ============================================================ -->
+        <!--  SECTION GROUPS                                              -->
+        <!-- ============================================================ -->
+
+        <record id="group_section_user" model="res.groups">
+            <field name="name">Section User</field>
+            <field name="implied_ids" eval="[(4, ref('base.group_user'))]"/>
+            <field name="comment">Can access assigned agricultural sections and view section dashboards</field>
+        </record>
+
+        <record id="group_section_manager" model="res.groups">
+            <field name="name">Section Manager</field>
+            <field name="implied_ids" eval="[(4, ref('group_section_user'))]"/>
+            <field name="comment">Can manage sections, assign users, modify settings, and access all section dashboards</field>
+        </record>
+
+    </data>
+</odoo>

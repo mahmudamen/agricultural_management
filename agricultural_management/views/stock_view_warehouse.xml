@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <record id="view_agricultural_stock_picking_form" model="ir.ui.view">
+            <field name="name">stock.picking.form</field>
+            <field name="model">stock.picking</field>
+            <field name="inherit_id" ref="stock.view_picking_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='origin']" position="after">
+                        <field name="agricultural_request_id" readonly="1" string="Request Number"/>
+                        <field name="agricultural_project_id" readonly="state != 'draft'" string="Project"/>
+                </xpath>
+            </field>
+        </record>
+        <record id="view_agricultural_account_move_form" model="ir.ui.view">
+            <field name="name">account.move.form</field>
+            <field name="model">account.move</field>
+            <field name="inherit_id" ref="account.view_move_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='ref']" position="after">
+                        <field name="agricultural_request_id" readonly="1" string="Request Number"/>
+                        <field name="agricultural_project_id" readonly="state != 'draft'" string="Project"/>
+                </xpath>
+            </field>
+        </record>
+    </data>
+</odoo>

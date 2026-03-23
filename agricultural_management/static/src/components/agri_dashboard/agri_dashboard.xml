@@ -1,0 +1,178 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates xml:space="preserve">
+<t t-name="agricultural_management.AgriDashboard">
+<div class="agri-dashboard o_action">
+
+    <!-- ===== HEADER ===== -->
+    <div class="agri-dash-header">
+        <div class="agri-dash-title">
+            <h2><i class="fa fa-leaf me-2"/>Agricultural Dashboard</h2>
+            <p class="text-muted mb-0">Farm performance overview and analytics</p>
+        </div>
+        <div class="agri-dash-actions">
+            <button class="btn btn-outline-secondary btn-sm me-2" t-on-click="onRefresh">
+                <i class="fa fa-refresh"/> Refresh
+            </button>
+        </div>
+    </div>
+
+    <!-- ===== LOADING ===== -->
+    <div t-if="state.loading" class="agri-loading">
+        <div class="spinner-border text-success" role="status"/>
+        <p class="mt-3">Loading dashboard...</p>
+    </div>
+
+    <div t-else="">
+
+        <!-- ===== KPI ROW 1: Primary ===== -->
+        <div class="agri-kpi-grid agri-kpi-primary">
+            <div class="agri-kpi-card kpi-farms" t-on-click="openFarms">
+                <div class="kpi-icon"><i class="fa fa-leaf"/></div>
+                <div class="kpi-body">
+                    <span class="kpi-value" t-esc="state.kpis.total_farms"/>
+                    <span class="kpi-label">Total Farms</span>
+                </div>
+                <i class="fa fa-chevron-right kpi-arrow"/>
+            </div>
+
+            <div class="agri-kpi-card kpi-area">
+                <div class="kpi-icon"><i class="fa fa-map-o"/></div>
+                <div class="kpi-body">
+                    <span class="kpi-value"><t t-esc="_fmt(state.kpis.total_area)"/> m</span>
+                    <span class="kpi-label">Total Area</span>
+                </div>
+            </div>
+
+            <div class="agri-kpi-card kpi-revenue">
+                <div class="kpi-icon"><i class="fa fa-arrow-up"/></div>
+                <div class="kpi-body">
+                    <span class="kpi-value"><t t-esc="_fmt(state.kpis.total_revenue)"/></span>
+                    <span class="kpi-label">Revenue</span>
+                </div>
+            </div>
+
+            <div class="agri-kpi-card kpi-cost">
+                <div class="kpi-icon"><i class="fa fa-arrow-down"/></div>
+                <div class="kpi-body">
+                    <span class="kpi-value"><t t-esc="_fmt(state.kpis.total_cost)"/></span>
+                    <span class="kpi-label">Total Cost</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- ===== KPI ROW 2: Secondary ===== -->
+        <div class="agri-kpi-grid agri-kpi-secondary">
+            <div class="agri-kpi-card kpi-profit">
+                <div class="kpi-icon"><i class="fa fa-line-chart"/></div>
+                <div class="kpi-body">
+                    <span class="kpi-value" t-att-class="{'text-success': state.kpis.net_profit >= 0, 'text-danger': state.kpis.net_profit &lt; 0}">
+                        <t t-esc="_fmt(state.kpis.net_profit)"/>
+                    </span>
+                    <span class="kpi-label">Net Profit</span>
+                </div>
+            </div>
+
+            <div class="agri-kpi-card kpi-margin">
+                <div class="kpi-icon"><i class="fa fa-percent"/></div>
+                <div class="kpi-body">
+                    <span class="kpi-value"><t t-esc="state.kpis.profit_margin"/>%</span>
+                    <span class="kpi-label">Profit Margin</span>
+                </div>
+            </div>
+
+            <div class="agri-kpi-card kpi-projects" t-on-click="openProjects">
+                <div class="kpi-icon"><i class="fa fa-tasks"/></div>
+                <div class="kpi-body">
+                    <span class="kpi-value" t-esc="state.kpis.active_projects"/>
+                    <span class="kpi-label">Active Projects</span>
+                </div>
+                <i class="fa fa-chevron-right kpi-arrow"/>
+            </div>
+
+            <div class="agri-kpi-card kpi-requests" t-on-click="openRequests">
+                <div class="kpi-icon"><i class="fa fa-clipboard"/></div>
+                <div class="kpi-body">
+                    <span class="kpi-value" t-esc="state.kpis.pending_requests"/>
+                    <span class="kpi-label">Pending Requests</span>
+                </div>
+                <i class="fa fa-chevron-right kpi-arrow"/>
+            </div>
+        </div>
+
+        <!-- ===== CHARTS ===== -->
+        <div class="agri-charts-row">
+            <div class="agri-chart-card agri-chart-wide">
+                <div class="chart-header">
+                    <h4><i class="fa fa-bar-chart me-2"/>Revenue vs Cost by Farm</h4>
+                </div>
+                <div class="chart-body">
+                    <canvas t-ref="profitChart"/>
+                </div>
+            </div>
+            <div class="agri-chart-card agri-chart-narrow">
+                <div class="chart-header">
+                    <h4><i class="fa fa-pie-chart me-2"/>Cost Breakdown</h4>
+                </div>
+                <div class="chart-body">
+                    <canvas t-ref="costChart"/>
+                </div>
+            </div>
+        </div>
+
+        <!-- ===== YIELD CHART ===== -->
+        <div class="agri-charts-row">
+            <div class="agri-chart-card agri-chart-full">
+                <div class="chart-header">
+                    <h4><i class="fa fa-line-chart me-2"/>Yield Efficiency (Revenue/Cost per m²)</h4>
+                </div>
+                <div class="chart-body chart-body-sm">
+                    <canvas t-ref="yieldChart"/>
+                </div>
+            </div>
+        </div>
+
+        <!-- ===== FARM TABLE ===== -->
+        <div class="agri-table-card" t-if="state.farms.length">
+            <div class="table-header">
+                <h4><i class="fa fa-th-list me-2"/>Farm Performance Summary</h4>
+            </div>
+            <div class="table-responsive">
+                <table class="agri-table">
+                    <thead>
+                        <tr>
+                            <th>Farm</th>
+                            <th>Level</th>
+                            <th class="text-end">Area (m)</th>
+                            <th class="text-end">Revenue</th>
+                            <th class="text-end">Cost</th>
+                            <th class="text-end">Profit</th>
+                            <th class="text-end">Margin</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <t t-foreach="state.farms" t-as="farm" t-key="farm.id">
+                            <tr>
+                                <td class="fw-bold"><t t-esc="farm.name"/></td>
+                                <td><span class="level-badge" t-att-data-level="farm.level"><t t-esc="farm.level"/></span></td>
+                                <td class="text-end"><t t-esc="farm.area.toLocaleString()"/></td>
+                                <td class="text-end text-success fw-semibold"><t t-esc="farm.revenue.toLocaleString()"/></td>
+                                <td class="text-end text-danger fw-semibold"><t t-esc="farm.cost.toLocaleString()"/></td>
+                                <td class="text-end fw-bold" t-att-class="{'text-success': farm.profit >= 0, 'text-danger': farm.profit &lt; 0}">
+                                    <t t-esc="farm.profit.toLocaleString()"/>
+                                </td>
+                                <td class="text-end">
+                                    <span t-att-class="{'text-success': farm.margin >= 0, 'text-danger': farm.margin &lt; 0}">
+                                        <t t-esc="farm.margin"/>%
+                                    </span>
+                                </td>
+                            </tr>
+                        </t>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+    </div>
+</div>
+</t>
+</templates>

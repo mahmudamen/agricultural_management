@@ -1,0 +1,123 @@
+// Payment Form Styling
+.payment_form_view {
+    .payment-header {
+        background: linear-gradient(135deg, #27ae60 0%, #2ecc71 100%);
+        color: white;
+        padding: 20px;
+        margin: -20px -20px 20px -20px;
+        border-radius: 8px 8px 0 0;
+
+        h2 {
+            margin: 0;
+            font-size: 22px;
+            font-weight: 600;
+        }
+    }
+
+    .payment-number {
+        font-size: 18px;
+        font-weight: 600;
+        color: $primary-color;
+    }
+
+    .payment-amount {
+        font-size: 24px;
+        font-weight: 700;
+        color: $success-color;
+    }
+}
+
+// Payment list View
+.payment_list_view {
+    tbody tr {
+        &:hover {
+            background-color: rgba(39, 174, 96, 0.05);
+        }
+    }
+}
+
+// Bed List View
+.bed-list-view {
+    tbody tr {
+        &:hover {
+            background-color: rgba(52, 152, 219, 0.05);
+        }
+
+        td {
+            padding: 12px;
+
+            .btn {
+                transition: all 0.3s ease;
+
+                &:hover {
+                    transform: scale(1.05);
+                }
+            }
+        }
+    }
+}
+
+// Reception View Modifications
+.reception_view {
+    .production-header {
+        background: linear-gradient(135deg, #9b59b6 0%, #8e44ad 100%);
+    }
+}
+
+.reception_list {
+    thead {
+        background: linear-gradient(135deg, #9b59b6 0%, #8e44ad 100%);
+
+        th {
+            color: white;
+        }
+    }
+}
+
+// Animations
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.info-card {
+    animation: fadeIn 0.5s ease-out;
+}
+
+// Responsive improvements
+@media (max-width: 992px) {
+    .info-card {
+        .row {
+            .col-md-6 {
+                margin-bottom: 15px;
+            }
+        }
+    }
+}
+
+// Print styles
+@media print {
+    .o_form_statusbar,
+    .o_button_box,
+    .oe_chatter,
+    .action-buttons {
+        display: none !important;
+    }
+
+    .production-header {
+        background: none !important;
+        color: black !important;
+        border: 1px solid #ddd;
+    }
+
+    .info-card {
+        box-shadow: none !important;
+        border: 1px solid #ddd;
+    }
+}

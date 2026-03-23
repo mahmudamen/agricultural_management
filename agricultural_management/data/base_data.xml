@@ -1,0 +1,44 @@
+<?xml version='1.0' encoding='utf-8'?>
+<odoo>
+<data noupdate="1">
+    <!-- Farm Code Sequence -->
+        <record id="seq_agricultural_farm" model="ir.sequence">
+            <field name="name">Agricultural Farm Code</field>
+            <field name="code">agricultural.farm</field>
+            <field name="prefix">FARM</field>
+            <field name="padding">3</field>
+            <field name="number_increment">1</field>
+            <field name="number_next">1</field>
+            <field name="company_id" eval="False"/>
+        </record>
+
+
+        <!-- Integration Code Sequence -->
+        <record id="seq_agricultural_accounts_integration" model="ir.sequence">
+            <field name="name">Agricultural Accounts Integration</field>
+            <field name="code">agricultural.accounts.integration</field>
+            <field name="prefix">INT</field>
+            <field name="padding">3</field>
+            <field name="company_id" eval="False"/>
+        </record>
+
+        <!-- Default Product Categories for Agriculture -->
+        <record id="product_category_seeds" model="product.category">
+            <field name="name">Seeds</field>
+        </record>
+
+        <record id="product_category_fertilizers" model="product.category">
+            <field name="name">Fertilizers</field>
+        </record>
+
+        <record id="product_category_pesticides" model="product.category">
+            <field name="name">Pesticides</field>
+        </record>
+
+        <record id="product_category_tools" model="product.category">
+            <field name="name">Agricultural Tools</field>
+        </record>
+
+        <!-- UOM: Odoo 19 removed uom.category; use standard UoMs instead -->
+    </data>
+</odoo>

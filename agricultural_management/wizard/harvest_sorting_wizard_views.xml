@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Harvest Sorting Wizard Form View -->
+    <record id="view_harvest_sorting_wizard_form" model="ir.ui.view">
+        <field name="name">harvest.sorting.wizard.form</field>
+        <field name="model">harvest.sorting.wizard</field>
+        <field name="arch" type="xml">
+            <form string="Harvest Sorting Wizard">
+                <sheet>
+                    <group>
+                        <group string="Basic Information">
+                            <field name="household_harvest_id"
+                                   options="{'no_create': True, 'no_open': True}"/>
+                            <field name="harvest_batch_id"
+                                   options="{'no_create': True, 'no_open': True}"/>
+                            <field name="product_id"
+                                   options="{'no_create': True}"/>
+                            <field name="uom_id" readonly="1"/>
+                            <field name="analytic_account_id"
+                                   options="{'no_create': True}"/>
+                        </group>
+                        <group string="Weights">
+                            <field name="initial_weight_kg"/>
+                            <field name="final_weight_kg"/>
+                            <field name="quantity" string="Original Quantity"/>
+                        </group>
+                    </group>
+                    <notebook>
+                        <page string="Grade Distribution" name="grade_distribution">
+                            <group>
+                                <group string="Quantities by Grade">
+                                    <field name="grade_a_qty"/>
+                                    <field name="grade_b_qty"/>
+                                    <field name="grade_c_qty"/>
+                                    <field name="rejected_qty"/>
+                                    <field name="total_qty" readonly="1"
+                                           class="oe_read_only oe_inline"/>
+                                </group>
+                                <group string="Prices per Grade">
+                                    <field name="grade_a_price"/>
+                                    <field name="grade_b_price"/>
+                                    <field name="grade_c_price"/>
+                                </group>
+                            </group>
+                            <div class="oe_button_box" name="button_box">
+                                <button name="action_quick_sort"
+                                        string="Quick Sort (Auto-Distribute)"
+                                        type="object"
+                                        class="oe_highlight"
+                                        help="Auto distribute: 60% Grade A, 25% Grade B, 10% Grade C, 5% Rejected"/>
+                            </div>
+                        </page>
+                        <page string="Classification" name="classification">
+                            <group>
+                                <group string="Quality">
+                                    <field name="quality_grade"/>
+                                    <field name="size_category"/>
+                                </group>
+                                <group string="Pricing">
+                                    <field name="currency_id" invisible="1"/>
+                                    <field name="unit_selling_price"
+                                           widget="monetary"
+                                           options="{'currency_field': 'currency_id'}"/>
+                                    <field name="unit_cost"
+                                           widget="monetary"
+                                           options="{'currency_field': 'currency_id'}"/>
+                                </group>
+                            </group>
+                        </page>
+                        <page string="Additional Information" name="additional_info">
+                            <group>
+                                <field name="sorting_line_id" invisible="1"/>
+                                <field name="notes" placeholder="Add notes about sorting process..."/>
+                            </group>
+                        </page>
+                    </notebook>
+                </sheet>
+                <footer>
+                    <button string="Process Sorting"
+                            name="action_process_sorting"
+                            type="object"
+                            class="btn-primary"/>
+                    <button string="Create Sorting Line"
+                            name="action_create_sorting_line"
+                            type="object"
+                            class="btn-primary"/>
+                    <button string="Cancel"
+                            class="btn-secondary"
+                            special="cancel"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+
+    <!-- Wizard Action -->
+    <record id="action_harvest_sorting_wizard" model="ir.actions.act_window">
+        <field name="name">Harvest Sorting</field>
+        <field name="res_model">harvest.sorting.wizard</field>
+        <field name="view_mode">form</field>
+        <field name="target">new</field>
+        <field name="binding_model_id" ref="model_harvest_sorting_line"/>
+        <field name="binding_view_types">form</field>
+    </record>
+
+</odoo>

@@ -1,0 +1,672 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <record id="view_agricultural_harvest_schedule_form" model="ir.ui.view">
+            <field name="name">agricultural.harvest.schedule.form</field>
+            <field name="model">agricultural.harvest.schedule</field>
+            <field name="arch" type="xml">
+                <form string="Harvest Schedule">
+                    <header>
+                        <field name="company_id" invisible="1"/>
+                        <!-- Workflow Buttons with v17 syntax -->
+                        <button name="action_confirm" string="Confirm" type="object"
+                                class="oe_highlight"
+                                invisible="state != 'draft'"/>
+
+                        <button name="action_set_ready" string="Set Ready" type="object"
+                                class="oe_highlight"
+                                invisible="state != 'scheduled'"/>
+
+                        <button name="action_start_harvest" string="Start Harvest" type="object"
+                                class="oe_highlight"
+                                invisible="state not in ['scheduled', 'ready']"/>
+
+                        <button name="action_auto_distribute_quantity"
+                                string="Auto-Distribute Quantity"
+                                type="object"
+                                class="btn-secondary"
+                                invisible="state not in ['in_progress', 'ready'] or estimated_quantity == 0"
+                                help="Automatically distribute estimated quantity to grades"/>
+
+                        <button name="action_process" string="Process" type="object"
+                                class="oe_highlight"
+                                invisible="state != 'in_progress'"/>
+
+                        <button name="action_complete" string="Complete" type="object"
+                                class="oe_highlight"
+                                invisible="state != 'processing'"/>
+
+                        <button name="action_delay" string="Delay" type="object"
+                                invisible="state not in ['scheduled', 'ready']"/>
+
+                        <button name="action_cancel" string="Cancel" type="object"
+                                invisible="state not in ['draft', 'scheduled', 'ready']"/>
+
+                        <button name="action_reset_to_draft" string="Reset to Draft" type="object"
+                                invisible="state not in ['cancelled', 'scheduled']"
+                                groups="agricultural_management.group_agricultural_manager"/>
+
+                        <button name="action_print_harvest_report" string="Print Report" type="object"
+                                icon="fa-print"
+                                invisible="state not in ['completed', 'processing']"/>
+
+                        <field name="state" widget="statusbar"
+                               statusbar_visible="draft,scheduled,ready,in_progress,processing,completed"/>
+                    </header>
+
+                    <sheet>
+                        <!-- Ribbon Widgets -->
+                        <widget name="web_ribbon" title="Delayed" bg_color="text-bg-danger"
+                                invisible="state != 'delayed'"/>
+                        <widget name="web_ribbon" title="High Priority" bg_color="text-bg-warning"
+                                invisible="priority not in ['2', '3']"/>
+                        <widget name="web_ribbon" title="Completed" bg_color="text-bg-success"
+                                invisible="state != 'completed'"/>
+
+                        <!-- Alert for quantity difference -->
+                        <div class="alert alert-warning" role="alert"
+                             invisible="state not in ['in_progress', 'processing'] or quantity_difference == 0 or quantity_difference &gt;= -0.01">
+                            <strong>Warning:</strong> Graded quantity
+                            (<field name="total_graded_quantity" class="oe_inline"/>)
+                            exceeds actual quantity
+                            (<field name="actual_quantity" class="oe_inline"/>).
+                            Difference: <field name="quantity_difference" class="oe_inline"/>
+                            <field name="uom_id" class="oe_inline"/>
+                        </div>
+
+                        <!-- Button Box -->
+                        <div class="oe_button_box" name="button_box">
+                            <!-- Lots Button -->
+                            <button name="action_view_lots"
+                                    type="object"
+                                    class="oe_stat_button"
+                                    icon="fa-cubes"
+                                    invisible="lot_count == 0">
+                                <field name="lot_count" widget="statinfo" string="Lots"/>
+                            </button>
+
+                            <!-- Quantity Breakdown Button -->
+                            <button name="action_view_quantity_breakdown"
+                                    type="object"
+                                    class="oe_stat_button"
+                                    icon="fa-pie-chart"
+                                    invisible="state == 'draft'">
+                                <div class="o_field_widget o_stat_info">
+                                    <span class="o_stat_value">
+                                        <field name="total_graded_quantity" widget="float"/>
+                                    </span>
+                                    <span class="o_stat_text">Total Graded</span>
+                                </div>
+                            </button>
+
+                            <!-- Stock Pickings -->
+                            <button class="oe_stat_button" type="object" name="action_view_stock_pickings"
+                                    icon="fa-truck"
+                                    invisible="picking_count == 0">
+                                <field name="picking_count" widget="statinfo" string="Pickings"/>
+                            </button>
+
+                            <!-- Stock Moves -->
+                            <button class="oe_stat_button" type="object" name="action_view_stock_moves"
+                                    icon="fa-arrows"
+                                    invisible="move_count == 0">
+                                <field name="move_count" widget="statinfo" string="Stock Moves"/>
+                            </button>
+
+                            <!-- Journal Entries -->
+                            <button class="oe_stat_button" type="object" name="action_view_account_moves"
+                                    icon="fa-book"
+                                    invisible="account_move_count == 0"
+                                    groups="account.group_account_readonly">
+                                <field name="account_move_count" widget="statinfo" string="Journal Entries"/>
+                            </button>
+
+                            <!-- Yield Efficiency -->
+                            <button class="oe_stat_button"
+                                    icon="fa-line-chart"
+                                    invisible="state not in ['processing', 'completed']">
+                                <div class="o_field_widget o_stat_info">
+                                    <span class="o_stat_value">
+                                        <field name="yield_efficiency" widget="percentage"/>
+                                    </span>
+                                    <span class="o_stat_text">Efficiency</span>
+                                </div>
+                            </button>
+                        </div>
+
+                        <!-- Title -->
+                        <div class="oe_title">
+                            <h1>
+                                <field name="name" readonly="1" class="oe_inline"/>
+                            </h1>
+                            <h3>
+                                <field name="crop_id" placeholder="Select Crop..."
+                                       options="{'no_create': True}"
+                                       readonly="state != 'draft'"/>
+                            </h3>
+                        </div>
+
+                        <!-- Main Content -->
+                        <group>
+                            <group name="basic_info" string="Basic Information">
+                                <field name="farm_id" readonly="state != 'draft'"/>
+                                <field name="project_id"
+                                       options="{'no_create': True}"
+                                       readonly="state != 'draft'"/>
+                                <field name="priority" widget="priority"/>
+                                <field name="supervisor_id"
+                                       options="{'no_create': True}"
+                                       readonly="state not in ['draft', 'scheduled']"/>
+                                <field name="worker_count"
+                                       readonly="state not in ['draft', 'scheduled', 'ready']"/>
+                            </group>
+
+                            <group name="schedule_info" string="Schedule Information">
+                                <field name="schedule_type"
+                                       readonly="state != 'draft'"/>
+                                <field name="scheduled_date"
+                                       readonly="state not in ['draft', 'scheduled']"/>
+                                <field name="scheduled_time" widget="float_time"
+                                       invisible="schedule_type == 'manual'"
+                                       readonly="state not in ['draft', 'scheduled']"/>
+                                <field name="actual_start_date" readonly="1"/>
+                                <field name="actual_end_date" readonly="1"/>
+                                <field name="duration_hours" widget="float_time" readonly="1"
+                                       invisible="actual_start_date == False"/>
+                                <field name="next_schedule_date" readonly="1"
+                                       invisible="schedule_type != 'recurring'"/>
+                            </group>
+                        </group>
+
+                        <!-- Quantities Section -->
+                        <group string="Quantities &amp; Grading">
+                            <group name="estimated_quantities" string="Estimated/Actual Quantities">
+                                <label for="estimated_quantity"/>
+                                <div class="o_row">
+                                    <field name="estimated_quantity"
+                                           readonly="state not in ['draft', 'scheduled']"/>
+                                    <field name="uom_id" readonly="1"/>
+                                </div>
+
+                                <label for="actual_quantity"/>
+                                <div class="o_row">
+                                    <field name="actual_quantity"
+                                           readonly="state not in ['in_progress', 'ready']"/>
+                                    <field name="uom_id" readonly="1"/>
+                                </div>
+                            </group>
+
+                            <group name="graded_quantities" string="Graded Quantities"
+                                   invisible="state == 'draft'">
+                                <label for="grade_a_quantity"/>
+                                <div class="o_row">
+                                    <field name="grade_a_quantity"
+                                           readonly="state not in ['in_progress', 'ready']"/>
+                                    <span class="text-success">Grade A</span>
+                                </div>
+
+                                <label for="grade_b_quantity"/>
+                                <div class="o_row">
+                                    <field name="grade_b_quantity"
+                                           readonly="state not in ['in_progress', 'ready']"/>
+                                    <span class="text-info">Grade B</span>
+                                </div>
+
+                                <label for="grade_c_quantity"/>
+                                <div class="o_row">
+                                    <field name="grade_c_quantity"
+                                           readonly="state not in ['in_progress', 'ready']"/>
+                                    <span class="text-warning">Grade C</span>
+                                </div>
+
+                                <label for="rejected_quantity"/>
+                                <div class="o_row">
+                                    <field name="rejected_quantity"
+                                           readonly="state not in ['in_progress', 'ready']"/>
+                                    <span class="text-danger">Rejected</span>
+                                </div>
+
+                                <separator colspan="2"/>
+
+                                <label for="total_graded_quantity" string="Total Graded"/>
+                                <div class="o_row">
+                                    <field name="total_graded_quantity" readonly="1"
+                                           class="fw-bold"/>
+                                    <field name="uom_id" readonly="1"/>
+                                </div>
+
+                                <label for="quantity_difference" string="Difference"/>
+                                <div class="o_row">
+                                    <field name="quantity_difference" readonly="1"
+                                           decoration-danger="quantity_difference &lt; 0"
+                                           decoration-warning="quantity_difference &lt; -0.01"/>
+                                    <field name="uom_id" readonly="1"/>
+                                </div>
+                            </group>
+                        </group>
+
+                        <!-- Quality Section -->
+                        <group string="Quality Information" invisible="state not in ['in_progress', 'processing', 'completed']">
+                            <group name="quality_info">
+                                <field name="quality_grade" widget="radio"
+                                       readonly="state not in ['in_progress', 'processing']"/>
+                                <field name="quality_score"
+                                       readonly="state not in ['in_progress', 'processing']"/>
+                                <field name="yield_efficiency" widget="percentage" readonly="1"/>
+                                <field name="waste_percentage" widget="percentage" readonly="1"
+                                       decoration-danger="waste_percentage &gt; 10"
+                                       decoration-warning="waste_percentage &gt; 5"/>
+                            </group>
+                            <group name="quality_notes">
+                                <field name="quality_notes"
+                                       placeholder="Enter quality observations..."
+                                       readonly="state == 'completed'"/>
+                            </group>
+                        </group>
+
+                        <!-- Warehouse &amp; Locations -->
+                        <group string="Warehouse and Locations">
+                            <group name="warehouse_locations">
+                                <field name="warehouse_id"
+                                       options="{'no_create': True}"
+                                       readonly="state != 'draft'"/>
+                                <field name="source_location_id"
+                                       options="{'no_create': True}"
+                                       readonly="state != 'draft'"/>
+                                <field name="destination_location_id"
+                                       options="{'no_create': True}"
+                                       readonly="state != 'draft'"/>
+                            </group>
+                            <group name="scrap_settings">
+                                <field name="scrap_location_id"
+                                       options="{'no_create': True}"
+                                       readonly="state != 'draft'"
+                                       invisible="rejected_quantity == 0"/>
+                                <field name="picking_type_id"
+                                       options="{'no_create': True}"
+                                       readonly="state != 'draft'"/>
+                            </group>
+                        </group>
+
+                        <!-- Lot Settings -->
+                        <group string="Lot/Batch Settings">
+                            <group name="lot_settings">
+                                <field name="generate_lots"
+                                       readonly="state not in ['draft', 'scheduled']"/>
+                                <field name="lot_prefix"
+                                       invisible="generate_lots == False"
+                                       readonly="state not in ['draft', 'scheduled']"/>
+                            </group>
+                        </group>
+
+                        <!-- Accounting Section -->
+                        <group string="Cost &amp; Accounting"
+                               groups="account.group_account_readonly"
+                               invisible="state == 'draft'">
+                            <group name="cost_info">
+                                <field name="currency_id" invisible="1"/>
+                                <field name="total_cost" widget="monetary"
+                                       readonly="state not in ['in_progress', 'processing']"/>
+                                <field name="cost_per_unit" widget="monetary" readonly="1"/>
+                            </group>
+                        </group>
+                        <!-- Notebook for Additional Information -->
+                        <notebook>
+                            <!-- Weather Page -->
+                            <page string="Weather Conditions" name="weather">
+                                <group>
+                                    <group>
+                                        <field name="weather_condition"/>
+                                        <field name="temperature"/>
+                                        <field name="humidity"/>
+                                        <field name="weather_suitable" widget="boolean_toggle"/>
+                                    </group>
+                                    <group>
+                                        <field name="weather_notes" placeholder="Enter weather observations..."/>
+                                    </group>
+                                </group>
+                            </page>
+
+                            <!-- Work Details Page -->
+                            <page string="Work Details" name="work_details">
+                                <group>
+                                    <group string="Work Planning">
+                                        <field name="planned_work_hours" widget="float_time"/>
+                                        <field name="actual_work_hours" widget="float_time" readonly="1"/>
+                                    </group>
+                                    <group string="Special Instructions">
+                                        <field name="harvest_method" placeholder="Describe harvest method..."/>
+                                        <field name="post_harvest_handling" placeholder="Post-harvest handling instructions..."/>
+                                    </group>
+                                </group>
+                                <group>
+                                    <field name="special_instructions" placeholder="Any special instructions or notes..."/>
+                                </group>
+                            </page>
+
+                            <!-- Harvest Batches Page -->
+                            <page string="Harvest Batches" name="batches"
+                                  invisible="state not in ['in_progress', 'processing', 'completed']">
+                                <field name="harvest_batch_ids">
+                                    <list editable="bottom">
+                                        <field name="name"/>
+                                        <field name="company_id" column_invisible="1"/>
+                                        <field name="uom_id"/>
+                                        <field name="state"/>
+                                    </list>
+                                </field>
+                                <group>
+                                    <group>
+                                        <field name="total_harvested_qty" readonly="1"/>
+                                        <field name="total_sorted_qty" readonly="1"/>
+                                    </group>
+                                    <group>
+                                        <field name="total_waste_qty" readonly="1"/>
+                                        <field name="sorting_completion" widget="progressbar" readonly="1"/>
+                                    </group>
+                                </group>
+                            </page>
+                            <!-- Notes Page -->
+                            <page string="Notes &amp; Observations" name="notes">
+                                <group>
+                                    <field name="notes" placeholder="General harvest notes and observations..."/>
+                                </group>
+                            </page>
+
+                            <!-- Delay/Cancellation -->
+                            <page string="Delay/Cancellation" name="delay_cancel"
+                                  invisible="state not in ['delayed', 'cancelled']">
+                                <group>
+                                    <field name="delay_reason" invisible="state != 'delayed'"/>
+                                    <field name="cancellation_reason" invisible="state != 'cancelled'"/>
+                                </group>
+                            </page>
+                        </notebook>
+                    </sheet>
+
+                    <!-- Chatter -->
+                    <chatter/>
+                </form>
+            </field>
+        </record>
+
+        <!-- list View (Updated) -->
+        <record id="view_agricultural_harvest_schedule_list" model="ir.ui.view">
+            <field name="name">agricultural.harvest.schedule.list</field>
+            <field name="model">agricultural.harvest.schedule</field>
+            <field name="arch" type="xml">
+                <list string="Harvest Schedules"
+                      sample="1"
+                      decoration-info="state == 'draft'"
+                      decoration-primary="state == 'scheduled'"
+                      decoration-warning="state in ['ready', 'in_progress']"
+                      decoration-success="state == 'completed'"
+                      decoration-danger="state == 'delayed'"
+                      decoration-muted="state == 'cancelled'"
+                      multi_edit="1">
+                    <header>
+                        <button name="action_confirm" string="Confirm" type="object"/>
+                        <button name="action_start_harvest" string="Start Harvest" type="object"/>
+                    </header>
+
+                    <field name="name" readonly="1"/>
+                    <field name="scheduled_date"/>
+                    <field name="crop_id"/>
+                    <field name="farm_id" optional="hide"/>
+                    <field name="project_id" optional="hide"/>
+
+                    <!-- Quantities -->
+                    <field name="estimated_quantity" sum="Total Estimated" optional="show"/>
+                    <field name="actual_quantity" sum="Total Actual" optional="show"/>
+                    <field name="grade_a_quantity" sum="Grade A Total" optional="hide"/>
+                    <field name="grade_b_quantity" sum="Grade B Total" optional="hide"/>
+                    <field name="grade_c_quantity" sum="Grade C Total" optional="hide"/>
+                    <field name="rejected_quantity" sum="Total Rejected" optional="hide"/>
+                    <field name="total_graded_quantity" sum="Total Graded" optional="show"/>
+                    <field name="uom_id" optional="hide"/>
+
+                    <!-- Quality &amp; Efficiency -->
+                    <field name="yield_efficiency" widget="percentage" optional="show"
+                           decoration-danger="yield_efficiency &lt; 70"
+                           decoration-warning="yield_efficiency &gt;= 70 and yield_efficiency &lt; 90"
+                           decoration-success="yield_efficiency &gt;= 90"/>
+
+                    <field name="quality_grade" widget="badge" optional="hide"
+                           decoration-success="quality_grade == 'a'"
+                           decoration-info="quality_grade == 'b'"
+                           decoration-warning="quality_grade == 'c'"
+                           decoration-danger="quality_grade == 'rejected'"/>
+
+                    <field name="waste_percentage" widget="percentage" optional="hide"
+                           decoration-danger="waste_percentage &gt; 10"
+                           decoration-warning="waste_percentage &gt; 5"/>
+
+                    <!-- Resources -->
+                    <field name="supervisor_id" optional="hide" widget="many2one_avatar_user"/>
+                    <field name="worker_count" optional="hide"/>
+
+                    <!-- Financial -->
+                    <field name="currency_id" column_invisible="1"/>
+                    <field name="total_cost" sum="Total Cost" widget="monetary"
+                           optional="hide"/>
+                    <field name="cost_per_unit" widget="monetary"
+                           optional="hide"/>
+
+                    <!-- Stock Operations -->
+                    <field name="picking_count" optional="hide"/>
+                    <field name="move_count" optional="hide"/>
+                    <field name="lot_count" optional="hide"/>
+
+                    <!-- Status -->
+                    <field name="priority" widget="priority" optional="show"/>
+                    <field name="schedule_type" optional="hide"/>
+
+                    <field name="state" widget="badge"
+                           decoration-info="state == 'draft'"
+                           decoration-primary="state == 'scheduled'"
+                           decoration-warning="state in ['ready', 'in_progress']"
+                           decoration-success="state == 'completed'"
+                           decoration-danger="state in ['delayed', 'cancelled']"/>
+
+                    <field name="activity_ids" widget="list_activity" optional="show"/>
+                    <field name="company_id" column_invisible="1"/>
+                </list>
+            </field>
+        </record>
+
+        <!-- Kanban View -->
+        <record id="view_agricultural_harvest_schedule_kanban" model="ir.ui.view">
+            <field name="name">agricultural.harvest.schedule.kanban</field>
+            <field name="model">agricultural.harvest.schedule</field>
+            <field name="arch" type="xml">
+                <kanban default_group_by="state" class="o_kanban_small_column" sample="1">
+                    <field name="id"/>
+                    <field name="name"/>
+                    <field name="crop_id"/>
+                    <field name="farm_id"/>
+                    <field name="scheduled_date"/>
+                    <field name="estimated_quantity"/>
+                    <field name="actual_quantity"/>
+                    <field name="total_graded_quantity"/>
+                    <field name="uom_id"/>
+                    <field name="state"/>
+                    <field name="priority"/>
+                    <field name="yield_efficiency"/>
+                    <field name="quality_grade"/>
+                    <field name="supervisor_id"/>
+                    <field name="activity_state"/>
+                    <progressbar field="activity_state" colors='{"planned": "success", "today": "warning", "overdue": "danger"}'/>
+                    <templates>
+                        <t t-name="card">
+                            <div class="oe_kanban_global_click">
+                                <div class="oe_kanban_content">
+                                    <!-- Priority Ribbon -->
+                                    <div class="ribbon ribbon-top-right" t-if="record.priority.raw_value == '3'">
+                                        <span class="bg-danger text-white">Urgent</span>
+                                    </div>
+
+                                    <!-- Header -->
+                                    <div class="o_kanban_record_top">
+                                        <div class="o_kanban_record_headings">
+                                            <strong class="o_kanban_record_title">
+                                                <field name="name"/>
+                                            </strong>
+                                            <div class="o_kanban_record_subtitle">
+                                                <i class="fa fa-leaf text-success" title="leaf"/> <field name="crop_id"/>
+                                            </div>
+                                        </div>
+                                        <div class="o_kanban_record_top_right">
+                                            <field name="priority" widget="priority"/>
+                                        </div>
+                                    </div>
+
+                                    <!-- Body -->
+                                    <div class="o_kanban_record_body">
+                                        <!-- Farm &amp; Date -->
+                                        <div>
+                                            <i class="fa fa-map-marker text-primary" title="map maker"/> <field name="farm_id"/>
+                                        </div>
+                                        <div>
+                                            <i class="fa fa-calendar" title="calendar"/> <field name="scheduled_date"/>
+                                        </div>
+
+                                        <!-- Quantities -->
+                                        <div class="row mt-2" t-if="record.state.raw_value != 'draft'">
+                                            <div class="col-6">
+                                                <strong>Estimated:</strong><br/>
+                                                <field name="estimated_quantity"/> <field name="uom_id"/>
+                                            </div>
+                                            <div class="col-6" t-if="record.actual_quantity.raw_value &gt; 0">
+                                                <strong>Actual:</strong><br/>
+                                                <field name="actual_quantity"/> <field name="uom_id"/>
+                                            </div>
+                                        </div>
+
+                                        <!-- Graded Quantities -->
+                                        <div class="mt-2" t-if="record.total_graded_quantity.raw_value &gt; 0">
+                                            <strong>Graded:</strong> <field name="total_graded_quantity"/> <field name="uom_id"/>
+                                        </div>
+
+                                        <!-- Efficiency Badge -->
+                                        <div class="mt-2" t-if="record.yield_efficiency.raw_value &gt; 0">
+                                            <span class="badge"
+                                                  t-att-class="record.yield_efficiency.raw_value &gt;= 90 ? 'badge-success' : record.yield_efficiency.raw_value &gt;= 70 ? 'badge-warning' : 'badge-danger'">
+                                                Efficiency: <field name="yield_efficiency"/>%
+                                            </span>
+                                        </div>
+
+                                        <!-- Quality Grade -->
+                                        <div class="mt-2" t-if="record.quality_grade.raw_value">
+                                            <span class="badge"
+                                                  t-att-class="record.quality_grade.raw_value == 'a' ? 'badge-success' : record.quality_grade.raw_value == 'b' ? 'badge-info' : 'badge-warning'">
+                                                <field name="quality_grade"/>
+                                            </span>
+                                        </div>
+                                    </div>
+
+                                    <!-- Footer -->
+                                    <div class="o_kanban_record_bottom">
+                                        <div class="oe_kanban_bottom_left">
+                                            <field name="supervisor_id" widget="many2one_avatar_user"/>
+                                        </div>
+                                        <div class="oe_kanban_bottom_right">
+                                            <field name="activity_ids" widget="kanban_activity"/>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </t>
+                    </templates>
+                </kanban>
+            </field>
+        </record>
+
+        <!-- Calendar View -->
+        <record id="view_agricultural_harvest_schedule_calendar" model="ir.ui.view">
+            <field name="name">agricultural.harvest.schedule.calendar</field>
+            <field name="model">agricultural.harvest.schedule</field>
+            <field name="arch" type="xml">
+                <calendar string="Harvest Calendar"
+                          date_start="scheduled_date"
+                          color="state"
+                          quick_create="0"
+                          event_open_popup="1"
+                          mode="month">
+                    <field name="crop_id"/>
+                    <field name="farm_id"/>
+                    <field name="estimated_quantity"/>
+                    <field name="state"/>
+                </calendar>
+            </field>
+        </record>
+
+        <!-- Pivot View -->
+        <record id="view_agricultural_harvest_schedule_pivot" model="ir.ui.view">
+            <field name="name">agricultural.harvest.schedule.pivot</field>
+            <field name="model">agricultural.harvest.schedule</field>
+            <field name="arch" type="xml">
+                <pivot string="Harvest Analysis" sample="1">
+                    <field name="farm_id" type="row"/>
+                    <field name="crop_id" type="row"/>
+                    <field name="state" type="col"/>
+                    <field name="estimated_quantity" type="measure"/>
+                    <field name="actual_quantity" type="measure"/>
+                    <field name="grade_a_quantity" type="measure"/>
+                    <field name="grade_b_quantity" type="measure"/>
+                    <field name="grade_c_quantity" type="measure"/>
+                    <field name="rejected_quantity" type="measure"/>
+                    <field name="total_graded_quantity" type="measure"/>
+                    <field name="yield_efficiency" type="measure"/>
+                    <field name="waste_percentage" type="measure"/>
+                    <field name="total_cost" type="measure"/>
+                </pivot>
+            </field>
+        </record>
+
+        <!-- Graph View -->
+        <record id="view_agricultural_harvest_schedule_graph" model="ir.ui.view">
+            <field name="name">agricultural.harvest.schedule.graph</field>
+            <field name="model">agricultural.harvest.schedule</field>
+            <field name="arch" type="xml">
+                <graph string="Harvest Statistics" sample="1" type="bar">
+                    <field name="scheduled_date" interval="month"/>
+                    <field name="estimated_quantity" type="measure"/>
+                    <field name="actual_quantity" type="measure"/>
+                    <field name="yield_efficiency" type="measure"/>
+                </graph>
+            </field>
+        </record>
+
+
+
+        <!-- Actions -->
+        <record id="action_agricultural_harvest_schedule" model="ir.actions.act_window">
+            <field name="name">Harvest Schedules</field>
+            <field name="res_model">agricultural.harvest.schedule</field>
+            <field name="view_mode">list,kanban,form,calendar,pivot,graph</field>
+            <field name="context">{}</field>
+            <field name="help" type="html">
+                <p class="o_view_nocontent_smiling_face">
+                    Create your first harvest schedule
+                </p>
+                <p>
+                    Schedule and manage your harvest operations to ensure optimal yield and quality.
+                    Track quantities, grades, and efficiency metrics.
+                </p>
+            </field>
+        </record>
+
+        <!-- Operations Management Menu -->
+        <menuitem id="menu_agricultural_operations"
+                  name="Operations"
+                  parent="menu_agricultural_management"
+                  sequence="20"/>
+
+        <!-- Menu Items -->
+        <menuitem id="menu_agricultural_harvest_schedule"
+                  name="Harvest Schedules"
+                  parent="agricultural_management.menu_agricultural_operations"
+                  action="action_agricultural_harvest_schedule"
+                  sequence="20"/>
+    </data>
+</odoo>

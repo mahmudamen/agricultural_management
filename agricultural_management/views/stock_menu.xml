@@ -1,0 +1,368 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+  <data noupdate="0">
+
+    <!-- Stock/Inventory Root Menu -->
+    <menuitem id="menu_agri_stock_root"
+              name="Inventory"
+              parent="menu_agricultural_management"
+              sequence="50"
+              groups="group_inventory_manager,stock.group_stock_user"/>
+
+    <!-- Overview Section -->
+    <menuitem id="menu_agri_stock_overview_section"
+ name=""
+              parent="menu_agri_stock_root"
+              sequence="5"
+              groups="stock.group_stock_user"/>
+
+    <!-- Inventory Overview -->
+    <record id="action_agri_stock_quant_overview" model="ir.actions.act_window">
+      <field name="name">Overview of Inventory</field>
+      <field name="res_model">stock.quant</field>
+      <field name="view_mode">list,form</field>
+      <field name="context">{'search_default_internal_loc': 1}</field>
+      <field name="domain">[('location_id.usage', '=', 'internal')]</field>
+    </record>
+    <menuitem id="menu_agri_stock_quant_overview"
+              name="Overview of Inventory"
+              action="action_agri_stock_quant_overview"
+              parent="menu_agri_stock_overview_section"
+              sequence="10"
+              groups="stock.group_stock_user"/>
+
+
+
+    <!-- All Transfers -->
+    <record id="action_agri_stock_all_pickings_stk" model="ir.actions.act_window">
+ <field name="name"> </field>
+      <field name="res_model">stock.picking</field>
+      <field name="view_mode">list,kanban,form,calendar</field>
+      <field name="context">{}</field>
+    </record>
+          <menuitem id="menu_agri_stock_operations_section_stk"
+ name="Operations"
+              parent="menu_agri_stock_root"
+              sequence="10"
+              groups="stock.group_stock_user"/>
+    <menuitem id="menu_agri_stock_all_pickings_stk"
+ name=""
+              action="action_agri_stock_all_pickings_stk"
+              parent="menu_agri_stock_operations_section_stk"
+              sequence="10"
+              groups="stock.group_stock_user"/>
+
+    <!-- Receipts -->
+    <record id="action_agri_stock_receipts" model="ir.actions.act_window">
+ <field name="name">Receipt</field>
+      <field name="res_model">stock.picking</field>
+      <field name="view_mode">list,kanban,form</field>
+      <field name="domain">[('picking_type_code','=','incoming')]</field>
+      <field name="context">{'search_default_todo': 1}</field>
+    </record>
+    <menuitem id="menu_agri_stock_receipts"
+ name="Receipt"
+              action="action_agri_stock_receipts"
+              parent="menu_agri_stock_operations_section_stk"
+              sequence="20"
+              groups="stock.group_stock_user"/>
+
+    <!-- Delivery Orders -->
+    <record id="action_agri_stock_deliveries" model="ir.actions.act_window">
+ <field name="name"> Delivery</field>
+      <field name="res_model">stock.picking</field>
+      <field name="view_mode">list,kanban,form</field>
+      <field name="domain">[('picking_type_code','=','outgoing')]</field>
+      <field name="context">{'search_default_todo': 1}</field>
+    </record>
+    <menuitem id="menu_agri_stock_deliveries"
+ name="Delivery"
+              action="action_agri_stock_deliveries"
+              parent="menu_agri_stock_operations_section_stk"
+              sequence="30"
+              groups="stock.group_stock_user"/>
+
+    <!-- Internal Transfers -->
+    <record id="action_agri_stock_internal_transfers" model="ir.actions.act_window">
+ <field name="name">Transfer </field>
+      <field name="res_model">stock.picking</field>
+      <field name="view_mode">list,kanban,form</field>
+      <field name="domain">[('picking_type_code','=','internal')]</field>
+      <field name="context">{'search_default_todo': 1}</field>
+    </record>
+    <menuitem id="menu_agri_stock_internal_transfers"
+ name="Transfer"
+              action="action_agri_stock_internal_transfers"
+              parent="menu_agri_stock_operations_section_stk"
+              sequence="40"
+              groups="stock.group_stock_user"/>
+
+    <!-- Stock Moves -->
+    <record id="action_agri_stock_moves" model="ir.actions.act_window">
+      <field name="name">Movements Inventory</field>
+      <field name="res_model">stock.move</field>
+      <field name="view_mode">list,form</field>
+      <field name="context">{}</field>
+    </record>
+    <menuitem id="menu_agri_stock_moves"
+              name="Movements Inventory"
+              action="action_agri_stock_moves"
+              parent="menu_agri_stock_operations_section_stk"
+              sequence="50"
+              groups="stock.group_stock_user"/>
+
+    <!-- Products &amp; Inventory Section -->
+    <menuitem id="menu_agri_stock_products_section"
+ name="Product Inventory"
+              parent="menu_agri_stock_root"
+              sequence="20"
+              groups="stock.group_stock_user"/>
+
+    <!-- Products -->
+    <record id="action_agri_stock_products" model="ir.actions.act_window">
+ <field name="name">Product</field>
+      <field name="res_model">product.product</field>
+      <field name="view_mode">kanban,list,form</field>
+      <field name="context">{'search_default_consumable': 1}</field>
+    </record>
+    <menuitem id="menu_agri_stock_products"
+ name="Product"
+              action="action_agri_stock_products"
+              parent="menu_agri_stock_products_section"
+              sequence="10"
+              groups="stock.group_stock_user"/>
+
+    <!-- Product Categories -->
+    <record id="action_agri_stock_product_categories" model="ir.actions.act_window">
+ <field name="name">Categories Product</field>
+      <field name="res_model">product.category</field>
+      <field name="view_mode">list,form</field>
+      <field name="context">{}</field>
+    </record>
+    <menuitem id="menu_agri_stock_product_categories"
+ name="Categories Product"
+              action="action_agri_stock_product_categories"
+              parent="menu_agri_stock_products_section"
+              sequence="20"
+              groups="stock.group_stock_user"/>
+
+    <!-- Lots/Serial Numbers -->
+    <record id="action_agri_stock_lots" model="ir.actions.act_window">
+ <field name="name">Batches/ Sequence</field>
+      <field name="res_model">stock.lot</field>
+      <field name="view_mode">list,form</field>
+      <field name="context">{}</field>
+    </record>
+    <menuitem id="menu_agri_stock_lots"
+ name="Batches/ Sequence"
+              action="action_agri_stock_lots"
+              parent="menu_agri_stock_products_section"
+              sequence="30"
+              groups="stock.group_production_lot"/>
+
+    <!-- Stock by Location -->
+    <record id="action_agri_stock_by_location" model="ir.actions.act_window">
+ <field name="name">Inventory Location</field>
+      <field name="res_model">stock.quant</field>
+      <field name="view_mode">list</field>
+      <field name="context">{'search_default_internal_loc': 1, 'search_default_productgroup':1}</field>
+      <field name="domain">[('location_id.usage', '=', 'internal')]</field>
+    </record>
+    <menuitem id="menu_agri_stock_by_location"
+ name="Inventory Location"
+              action="action_agri_stock_by_location"
+              parent="menu_agri_stock_products_section"
+              sequence="40"
+              groups="stock.group_stock_user"/>
+
+    <!-- Locations &amp; Warehouses Section -->
+    <menuitem id="menu_agri_stock_locations_section"
+ name="Locations Warehouses"
+              parent="menu_agri_stock_root"
+              sequence="30"
+              groups="stock.group_stock_user"/>
+
+    <!-- Warehouses -->
+    <record id="action_agri_stock_warehouses" model="ir.actions.act_window">
+      <field name="name">Warehouses</field>
+      <field name="res_model">stock.warehouse</field>
+      <field name="view_mode">kanban,list,form</field>
+      <field name="context">{}</field>
+    </record>
+    <menuitem id="menu_agri_stock_warehouses"
+              name="Warehouses"
+              action="action_agri_stock_warehouses"
+              parent="menu_agri_stock_locations_section"
+              sequence="10"
+              groups="stock.group_stock_user"/>
+
+    <!-- Locations -->
+    <record id="action_agri_stock_locations" model="ir.actions.act_window">
+      <field name="name">Locations</field>
+      <field name="res_model">stock.location</field>
+      <field name="view_mode">list,form</field>
+      <field name="context">{}</field>
+      <field name="domain">[('usage', 'in', ['internal', 'view'])]</field>
+    </record>
+    <menuitem id="menu_agri_stock_locations"
+              name="Locations"
+              action="action_agri_stock_locations"
+              parent="menu_agri_stock_locations_section"
+              sequence="20"
+              groups="stock.group_stock_user"/>
+
+    <!-- Routes -->
+    <record id="action_agri_stock_routes" model="ir.actions.act_window">
+ <field name="name"></field>
+      <field name="res_model">stock.route</field>
+      <field name="view_mode">list,form</field>
+      <field name="context">{}</field>
+    </record>
+    <menuitem id="menu_agri_stock_routes"
+ name=""
+              action="action_agri_stock_routes"
+              parent="menu_agri_stock_locations_section"
+              sequence="30"
+              groups="stock.group_adv_location"/>
+
+    <!-- Operation Types -->
+    <record id="action_agri_stock_picking_types" model="ir.actions.act_window">
+ <field name="name"> Operations</field>
+      <field name="res_model">stock.picking.type</field>
+      <field name="view_mode">kanban,list,form</field>
+      <field name="context">{}</field>
+    </record>
+    <menuitem id="menu_agri_stock_picking_types"
+ name="Operations"
+              action="action_agri_stock_picking_types"
+              parent="menu_agri_stock_locations_section"
+              sequence="40"
+              groups="stock.group_stock_manager"/>
+
+    <!-- Inventory Adjustments Section -->
+    <menuitem id="menu_agri_stock_adjustments_section"
+              name="Adjustments Inventory"
+              parent="menu_agri_stock_root"
+              sequence="40"
+              groups="stock.group_stock_user"/>
+
+    <!-- Inventory Adjustments -->
+    <record id="action_agri_stock_inventory" model="ir.actions.act_window">
+      <field name="name">Adjustments Inventory</field>
+      <field name="res_model">stock.quant</field>
+      <field name="view_mode">list</field>
+      <field name="context">{'search_default_internal_loc': 1}</field>
+      <field name="domain">[('location_id.usage', '=', 'internal')]</field>
+    </record>
+    <menuitem id="menu_agri_stock_inventory"
+              name="Adjustments Inventory"
+              action="action_agri_stock_inventory"
+              parent="menu_agri_stock_adjustments_section"
+              sequence="10"
+              groups="stock.group_stock_manager"/>
+
+    <!-- Scrap -->
+    <record id="action_agri_stock_scrap" model="ir.actions.act_window">
+ <field name="name"> Product"</field>
+      <field name="res_model">stock.scrap</field>
+      <field name="view_mode">list,form</field>
+      <field name="context">{}</field>
+    </record>
+    <menuitem id="menu_agri_stock_scrap"
+ name="Product"
+              action="action_agri_stock_scrap"
+              parent="menu_agri_stock_adjustments_section"
+              sequence="20"
+              groups="stock.group_stock_user"/>
+
+    <!-- Reports Section -->
+    <menuitem id="menu_agri_stock_reports_section"
+              name="Reports"
+              parent="menu_agri_stock_root"
+              sequence="50"
+              groups="stock.group_stock_user"/>
+
+    <!-- Inventory Report -->
+    <record id="action_agri_stock_inventory_report" model="ir.actions.act_window">
+      <field name="name">Report Inventory</field>
+      <field name="res_model">stock.quant</field>
+      <field name="view_mode">list</field>
+      <field name="context">{'search_default_internal_loc': 1, 'search_default_productgroup': 1}</field>
+      <field name="domain">[('location_id.usage', '=', 'internal')]</field>
+    </record>
+    <menuitem id="menu_agri_stock_inventory_report"
+              name="Report Inventory"
+              action="action_agri_stock_inventory_report"
+              parent="menu_agri_stock_reports_section"
+              sequence="10"
+              groups="stock.group_stock_user"/>
+
+    <!-- Stock Moves History -->
+    <record id="action_agri_stock_moves_report" model="ir.actions.act_window">
+      <field name="name">Date Movements Inventory</field>
+      <field name="res_model">stock.move</field>
+      <field name="view_mode">list,pivot,graph</field>
+      <field name="context">{'search_default_done': 1}</field>
+      <field name="domain">[('state', '=', 'done')]</field>
+    </record>
+    <menuitem id="menu_agri_stock_moves_report"
+              name="Date Movements Inventory"
+              action="action_agri_stock_moves_report"
+              parent="menu_agri_stock_reports_section"
+              sequence="20"
+              groups="stock.group_stock_user"/>
+
+    <!-- Product Moves -->
+    <record id="action_agri_stock_product_moves" model="ir.actions.act_window">
+ <field name="name">Movements Product</field>
+      <field name="res_model">stock.move.line</field>
+      <field name="view_mode">list,pivot</field>
+      <field name="context">{'search_default_done': 1}</field>
+      <field name="domain">[('state', '=', 'done')]</field>
+    </record>
+    <menuitem id="menu_agri_stock_product_moves"
+ name="Movements Product"
+              action="action_agri_stock_product_moves"
+              parent="menu_agri_stock_reports_section"
+              sequence="40"
+              groups="stock.group_stock_user"/>
+
+    <!-- Forecasted Inventory -->
+    <record id="action_agri_stock_forecasted" model="ir.actions.act_window">
+ <field name="name">Inventory </field>
+      <field name="res_model">stock.quant</field>
+      <field name="view_mode">list</field>
+      <field name="context">{'search_default_internal_loc': 1}</field>
+      <field name="domain">[('location_id.usage', '=', 'internal')]</field>
+    </record>
+    <menuitem id="menu_agri_stock_forecasted"
+ name="Inventory"
+              action="action_agri_stock_forecasted"
+              parent="menu_agri_stock_reports_section"
+              sequence="50"
+              groups="stock.group_stock_user"/>
+
+    <!-- Configuration Section -->
+    <menuitem id="menu_agri_stock_config_section"
+              name="Settings"
+              parent="menu_agri_stock_root"
+              sequence="60"
+              groups="stock.group_stock_manager"/>
+
+
+
+
+
+
+
+    <!-- Advanced Operations Section -->
+    <menuitem id="menu_agri_stock_advanced_section"
+ name="Operations"
+              parent="menu_agri_stock_root"
+              sequence="70"
+              groups="stock.group_adv_location"/>
+
+
+
+  </data>
+</odoo>

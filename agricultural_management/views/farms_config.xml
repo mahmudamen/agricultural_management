@@ -1,0 +1,465 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+    <!-- ==================== Perpetual Inventory System Settings ==================== -->
+    <record id="res_config_settings_view_form_agricultural_inventory" model="ir.ui.view">
+        <field name="name">res.config.settings.view.form.agricultural.inventory</field>
+        <field name="model">res.config.settings</field>
+        <field name="priority" eval="1"/>
+        <field name="inherit_id" ref="base.res_config_settings_view_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//form" position="inside">
+                <!-- ==================== Apply Perpetual Inventory ==================== -->
+                <app logo="/agricultural_management/static/src/img/gardening.png" data-string="Settings Farm" string="Settings Farm" name="agricultural_inventory" icon="">
+ <!-- ==================== 1. Settings ==================== -->
+ <block title="Settings" name="basic_inventory_settings">
+                        <setting string="Enable Perpetual Inventory System">
+                            <div class="content-group">
+                                <div class="row mt16">
+                                    <div class="col-12">
+                                        <div class="o_setting_box">
+                                            <div class="o_setting_left_pane" style="width: 100%;">
+                                                <field name="stock_accounting_active"/>
+                                            </div>
+                                            <div class="o_setting_right_pane" style="width: 100%;">
+                                                <label for="stock_accounting_active" class="o_form_label"/>
+                                                <div class="text-muted">
+                                                    Enable automatic stock accounting and create entries automatically for each movement
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="row mt16" invisible="stock_accounting_active == False">
+                                    <div class="col-12">
+                                        <div class="o_setting_box">
+                                            <div class="o_setting_left_pane" style="width: 100%;">
+                                                <field name="auto_post_stock_entries"/>
+                                            </div>
+                                            <div class="o_setting_right_pane" style="width: 100%;">
+                                                <label for="auto_post_stock_entries" class="o_form_label"/>
+                                                <div class="text-muted">
+ Post Inventory automatically without manual review
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Valuation Method -->
+                                <div class="row mt16" invisible="stock_accounting_active == False">
+                                    <div class="col-12">
+                                        <div class="o_setting_box">
+                                            <div class="o_setting_left_pane" style="width: 100%;">
+                                                <i class="fa fa-calculator text-info fa-2x" title="Active"/>
+                                            </div>
+                                            <div class="o_setting_right_pane" style="width: 100%;">
+ <label for="inventory_valuation_method" class="o_form_label" string="Inventory"/>
+                                                <div class="text-muted">
+ Choose the accounting method for cost calculation Inventory 
+                                                </div>
+                                                <div class="content-group mt8">
+                                                    <field name="inventory_valuation_method" widget="radio"/>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </setting>
+                    </block>
+ <!-- ==================== 2. Journals ==================== -->
+ <block title="Journals" name="inventory_journals" invisible="stock_accounting_active == False">
+ <setting string="Journals accounting for inventory">
+                            <div class="content-group">
+ <!-- Inventory -->
+                                <div class="row mt16 mb8">
+                                    <div class="col-12 col-lg-6">
+                                        <div class="o_setting_box">
+                                            <div class="o_setting_left_pane" style="width: 100%;">
+                                                <i class="fa fa-book text-primary fa-2x" title="Active"/>
+                                            </div>
+                                            <div class="o_setting_right_pane" style="width: 100%;">
+ <label for="stock_journal" class="o_form_label" string="Inventory"/>
+                                                <div class="text-muted">
+ Purchases 
+                                                </div>
+                                                <div class="content-group mt8">
+                                                    <field style="width: 100%; max-width: 600px;"  name="stock_journal"
+                                                           options='{"no_open": True, "no_create": True}'/>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <!-- Valuation Journal -->
+                                    <div class="col-12 col-lg-6">
+                                        <div class="o_setting_box">
+                                            <div class="o_setting_left_pane" style="width: 100%;">
+                                                <i class="fa fa-balance-scale text-success fa-2x" title="Active"/>
+                                            </div>
+                                            <div class="o_setting_right_pane" style="width: 100%;">
+ <label for="stock_valuation_journal" class="o_form_label" string="Inventory"/>
+                                                <div class="text-muted">
+                                                    for adjustment and valuation Inventory
+                                                </div>
+                                                <div class="content-group mt8">
+                                                    <field style="width: 100%; max-width: 600px;"  name="stock_valuation_journal"
+                                                           options='{"no_open": True, "no_create": True}'/>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <!-- Internal Transfer Journal -->
+                                    <div class="col-12 col-lg-6">
+                                        <div class="o_setting_box">
+                                            <div class="o_setting_left_pane" style="width: 100%;">
+                                                <i class="fa fa-exchange text-warning fa-2x" title="Active"/>
+                                            </div>
+                                            <div class="o_setting_right_pane" style="width: 100%;">
+                                                <label for="internal_transfer_journal" class="o_form_label" string="Internal Transfer Journal"/>
+                                                <div class="text-muted">
+                                                    for inter-warehouse transfer
+                                                </div>
+                                                <div class="content-group mt8">
+                                                    <field style="width: 100%; max-width: 600px;"  name="internal_transfer_journal"
+                                                           options='{"no_open": True, "no_create": True}'/>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </setting>
+                    </block>
+ <!-- ==================== 3. Accounts Inventory ==================== -->
+                    <block title="Accounts Main Warehouse" name="main_warehouse_accounts" invisible="stock_accounting_active == False">
+ <setting string="Accounts Inventory in main warehouse">
+                            <div class="content-group">
+                                <div class="alert alert-info" role="alert">
+ <i class="fa fa-info-circle" title="Active"/> Accounts used for recording Inventory in the main warehouse for Qatf company Agricultural
+                                </div>
+                                <div class="row mt16">
+ <!-- Fertilizers -->
+                                    <div class="col-12 col-lg-6">
+                                        <div class="o_setting_box">
+                                            <div class="o_setting_left_pane" style="width: 100%;">
+                                                <i class="fa fa-leaf text-success fa-2x" style="font-size: 2.5em;" title="Active"/>
+                                            </div>
+                                            <div class="o_setting_right_pane" style="width: 100%;">
+ <label for="stock_fertilizers_main" string="Fertilizers"/>
+                                                <div class="text-muted">
+                                                </div>
+                                                <div class="content-group mt8">
+                                                    <field style="width: 100%; max-width: 600px;"  name="stock_fertilizers_main"
+                                                           options='{"no_open": True, "no_create": True}'
+                                                           placeholder="Choose stock account for Fertilizers..."/>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+ <!-- Pesticides -->
+                                    <div class="col-12 col-lg-6">
+                                        <div class="o_setting_box">
+                                            <div class="o_setting_left_pane" style="width: 100%;">
+                                                <i class="fa fa-flask text-danger fa-2x" style="font-size: 2.5em;" title="Active"/>
+                                            </div>
+                                            <div class="o_setting_right_pane" style="width: 100%;">
+ <label for="stock_pesticides_main" string="Pesticides"/>
+                                                <div class="text-muted">
+                                                </div>
+                                                <div class="content-group mt8">
+                                                    <field style="width: 100%; max-width: 600px;"  name="stock_pesticides_main"
+                                                           options='{"no_open": True, "no_create": True}'
+                                                           placeholder="Choose stock account for Pesticides..."/>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+ <!-- Seeds -->
+                                    <div class="col-12 col-lg-6">
+                                        <div class="o_setting_box">
+                                            <div class="o_setting_left_pane" style="width: 100%;">
+                                                <i class="fa fa-envira text-warning fa-2x" style="font-size: 2.5em;" title="Active"/>
+                                            </div>
+                                            <div class="o_setting_right_pane" style="width: 100%;">
+ <label for="stock_seeds_main" string="Seeds"/>
+                                                <div class="text-muted">
+                                                </div>
+                                                <div class="content-group mt8">
+                                                    <field style="width: 100%; max-width: 600px;"  name="stock_seeds_main"
+                                                           options='{"no_open": True, "no_create": True}'
+                                                           placeholder="Choose stock account Seeds..."/>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </setting>
+                    </block>
+                    <!-- ==================== 4. Accounts Branch Warehouses ==================== -->
+                    <!-- ==================== 5. Accounts Cost of Goods ==================== -->
+                    <block title="Accounts Cost of Goods Sold" name="cogs_accounts" invisible="stock_accounting_active == False">
+ <setting string="Accounts User">
+                            <div class="content-group">
+                                <div class="row mt16">
+ <!-- Fertilizers -->
+                                    <div class="col-12 col-lg-6">
+                                        <div class="o_setting_box">
+                                            <div class="o_setting_left_pane" style="width: 100%;">
+                                                <i class="fa fa-usd text-primary fa-2x" title="Active"/>
+                                            </div>
+                                            <div class="o_setting_right_pane" style="width: 100%;">
+ <label for="cogs_fertilizers" string="Fertilizers User"/>
+                                                <div class="text-muted">
+                                                </div>
+                                                <div class="content-group mt8">
+                                                    <field style="width: 100%; max-width: 600px;"  name="cogs_fertilizers"
+                                                           options='{"no_open": True, "no_create": True}'/>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+ <!-- Pesticides -->
+                                    <div class="col-12 col-lg-6">
+                                        <div class="o_setting_box">
+                                            <div class="o_setting_left_pane" style="width: 100%;">
+                                                <i class="fa fa-usd text-primary fa-2x" title="Active"/>
+                                            </div>
+                                            <div class="o_setting_right_pane" style="width: 100%;">
+ <label for="cogs_pesticides" string="Pesticides User"/>
+                                                <div class="text-muted">
+                                                </div>
+                                                <div class="content-group mt8">
+                                                    <field style="width: 100%; max-width: 600px;"  name="cogs_pesticides"
+                                                           options='{"no_open": True, "no_create": True}'/>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+ <!-- Seeds -->
+                                    <div class="col-12 col-lg-6">
+                                        <div class="o_setting_box">
+                                            <div class="o_setting_left_pane" style="width: 100%;">
+                                                <i class="fa fa-usd text-primary fa-2x" title="Active"/>
+                                            </div>
+                                            <div class="o_setting_right_pane" style="width: 100%;">
+ <label for="cogs_seeds" string="Seeds User"/>
+                                                <div class="text-muted">
+                                                </div>
+                                                <div class="content-group mt8">
+                                                    <field style="width: 100%; max-width: 600px;"  name="cogs_seeds"
+                                                           options='{"no_open": True, "no_create": True}'/>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </setting>
+                    </block>
+                    <!-- ==================== 6. Accounts Purchases &amp; Suppliers ==================== -->
+                    <block title="Accounts Purchases &amp; Suppliers" name="purchase_accounts" invisible="stock_accounting_active == False">
+ <setting string="Accounts Purchases &amp; Suppliers">
+                            <div class="content-group">
+                                <div class="row mt16">
+                                    <!-- Suppliers Account -->
+                                    <div class="col-12 col-lg-6">
+                                        <div class="o_setting_box">
+                                            <div class="o_setting_left_pane" style="width: 100%;">
+                                                <i class="fa fa-users text-info fa-2x" title="Active"/>
+                                            </div>
+                                            <div class="o_setting_right_pane" style="width: 100%;">
+ <label for="suppliers_payable" string=""/>
+                                                <div class="text-muted">
+                                                </div>
+                                                <div class="content-group mt8">
+                                                    <field style="width: 100%; max-width: 600px;"  name="suppliers_payable"
+                                                           options='{"no_open": True, "no_create": True}'/>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+ <!-- Purchases -->
+                                    <div class="col-12 col-lg-6">
+                                        <div class="o_setting_box">
+                                            <div class="o_setting_left_pane" style="width: 100%;">
+                                                <i class="fa fa-shopping-cart text-success fa-2x" title="Active"/>
+                                            </div>
+                                            <div class="o_setting_right_pane" style="width: 100%;">
+ <label for="purchases_account" string="Purchases"/>
+                                                <div class="text-muted">
+                                                    (Optional - for periodic system)
+                                                </div>
+                                                <div class="content-group mt8">
+                                                    <field style="width: 100%; max-width: 600px;"  name="purchases_account"
+                                                           options='{"no_open": True, "no_create": True}'/>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </setting>
+                    </block>
+                    <!-- ==================== 7. Accounts Internal Transfer ==================== -->
+                    <block title="Accounts Internal Transfer" name="transfer_accounts" invisible="stock_accounting_active == False">
+                        <setting string="Accounts inter-warehouse transfer">
+                            <div class="content-group">
+                                <div class="row mt16">
+                                    <!-- Goods in Transit -->
+                                    <div class="col-12 col-lg-6">
+                                        <div class="o_setting_box">
+                                            <div class="o_setting_left_pane" style="width: 100%;">
+                                                <i class="fa fa-truck text-warning fa-2x" title="Active"/>
+                                            </div>
+                                            <div class="o_setting_right_pane" style="width: 100%;">
+                                                <label for="goods_in_transit" string="Goods in Transit"/>
+                                                <div class="text-muted">
+                                                </div>
+                                                <div class="content-group mt8">
+                                                    <field style="width: 100%; max-width: 600px;"  name="goods_in_transit"
+                                                           options='{"no_open": True, "no_create": True}'/>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <!-- Clearing Account -->
+                                    <div class="col-12 col-lg-6">
+                                        <div class="o_setting_box">
+                                            <div class="o_setting_left_pane" style="width: 100%;">
+                                                <i class="fa fa-exchange text-info fa-2x"/>
+                                            </div>
+                                            <div class="o_setting_right_pane" style="width: 100%;">
+                                                <label for="transfer_clearing" string="Internal Transfer Clearing"/>
+                                                <div class="text-muted">
+                                                </div>
+                                                <div class="content-group mt8">
+                                                    <field style="width: 100%; max-width: 600px;"  name="transfer_clearing" options='{"no_open": True, "no_create": True}'/>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </setting>
+                    </block>
+ <!-- ==================== 8. Accounts ==================== -->
+ <block title="Accounts" name="inventory_variance_accounts" invisible="stock_accounting_active == False">
+                        <setting string="Accounts Record physical inventory differences">
+                            <div class="content-group">
+                                <div class="alert alert-danger" role="alert">
+ <i class="fa fa-exclamation-circle"/> Accounts When differences exist between physical and book inventory
+                                </div>
+                                <div class="row mt16">
+                                    <!-- Inventory Gain -->
+                                    <div class="col-12 col-lg-6">
+                                        <div class="o_setting_box">
+                                            <div class="o_setting_left_pane" style="width: 100%;">
+                                                <i class="fa fa-arrow-up text-success fa-2x"/>
+                                            </div>
+                                            <div class="o_setting_right_pane" style="width: 100%;">
+                                                <label for="inventory_gain" string="Inventory Gain"/>
+                                                <div class="text-muted">
+ Inventory 
+                                                </div>
+                                                <div class="content-group mt8">
+                                                    <field style="width: 100%; max-width: 600px;"  name="inventory_gain"
+                                                           options='{"no_open": True, "no_create": True}'/>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <!-- Inventory Loss -->
+                                    <div class="col-12 col-lg-6">
+                                        <div class="o_setting_box">
+                                            <div class="o_setting_left_pane" style="width: 100%;">
+                                                <i class="fa fa-arrow-down text-danger fa-2x"/>
+                                            </div>
+                                            <div class="o_setting_right_pane" style="width: 100%;">
+                                                <label for="inventory_loss" string="Inventory Loss"/>
+                                                <div class="text-muted">
+ Inventory 
+                                                </div>
+                                                <div class="content-group mt8">
+                                                    <field style="width: 100%; max-width: 600px;"  name="inventory_loss"
+                                                           options='{"no_open": True, "no_create": True}'/>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <!-- Adjustment -->
+                                    <div class="col-12 col-lg-6">
+                                        <div class="o_setting_box">
+                                            <div class="o_setting_left_pane" style="width: 100%;">
+                                                <i class="fa fa-adjust text-warning fa-2x"/>
+                                            </div>
+                                            <div class="o_setting_right_pane" style="width: 100%;">
+                                                <label for="inventory_adjustment" string="Inventory Adjustment"/>
+                                                <div class="text-muted">
+                                                    General adjustment account
+                                                </div>
+                                                <div class="content-group mt8">
+                                                    <field style="width: 100%; max-width: 600px;"  name="inventory_adjustment"
+                                                           options='{"no_open": True, "no_create": True}'/>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </setting>
+                    </block>
+ <!-- ==================== 9. Accounts ==================== -->
+ <block title="Accounts Inventory" name="valuation_accounts" invisible="stock_accounting_active == False">
+ <setting string="Accounts Reset Inventory">
+                            <div class="content-group">
+                                <div class="row mt16">
+                                    <!-- Valuation Diff -->
+                                    <div class="col-12 col-lg-6">
+                                        <div class="o_setting_box">
+                                            <div class="o_setting_left_pane" style="width: 100%;">
+                                                <i class="fa fa-line-chart text-purple fa-2x"/>
+                                            </div>
+                                            <div class="o_setting_right_pane" style="width: 100%;">
+ <label for="stock_valuation_diff" string="Inventory"/>
+                                                <div class="text-muted">
+                                                </div>
+                                                <div class="content-group mt8">
+                                                    <field style="width: 100%; max-width: 600px;"  name="stock_valuation_diff"
+                                                           options='{"no_open": True, "no_create": True}'/>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <!-- Interim Stock -->
+                                    <div class="col-12 col-lg-6">
+                                        <div class="o_setting_box">
+                                            <div class="o_setting_left_pane" style="width: 100%;">
+                                                <i class="fa fa-clock-o text-info fa-2x"/>
+                                            </div>
+                                            <div class="o_setting_right_pane" style="width: 100%;">
+                                                <label for="stock_interim" string="Interim Stock Account"/>
+                                                <div class="text-muted">
+                                                </div>
+                                                <div class="content-group mt8">
+                                                    <field style="width: 100%; max-width: 600px;"  name="stock_interim"
+                                                           options='{"no_open": True, "no_create": True}'/>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </setting>
+                    </block>
+                </app>
+            </xpath>
+        </field>
+    </record>
+    </data>
+</odoo>

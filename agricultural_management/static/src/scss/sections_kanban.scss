@@ -1,0 +1,555 @@
+/* Hospital Sections Kanban - Modern Design with Owl Compatibility */
+
+// Beautiful gradient colors for each section
+$section-gradients: (
+    ProductionOperationsManagement: linear-gradient(135deg, #89f7fe 0%, #66a6ff 100%),
+    CostCenter: linear-gradient(135deg, #ff6fd8 0%, #3813c2 100%),
+    Accounting: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%),
+    FinishedGoodsWarehouses: linear-gradient(135deg, #b465da 0%, #cf6cc9 33%, #ee609c 66%, #ee609c 100%),
+    RawMaterialsWarehouses: linear-gradient(135deg, #6a11cb 0%, #2575fc 100%),
+    AgriculturalWorkers: linear-gradient(135deg, #37ecba 0%, #72afd3 100%),
+    PreSaleWarehouses: linear-gradient(135deg, #f54ea2 0%, #ff7676 100%),
+    Rfq: linear-gradient(135deg, #17ead9 0%, #6078ea 100%),
+    Harvest: linear-gradient(135deg, #ff9a9e 0%, #fad0c4 100%),
+    CarWorkshops: linear-gradient(135deg, #13f1fc 0%, #0470dc 100%),
+    MaintenanceWorkshops: linear-gradient(135deg, #c471f5 0%, #fa71cd 100%)
+);
+
+// Light theme colors
+$content-bg-color: #ffffff;
+$footer-bg-color: #f8fafc;
+$main-bg-color: #f1f5f9;
+$text-primary: #1e293b;
+$text-secondary: #475569;
+$text-muted: #64748b;
+$border-color: #e2e8f0;
+$accent-color: #3b82f6;
+$hover-bg: rgba(59, 130, 246, 0.1);
+$shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+$shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+$shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+
+// Base kanban styling
+.o_kanban_view {
+    &.o_kanban_dashboard {
+        background: $main-bg-color;
+        padding: 8px;
+        min-height: calc(100vh - 100px);
+
+        // Add Font Awesome link if not already included
+        @supports (font-variation-settings: normal) {
+            @import url('https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css');
+        }
+
+        // Container for non-grouped view - CSS Grid for better layout
+        &.o_kanban_ungrouped {
+            .o_kanban_renderer {
+                display: grid;
+                grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+                gap: 10px;
+                padding: 8px;
+                max-width: 100%;
+
+                // Responsive grid adjustments
+                @media (max-width: 576px) {
+                    grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+                    gap: 8px;
+                }
+
+                @media (min-width: 768px) {
+                    grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+                }
+
+                @media (min-width: 1024px) {
+                    grid-template-columns: repeat(auto-fill, minmax(135px, 1fr));
+                }
+
+                @media (min-width: 1440px) {
+                    grid-template-columns: repeat(auto-fill, minmax(130px, 1fr));
+                }
+
+                @media (min-width: 1920px) {
+                    grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+                }
+            }
+        }
+
+        // Kanban record card - Compact and lightweight
+        .o_kanban_record {
+            background: $content-bg-color;
+            border-radius: 10px;
+            box-shadow: $shadow-sm;
+            overflow: hidden;
+            transition: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease;
+            position: relative;
+            border: 1px solid $border-color;
+            animation: fadeInUp 0.5s ease-out forwards;
+            opacity: 0;
+            transform: translateY(10px);
+            height: 50%;
+
+            // Staggered animation delay for cards
+            @for $i from 1 through 20 {
+                &:nth-child(#{$i}) {
+                    animation-delay: #{$i * 0.05}s;
+                }
+            }
+
+            // Hover effect
+            &:hover {
+                transform: translateY(-4px);
+                box-shadow: $shadow-md;
+                border-color: $accent-color;
+                z-index: 2;
+            }
+
+            // Grouped view adjustments
+            .o_kanban_grouped & {
+                width: 140px;
+                margin: 3px 0;
+            }
+
+            // Focus state for accessibility
+            &:focus-within {
+                outline: 2px solid $accent-color;
+                outline-offset: 2px;
+            }
+        }
+
+        // Card header with gradients and icons
+        .o_kanban_card_header {
+            min-height: 40px;
+            padding: 8px;
+            position: relative;
+            overflow: hidden;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            // Default gradient
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+
+            // Apply section-specific gradients
+            @each $type, $gradient in $section-gradients {
+                &[data-type="#{$type}"] {
+                    background: $gradient;
+
+                    // Add icon before title with Owl data attributes
+                    .o_kanban_card_header_title .o_primary a::before {
+                        display: inline-block;
+                        font-family: "Font Awesome 6 Free";
+                        font-weight: 900;
+                        margin-right: 8px; // Increased spacing
+                        font-size: 1.1em; // Larger icon size
+                        animation: iconFloat 2s ease-in-out infinite;
+                        vertical-align: middle;
+                    }
+                }
+            }
+
+            // Add specific icons - compatible with Font Awesome
+                &[data-type="ProductionOperationsManagement"] .o_kanban_card_header_title .o_primary a::before { content: "\f0f1"; /* stethoscope */ }
+                &[data-type="CostCenter"] .o_kanban_card_header_title .o_primary a::before { content: "\f82f"; /* user-nurse */ }
+                &[data-type="Accounting"] .o_kanban_card_header_title .o_primary a::before { content: "\f0c3"; /* flask */ }
+                &[data-type="FinishedGoodsWarehouses"] .o_kanban_card_header_title .o_primary a::before { content: "\f7e0"; /* radiation */ }
+                &[data-type="RawMaterialsWarehouses"] .o_kanban_card_header_title .o_primary a::before { content: "\f236"; /* bed */ }
+                &[data-type="AgriculturalWorkers"] .o_kanban_card_header_title .o_primary a::before { content: "\f21e"; /* heartbeat */ }
+                &[data-type="PreSaleWarehouses"] .o_kanban_card_header_title .o_primary a::before { content: "\f6e0"; /* syringe */ }
+                &[data-type="Rfq"] .o_kanban_card_header_title .o_primary a::before { content: "\f21e"; /* heartbeat */ }
+                &[data-type="Harvest"] .o_kanban_card_header_title .o_primary a::before { content: "\f043"; /* droplet */ }
+                &[data-type="CarWorkshops"] .o_kanban_card_header_title .o_primary a::before { content: "\f484"; /* pills */ }
+                &[data-type="MaintenanceWorkshops"] .o_kanban_card_header_title .o_primary a::before { content: "\f0f8"; /* warehouse */ }
+
+            // Larger title text
+            .o_kanban_card_header_title .o_primary a {
+                 font-size: 1.1rem !important; // Larger header text
+                 font-weight: 700 !important;
+                 padding: 4px 0 !important;
+            }
+            // Header content
+            .o_kanban_card_header_title {
+                position: relative;
+                z-index: 2;
+                width: 100%;
+
+                .o_primary {
+                    text-align: center;
+
+                    a {
+                        color: #ffffff !important;
+                        font-size: 0.85em;
+                        font-weight: 600;
+                        text-decoration: none;
+                        text-shadow: 0 1px 1px rgba(0,0,0,0.2);
+                        display: block;
+                        line-height: 1.2;
+                        transition: all 0.2s ease;
+                        padding: 2px 0;
+
+                        &:hover {
+                            transform: scale(1.05);
+                        }
+                    }
+                }
+            }
+
+            // Sequence number
+            .sequence-number {
+                position: absolute;
+                top: 4px;
+                right: 4px;
+                background: rgba(255, 255, 255, 0.25);
+                color: #ffffff;
+                padding: 1px 4px;
+                border-radius: 6px;
+                font-weight: 700;
+                font-size: 0.65em;
+                backdrop-filter: blur(4px);
+                animation: numberPulse 2s ease-in-out infinite;
+            }
+
+            // Dropdown menu
+            .o_kanban_manage_button_section {
+                position: absolute;
+                top: 4px;
+                left: 4px;
+                z-index: 3;
+
+                .o_kanban_manage_toggle_button {
+                    color: rgba(255, 255, 255, 0.9);
+                    font-size: 0.8em;
+                    transition: all 0.3s ease;
+                    padding: 2px;
+                    border-radius: 4px;
+
+                    &:hover {
+                        color: #ffffff;
+                        transform: rotate(90deg);
+                        background: rgba(255, 255, 255, 0.1);
+                    }
+                }
+            }
+        }
+
+        // Card content
+        .o_kanban_card_content {
+            padding: 10px 8px;
+            background: $content-bg-color;
+            color: $text-secondary;
+            font-size: 0.75em;
+            line-height: 1.3;
+
+
+            // Status indicator
+            .status-indicator {
+                width: 8px;
+                height: 8px;
+                border-radius: 50%;
+                display: inline-block;
+                margin-right: 4px;
+                position: relative;
+
+                &.active {
+                    background: #10b981;
+                    animation: statusActive 1.5s ease-in-out infinite;
+                }
+
+                &.inactive {
+                    background: #ef4444;
+                    animation: statusInactive 1.5s ease-in-out infinite;
+                }
+            }
+
+            // Text styling
+            strong {
+                color: $text-primary;
+                font-size: 0.95em;
+                font-weight: 600;
+            }
+
+            .text-success { color: #10b981 !important; font-weight: 600; }
+            .text-danger { color: #ef4444 !important; font-weight: 600; }
+            .text-warning { color: #f59e0b !important; font-weight: 600; }
+            .text-info { color: #3b82f6 !important; font-weight: 600; }
+
+            // Action buttons
+            .btn-link {
+                display: inline-flex;
+                align-items: center;
+                color: $accent-color;
+                text-decoration: none;
+                padding: 3px 6px;
+                margin: 2px 0;
+                border-radius: 4px;
+                transition: all 0.2s ease;
+                font-weight: 500;
+                font-size: 0.75em;
+                width: 100%;
+
+                i {
+                    margin-right: 4px;
+                    font-size: 0.9em;
+                    animation: iconBounce 2s ease-in-out infinite;
+                }
+
+                &:hover {
+                    background: $hover-bg;
+                    transform: translateX(-2px);
+                    color: darken($accent-color, 10%);
+                }
+            }
+        }
+
+        // Card footer
+        .o_kanban_card_footer {
+            padding: 4px 8px;
+            background: $footer-bg-color;
+            border-top: 1px solid $border-color;
+            font-size: 0.65em;
+            color: $text-muted;
+
+            .row {
+                margin: 0;
+                align-items: center;
+            }
+
+            .col-6 {
+                padding: 0 2px;
+            }
+        }
+
+        // Grouped view styles
+        &.o_kanban_grouped {
+            .o_kanban_group {
+                background: transparent;
+                min-width: 160px;
+                margin: 0 5px;
+
+                .o_kanban_header {
+                    background: #ffffff;
+                    border-radius: 8px;
+                    padding: 8px 10px;
+                    margin-bottom: 10px;
+                    box-shadow: $shadow-sm;
+                    border: 1px solid $border-color;
+                    transition: all 0.3s ease;
+
+                    &:hover {
+                        box-shadow: $shadow-md;
+                    }
+
+                    .o_kanban_header_title {
+                        font-weight: 600;
+                        color: $text-primary;
+                        font-size: 0.85em;
+                    }
+                }
+            }
+        }
+
+        // Empty state
+        .o_kanban_nocontent {
+            text-align: center;
+            padding: 30px 20px;
+            color: $text-muted;
+            font-size: 1em;
+
+            &::before {
+                content: "\f0f8";
+                font-family: "Font Awesome 6 Free";
+                font-weight: 900;
+                font-size: 2.5em;
+                display: block;
+                margin-bottom: 15px;
+                color: #cbd5e1;
+                animation: iconFloat 2s ease-in-out infinite;
+            }
+        }
+    }
+}
+
+// Owl compatibility hooks - connect animations to lifecycle
+.o-kanban-renderer {
+    &.o-appear {
+        animation: fadeIn 0.3s ease-in-out forwards;
+    }
+
+    .o-kanban-record {
+        &.o-appear {
+            animation: fadeInUp 0.4s ease-out forwards;
+        }
+    }
+}
+
+// RTL Support
+.o_rtl {
+    .o_kanban_dashboard {
+        .o_kanban_card_header {
+            .sequence-number {
+                right: auto;
+                left: 4px;
+            }
+
+            .o_kanban_manage_button_section {
+                left: auto;
+                right: 4px;
+            }
+
+            .o_kanban_card_header_title .o_primary a::before {
+                margin-right: 0;
+                margin-left: 5px;
+            }
+        }
+
+        .o_kanban_card_content {
+            .status-indicator {
+                margin-right: 0;
+                margin-left: 4px;
+            }
+
+            // Action buttons with larger text and icons
+        .btn-link {
+            display: inline-flex;
+            align-items: center;
+            color: #3b82f6;
+            text-decoration: none;
+            padding: 4px 8px; // Increased padding
+            margin: 3px 0; // More vertical space
+            border-radius: 5px;
+            transition: all 0.2s ease;
+            font-weight: 500;
+            font-size: 0.85em; // Increased from 0.75em
+            width: 100%;
+
+            i {
+                margin-right: 6px; // More spacing
+                font-size: 1.1em; // Larger icons
+                animation: iconBounce 2s ease-in-out infinite;
+            }
+
+            // Add Font Awesome icons to common buttons if they don't have them
+            &:not(:has(i)):before {
+                font-family: "Font Awesome 6 Free";
+                font-weight: 900;
+                margin-right: 6px;
+                font-size: 1.1em;
+            }
+
+            // Add icons to specific buttons based on text content
+ &:contains("new"), &:contains(""):before { content:"\f067"; /* plus */ }
+ &:contains("view"), &:contains(""):before { content:"\f06e"; /* eye */ }
+ &:contains("edit"), &:contains(""):before { content:"\f044"; /* edit */ }
+ &:contains("delete"), &:contains(""):before { content:"\f1f8"; /* trash */ }
+        }
+        }
+    }
+}
+
+// All animations definitions - COMPLETE
+@keyframes fadeInUp {
+from {
+opacity: 0;
+transform: translateY(10px);
+}
+to {
+opacity: 1;
+transform: translateY(0);
+}
+}
+
+@keyframes cardHover {
+0% { transform: translateY(0) scale(1); }
+50% { transform: translateY(-4px) scale(1.02); }
+100% { transform: translateY(-8px) scale(1.03); }
+}
+
+@keyframes iconFloat {
+0%, 100% { transform: translateY(0); }
+50% { transform: translateY(-3px); }
+}
+
+@keyframes rotateBackground {
+0% { transform: rotate(0deg); }
+100% { transform: rotate(360deg); }
+}
+
+@keyframes numberPulse {
+0%, 100% { transform: scale(1); opacity: 1; }
+50% { transform: scale(1.1); opacity: 0.8; }
+}
+
+@keyframes statusActive {
+0%, 100% { box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.4); }
+50% { box-shadow: 0 0 0 4px rgba(16, 185, 129, 0); }
+}
+
+@keyframes statusInactive {
+0%, 100% { box-shadow: 0 0 0 0 rgba(239, 68, 68, 0.4); }
+50% { box-shadow: 0 0 0 4px rgba(239, 68, 68, 0); }
+}
+
+@keyframes iconBounce {
+0%, 100% { transform: translateY(0); }
+50% { transform: translateY(-2px); }
+}
+
+@keyframes fadeIn {
+from { opacity: 0; }
+to { opacity: 1; }
+}
+
+@keyframes shimmer {
+0% { left: -100%; }
+100% { left: 100%; }
+}
+
+@keyframes backgroundShift {
+0% { background-position: 0% 0%; }
+50% { background-position: 100% 100%; }
+100% { background-position: 0% 0%; }
+}
+
+@keyframes pulse {
+0% { transform: scale(1); }
+50% { transform: scale(1.05); }
+100% { transform: scale(1); }
+}
+
+@keyframes fadeInRight {
+from {
+opacity: 0;
+transform: translateX(-10px);
+}
+to {
+opacity: 1;
+transform: translateX(0);
+}
+}
+
+@keyframes fadeInLeft {
+from {
+opacity: 0;
+transform: translateX(10px);
+}
+to {
+opacity: 1;
+transform: translateX(0);
+}
+}
+
+// Print styles
+@media print {
+.o_kanban_dashboard {
+.o_kanban_record {
+page-break-inside: avoid;
+box-shadow: none !important;
+border: 1px solid #e5e7eb;
+animation: none !important;
+transform: none !important;
+}
+
+    .o_kanban_manage_button_section {
+        display: none !important;
+    }
+}
+}

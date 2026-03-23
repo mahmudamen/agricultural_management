@@ -1,0 +1,20 @@
+/* Increase text size for all kanban cards */
+.o_kanban_view .o_kanban_record {
+    font-size: 16px !important;
+}
+
+/* Card headers */
+.o_kanban_view .o_kanban_card_header {
+    font-size: 20px !important;
+    font-weight: bold;
+}
+
+/* Card content */
+.o_kanban_view .o_kanban_card_content {
+    font-size: 16px !important;
+}
+
+/* All text inside cards */
+.o_kanban_view .oe_kanban_card * {
+    font-size: inherit !important;
+}

@@ -1,0 +1,20 @@
+<odoo>
+<data>
+
+    <!-- Production Requests -->
+    <record id="prod_req_alpha_01" model="agricultural.production.request">
+        <field name="farm_id" ref="farm_main_1"/>
+        <field name="project_id" ref="project_alpha_tomato"/>
+        <field name="request_type">seeds</field>
+        <field name="state">approved</field>
+    </record>
+
+    <record id="prod_req_beta_01" model="agricultural.production.request">
+        <field name="farm_id" ref="farm_main_2"/>
+        <field name="project_id" ref="project_beta_cucumber"/>
+        <field name="request_type">fertilizer</field>
+        <field name="state">approved</field>
+    </record>
+
+</data>
+</odoo>

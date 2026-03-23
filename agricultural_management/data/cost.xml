@@ -1,0 +1,543 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data noupdate="1">
+        <record id="cost_allocation_seeds_01" model="agri.cost.allocation">
+            <field name="name">COST/2024/001</field>
+            <field name="date" eval="(DateTime.now() - relativedelta(months=1)).strftime('%Y-%m-01')"/>
+            <field name="farm_id" ref="agricultural_management.farm_main_001"/>
+            <field name="cost_category">seeds</field>
+            <field name="allocation_method">area_based</field>
+            <field name="total_amount">15000.00</field>
+            <field name="allocation_percentage">100.0</field>
+            <field name="source_document">INV/2024/001</field>
+            <field name="vendor_id" ref="base.res_partner_12"/>
+            <field name="state">draft</field>
+        </record>
+        <record id="cost_allocation_fertilizers_01" model="agri.cost.allocation">
+            <field name="name">COST/2024/002</field>
+            <field name="date" eval="(DateTime.now() - relativedelta(months=1)).strftime('%Y-%m-05')"/>
+            <field name="farm_id" ref="agricultural_management.farm_main_001"/>
+            <field name="cost_category">fertilizers</field>
+            <field name="allocation_method">area_based</field>
+            <field name="total_amount">25000.00</field>
+            <field name="allocation_percentage">100.0</field>
+            <field name="source_document">INV/2024/002</field>
+            <field name="vendor_id" ref="base.res_partner_12"/>
+            <field name="state">allocated</field>
+        </record>
+        <record id="cost_allocation_pesticides_01" model="agri.cost.allocation">
+            <field name="name">COST/2024/003</field>
+            <field name="date" eval="(DateTime.now() - relativedelta(months=1)).strftime('%Y-%m-10')"/>
+            <field name="farm_id" ref="agricultural_management.farm_main_001"/>
+            <field name="cost_category">pesticides</field>
+            <field name="allocation_method">project_based</field>
+            <field name="total_amount">8500.00</field>
+            <field name="allocation_percentage">100.0</field>
+            <field name="source_document">INV/2024/003</field>
+            <field name="vendor_id" ref="base.res_partner_3"/>
+            <field name="state">allocated</field>
+        </record>
+        <record id="cost_allocation_labor_01" model="agri.cost.allocation">
+            <field name="name">COST/2024/004</field>
+            <field name="date" eval="(DateTime.now() - relativedelta(months=1)).strftime('%Y-%m-15')"/>
+            <field name="farm_id" ref="agricultural_management.farm_main_001"/>
+            <field name="cost_category">direct_labor</field>
+            <field name="allocation_method">equal_distribution</field>
+            <field name="total_amount">35000.00</field>
+            <field name="allocation_percentage">100.0</field>
+            <field name="source_document">PAYROLL/2024/001</field>
+            <field name="state">allocated</field>
+        </record>
+        <record id="cost_allocation_utilities_01" model="agri.cost.allocation">
+            <field name="name">COST/2024/005</field>
+            <field name="date" eval="(DateTime.now() - relativedelta(months=1)).strftime('%Y-%m-20')"/>
+            <field name="farm_id" ref="agricultural_management.farm_main_001"/>
+            <field name="cost_category">utilities</field>
+            <field name="allocation_method">area_based</field>
+            <field name="total_amount">12000.00</field>
+            <field name="allocation_percentage">100.0</field>
+            <field name="source_document">UTIL/2024/001</field>
+            <field name="vendor_id" ref="base.res_partner_1"/>
+            <field name="state">posted</field>
+        </record>
+        <record id="cost_allocation_maintenance_01" model="agri.cost.allocation">
+            <field name="name">COST/2024/006</field>
+            <field name="date" eval="(DateTime.now() - relativedelta(months=1)).strftime('%Y-%m-25')"/>
+            <field name="farm_id" ref="agricultural_management.farm_main_001"/>
+            <field name="cost_category">maintenance</field>
+            <field name="allocation_method">direct_assignment</field>
+            <field name="farm_id" ref="agricultural_management.greenhouse_001"/>
+            <field name="total_amount">5500.00</field>
+            <field name="allocation_percentage">100.0</field>
+            <field name="source_document">MAINT/2024/001</field>
+            <field name="state">allocated</field>
+        </record>
+        <record id="cost_allocation_line_seeds_gh1" model="agri.cost.allocation.line">
+            <field name="allocation_id" ref="cost_allocation_fertilizers_01"/>
+            <field name="farm_id" ref="agricultural_management.greenhouse_001"/>
+            <field name="percentage">40.0</field>
+            <field name="amount">10000.00</field>
+            <field name="area_m2">2000.0</field>
+            <field name="plant_count">500</field>
+        </record>
+        <record id="cost_allocation_line_seeds_gh2" model="agri.cost.allocation.line">
+            <field name="allocation_id" ref="cost_allocation_fertilizers_01"/>
+            <field name="farm_id" ref="agricultural_management.greenhouse_002"/>
+            <field name="percentage">35.0</field>
+            <field name="amount">8750.00</field>
+            <field name="area_m2">1750.0</field>
+            <field name="plant_count">400</field>
+        </record>
+        <record id="cost_allocation_line_seeds_gh3" model="agri.cost.allocation.line">
+            <field name="allocation_id" ref="cost_allocation_fertilizers_01"/>
+            <field name="farm_id" ref="agricultural_management.greenhouse_003"/>
+            <field name="percentage">25.0</field>
+            <field name="amount">6250.00</field>
+            <field name="area_m2">1250.0</field>
+            <field name="plant_count">300</field>
+        </record>
+        <record id="cost_allocation_line_pesticides_gh1" model="agri.cost.allocation.line">
+            <field name="allocation_id" ref="cost_allocation_pesticides_01"/>
+            <field name="farm_id" ref="agricultural_management.greenhouse_001"/>
+            <field name="project_id" ref="agricultural_management.project_tomato_001"/>
+            <field name="percentage">60.0</field>
+            <field name="amount">5100.00</field>
+            <field name="area_m2">2000.0</field>
+            <field name="plant_count">500</field>
+        </record>
+        <record id="cost_allocation_line_pesticides_gh2" model="agri.cost.allocation.line">
+            <field name="allocation_id" ref="cost_allocation_pesticides_01"/>
+            <field name="farm_id" ref="agricultural_management.greenhouse_002"/>
+            <field name="project_id" ref="agricultural_management.project_cucumber_001"/>
+            <field name="percentage">40.0</field>
+            <field name="amount">3400.00</field>
+            <field name="area_m2">1750.0</field>
+            <field name="plant_count">400</field>
+        </record>
+        <record id="cost_allocation_line_labor_gh1" model="agri.cost.allocation.line">
+            <field name="allocation_id" ref="cost_allocation_labor_01"/>
+            <field name="farm_id" ref="agricultural_management.greenhouse_001"/>
+            <field name="percentage">33.33</field>
+            <field name="amount">11666.55</field>
+            <field name="area_m2">2000.0</field>
+            <field name="labor_hours">120.0</field>
+        </record>
+        <record id="cost_allocation_line_labor_gh2" model="agri.cost.allocation.line">
+            <field name="allocation_id" ref="cost_allocation_labor_01"/>
+            <field name="farm_id" ref="agricultural_management.greenhouse_002"/>
+            <field name="percentage">33.33</field>
+            <field name="amount">11666.55</field>
+            <field name="area_m2">1750.0</field>
+            <field name="labor_hours">110.0</field>
+        </record>
+        <record id="cost_allocation_line_labor_gh3" model="agri.cost.allocation.line">
+            <field name="allocation_id" ref="cost_allocation_labor_01"/>
+            <field name="farm_id" ref="agricultural_management.greenhouse_003"/>
+            <field name="percentage">33.34</field>
+            <field name="amount">11666.90</field>
+            <field name="area_m2">1250.0</field>
+            <field name="labor_hours">100.0</field>
+        </record>
+        <record id="cost_allocation_line_utilities_gh1" model="agri.cost.allocation.line">
+            <field name="allocation_id" ref="cost_allocation_utilities_01"/>
+            <field name="farm_id" ref="agricultural_management.greenhouse_001"/>
+            <field name="percentage">40.0</field>
+            <field name="amount">4800.00</field>
+            <field name="area_m2">2000.0</field>
+        </record>
+        <record id="cost_allocation_line_utilities_gh2" model="agri.cost.allocation.line">
+            <field name="allocation_id" ref="cost_allocation_utilities_01"/>
+            <field name="farm_id" ref="agricultural_management.greenhouse_002"/>
+            <field name="percentage">35.0</field>
+            <field name="amount">4200.00</field>
+            <field name="area_m2">1750.0</field>
+        </record>
+        <record id="cost_allocation_line_utilities_gh3" model="agri.cost.allocation.line">
+            <field name="allocation_id" ref="cost_allocation_utilities_01"/>
+            <field name="farm_id" ref="agricultural_management.greenhouse_003"/>
+            <field name="percentage">25.0</field>
+            <field name="amount">3000.00</field>
+            <field name="area_m2">1250.0</field>
+        </record>
+        <record id="cost_allocation_line_maintenance_gh1" model="agri.cost.allocation.line">
+            <field name="allocation_id" ref="cost_allocation_maintenance_01"/>
+            <field name="farm_id" ref="agricultural_management.greenhouse_001"/>
+            <field name="percentage">100.0</field>
+            <field name="amount">5500.00</field>
+            <field name="area_m2">2000.0</field>
+        </record>
+        <record id="cost_calculation_monthly_001" model="agri.cost.calculation">
+            <field name="name">Monthly Cost Analysis - January 2024</field>
+            <field name="code">CALC/2024/001</field>
+            <field name="date_from" eval="(DateTime.now() - relativedelta(months=1)).strftime('%Y-%m-01')"/>
+            <field name="date_to" eval="(DateTime.now() - relativedelta(months=1)).strftime('%Y-%m-31')"/>
+            <field name="period_type">monthly</field>
+            <field name="farm_id" ref="agricultural_management.farm_main_001"/>
+            <field name="state">calculated</field>
+        </record>
+        <record id="cost_calculation_quarterly_001" model="agri.cost.calculation">
+            <field name="name">Quarterly Cost Analysis - Q1 2024</field>
+            <field name="code">CALC/2024/002</field>
+            <field name="date_from" eval="(DateTime.now() - relativedelta(months=3)).strftime('%Y-01-01')"/>
+            <field name="date_to" eval="(DateTime.now() - relativedelta(months=1)).strftime('%Y-03-31')"/>
+            <field name="period_type">quarterly</field>
+            <field name="farm_id" ref="agricultural_management.farm_main_001"/>
+            <field name="state">validated</field>
+        </record>
+        <record id="cost_calculation_project_001" model="agri.cost.calculation">
+            <field name="name">Tomato Project Cost Analysis</field>
+            <field name="code">CALC/2024/003</field>
+            <field name="date_from" eval="(DateTime.now() - relativedelta(months=2)).strftime('%Y-%m-01')"/>
+            <field name="date_to" eval="(DateTime.now()).strftime('%Y-%m-%d')"/>
+            <field name="period_type">custom</field>
+            <field name="farm_id" ref="agricultural_management.farm_main_001"/>
+            <field name="project_ids" eval="[(6, 0, [ref('agricultural_management.project_tomato_001')])]"/>
+            <field name="state">calculated</field>
+        </record>
+        <record id="cost_calc_line_seeds_001" model="agri.cost.calculation.line">
+            <field name="calculation_id" ref="cost_calculation_monthly_001"/>
+            <field name="cost_category">seeds</field>
+            <field name="amount">15000.00</field>
+            <field name="allocation_id" ref="cost_allocation_seeds_01"/>
+            <field name="farm_id" ref="agricultural_management.greenhouse_001"/>
+            <field name="quantity">500.0</field>
+            <field name="unit_cost">30.0</field>
+            <field name="description">Tomato seeds for January planting</field>
+        </record>
+        <record id="cost_calc_line_fertilizers_001" model="agri.cost.calculation.line">
+            <field name="calculation_id" ref="cost_calculation_monthly_001"/>
+            <field name="cost_category">fertilizers</field>
+            <field name="amount">25000.00</field>
+            <field name="allocation_id" ref="cost_allocation_fertilizers_01"/>
+            <field name="farm_id" ref="agricultural_management.greenhouse_001"/>
+            <field name="quantity">1000.0</field>
+            <field name="unit_cost">25.0</field>
+            <field name="description">NPK fertilizer for all greenhouses</field>
+        </record>
+        <record id="cost_calc_line_pesticides_001" model="agri.cost.calculation.line">
+            <field name="calculation_id" ref="cost_calculation_monthly_001"/>
+            <field name="cost_category">pesticides</field>
+            <field name="amount">8500.00</field>
+            <field name="allocation_id" ref="cost_allocation_pesticides_01"/>
+            <field name="farm_id" ref="agricultural_management.greenhouse_001"/>
+            <field name="project_id" ref="agricultural_management.project_tomato_001"/>
+            <field name="quantity">200.0</field>
+            <field name="unit_cost">42.5</field>
+            <field name="description">Organic pesticides for pest control</field>
+        </record>
+        <record id="cost_calc_line_labor_001" model="agri.cost.calculation.line">
+            <field name="calculation_id" ref="cost_calculation_monthly_001"/>
+            <field name="cost_category">direct_labor</field>
+            <field name="amount">35000.00</field>
+            <field name="allocation_id" ref="cost_allocation_labor_01"/>
+            <field name="farm_id" ref="agricultural_management.greenhouse_001"/>
+            <field name="quantity">330.0</field>
+            <field name="unit_cost">106.06</field>
+            <field name="description">Direct labor costs for cultivation activities</field>
+        </record>
+        <record id="cost_calc_line_utilities_001" model="agri.cost.calculation.line">
+            <field name="calculation_id" ref="cost_calculation_monthly_001"/>
+            <field name="cost_category">utilities</field>
+            <field name="amount">12000.00</field>
+            <field name="allocation_id" ref="cost_allocation_utilities_01"/>
+            <field name="farm_id" ref="agricultural_management.greenhouse_001"/>
+            <field name="description">Electricity and water costs</field>
+        </record>
+        <record id="cost_calc_line_maintenance_001" model="agri.cost.calculation.line">
+            <field name="calculation_id" ref="cost_calculation_monthly_001"/>
+            <field name="cost_category">maintenance</field>
+            <field name="amount">5500.00</field>
+            <field name="allocation_id" ref="cost_allocation_maintenance_01"/>
+            <field name="farm_id" ref="agricultural_management.greenhouse_001"/>
+            <field name="description">Greenhouse maintenance and repairs</field>
+        </record>
+        <record id="cost_calc_line_seeds_q1" model="agri.cost.calculation.line">
+            <field name="calculation_id" ref="cost_calculation_quarterly_001"/>
+            <field name="cost_category">seeds</field>
+            <field name="amount">45000.00</field>
+            <field name="farm_id" ref="agricultural_management.greenhouse_001"/>
+            <field name="quantity">1500.0</field>
+            <field name="unit_cost">30.0</field>
+            <field name="description">Q1 seed costs - multiple varieties</field>
+        </record>
+        <record id="cost_calc_line_fertilizers_q1" model="agri.cost.calculation.line">
+            <field name="calculation_id" ref="cost_calculation_quarterly_001"/>
+            <field name="cost_category">fertilizers</field>
+            <field name="amount">75000.00</field>
+            <field name="farm_id" ref="agricultural_management.greenhouse_001"/>
+            <field name="quantity">3000.0</field>
+            <field name="unit_cost">25.0</field>
+            <field name="description">Q1 fertilizer costs - various nutrients</field>
+        </record>
+        <record id="cost_calc_line_labor_q1" model="agri.cost.calculation.line">
+            <field name="calculation_id" ref="cost_calculation_quarterly_001"/>
+            <field name="cost_category">direct_labor</field>
+            <field name="amount">105000.00</field>
+            <field name="farm_id" ref="agricultural_management.greenhouse_001"/>
+            <field name="quantity">990.0</field>
+            <field name="unit_cost">106.06</field>
+            <field name="description">Q1 labor costs for all activities</field>
+        </record>
+        <record id="production_calc_line_tomato_001" model="agri.production.calculation.line">
+            <field name="calculation_id" ref="cost_calculation_monthly_001"/>
+            <field name="product_id" ref="agricultural_management.product_tomato"/>
+            <field name="quantity">5000.0</field>
+            <field name="unit_price">8.5</field>
+            <field name="revenue">42500.00</field>
+            <field name="cost">35000.00</field>
+            <field name="profit">7500.00</field>
+            <field name="farm_id" ref="agricultural_management.greenhouse_001"/>
+            <field name="project_id" ref="agricultural_management.project_tomato_001"/>
+            <field name="quality_grade">grade_a</field>
+        </record>
+        <record id="production_calc_line_cucumber_001" model="agri.production.calculation.line">
+            <field name="calculation_id" ref="cost_calculation_monthly_001"/>
+            <field name="product_id" ref="agricultural_management.product_cucumber"/>
+            <field name="quantity">3500.0</field>
+            <field name="unit_price">6.0</field>
+            <field name="revenue">21000.00</field>
+            <field name="cost">18000.00</field>
+            <field name="profit">3000.00</field>
+            <field name="farm_id" ref="agricultural_management.greenhouse_002"/>
+            <field name="project_id" ref="agricultural_management.project_cucumber_001"/>
+            <field name="quality_grade">grade_a</field>
+        </record>
+        <record id="production_calc_line_lettuce_001" model="agri.production.calculation.line">
+            <field name="calculation_id" ref="cost_calculation_monthly_001"/>
+            <field name="product_id" ref="agricultural_management.product_lettuce"/>
+            <field name="quantity">2000.0</field>
+            <field name="unit_price">4.5</field>
+            <field name="revenue">9000.00</field>
+            <field name="cost">8000.00</field>
+            <field name="profit">1000.00</field>
+            <field name="farm_id" ref="agricultural_management.greenhouse_003"/>
+            <field name="quality_grade">premium</field>
+        </record>
+        <record id="production_calc_line_tomato_q1" model="agri.production.calculation.line">
+            <field name="calculation_id" ref="cost_calculation_quarterly_001"/>
+            <field name="product_id" ref="agricultural_management.product_tomato"/>
+            <field name="quantity">15000.0</field>
+            <field name="unit_price">8.5</field>
+            <field name="revenue">127500.00</field>
+            <field name="cost">105000.00</field>
+            <field name="profit">22500.00</field>
+            <field name="farm_id" ref="agricultural_management.greenhouse_001"/>
+            <field name="project_id" ref="agricultural_management.project_tomato_001"/>
+            <field name="quality_grade">grade_a</field>
+        </record>
+        <record id="production_calc_line_cucumber_q1" model="agri.production.calculation.line">
+            <field name="calculation_id" ref="cost_calculation_quarterly_001"/>
+            <field name="product_id" ref="agricultural_management.product_cucumber"/>
+            <field name="quantity">10500.0</field>
+            <field name="unit_price">6.0</field>
+            <field name="revenue">63000.00</field>
+            <field name="cost">54000.00</field>
+            <field name="profit">9000.00</field>
+            <field name="farm_id" ref="agricultural_management.greenhouse_002"/>
+            <field name="project_id" ref="agricultural_management.project_cucumber_001"/>
+            <field name="quality_grade">grade_a</field>
+        </record>
+        <record id="inventory_stage_tomato_seeding" model="agri.inventory.stage">
+            <field name="name">Seeding - Tomato Cherry</field>
+            <field name="sequence">10</field>
+            <field name="date" eval="(DateTime.now() - relativedelta(months=2, days=5))"/>
+            <field name="farm_id" ref="agricultural_management.farm_main_001"/>
+            <field name="project_id" ref="agricultural_management.project_tomato_001"/>
+            <field name="product_id" ref="agricultural_management.product_tomato"/>
+            <field name="stage_type">seeding</field>
+            <field name="quantity_in">1000.0</field>
+            <field name="quantity_out">950.0</field>
+            <field name="quantity_loss">50.0</field>
+            <field name="quantity_waste">0.0</field>
+            <field name="uom_id" ref="uom.product_uom_unit"/>
+            <field name="quality_grade">grade_a</field>
+            <field name="quality_score">85.0</field>
+            <field name="temperature">24.0</field>
+            <field name="humidity">75.0</field>
+            <field name="ph_level">6.5</field>
+            <field name="stage_cost">2500.00</field>
+            <field name="labor_cost">1500.00</field>
+            <field name="material_cost">800.00</field>
+            <field name="equipment_cost">200.00</field>
+            <field name="processing_method">Manual seeding in trays</field>
+            <field name="equipment_used">Seeding trays, growing medium</field>
+            <field name="responsible_user_id" ref="base.user_admin"/>
+            <field name="state">completed</field>
+            <field name="notes">Excellent germination rate, minimal losses</field>
+        </record>
+        <record id="inventory_stage_tomato_germination" model="agri.inventory.stage">
+            <field name="name">Germination - Tomato Cherry</field>
+            <field name="sequence">20</field>
+            <field name="date" eval="(DateTime.now() - relativedelta(months=2))"/>
+            <field name="farm_id" ref="agricultural_management.farm_main_001"/>
+            <field name="project_id" ref="agricultural_management.project_tomato_001"/>
+            <field name="product_id" ref="agricultural_management.product_tomato"/>
+            <field name="stage_type">germination</field>
+            <field name="quantity_in">950.0</field>
+            <field name="quantity_out">920.0</field>
+            <field name="quantity_loss">30.0</field>
+            <field name="quantity_waste">0.0</field>
+            <field name="uom_id" ref="uom.product_uom_unit"/>
+            <field name="quality_grade">grade_a</field>
+            <field name="quality_score">88.0</field>
+            <field name="temperature">25.0</field>
+            <field name="humidity">80.0</field>
+            <field name="ph_level">6.3</field>
+            <field name="light_exposure">16.0</field>
+            <field name="stage_cost">1800.00</field>
+            <field name="labor_cost">1000.00</field>
+            <field name="material_cost">500.00</field>
+            <field name="equipment_cost">300.00</field>
+            <field name="processing_method">Controlled environment germination</field>
+            <field name="equipment_used">Germination chamber, LED lights</field>
+            <field name="responsible_user_id" ref="base.user_admin"/>
+            <field name="state">completed</field>
+            <field name="notes">Good germination rate under controlled conditions</field>
+        </record>
+        <record id="inventory_stage_tomato_transplanting" model="agri.inventory.stage">
+            <field name="name">Transplanting - Tomato Cherry</field>
+            <field name="sequence">30</field>
+            <field name="date" eval="(DateTime.now() - relativedelta(months=1, days=20))"/>
+            <field name="farm_id" ref="agricultural_management.farm_main_001"/>
+            <field name="project_id" ref="agricultural_management.project_tomato_001"/>
+            <field name="product_id" ref="agricultural_management.product_tomato"/>
+            <field name="stage_type">transplanting</field>
+            <field name="quantity_in">920.0</field>
+            <field name="quantity_out">900.0</field>
+            <field name="quantity_loss">20.0</field>
+            <field name="quantity_waste">0.0</field>
+            <field name="uom_id" ref="uom.product_uom_unit"/>
+            <field name="quality_grade">grade_a</field>
+            <field name="quality_score">90.0</field>
+            <field name="temperature">22.0</field>
+            <field name="humidity">70.0</field>
+            <field name="ph_level">6.2</field>
+            <field name="stage_cost">3200.00</field>
+            <field name="labor_cost">2000.00</field>
+            <field name="material_cost">800.00</field>
+            <field name="equipment_cost">400.00</field>
+            <field name="processing_method">Manual transplanting to growing beds</field>
+            <field name="equipment_used">Growing beds, substrate, irrigation system</field>
+            <field name="responsible_user_id" ref="base.user_admin"/>
+            <field name="state">completed</field>
+            <field name="notes">Successful transplanting with minimal shock</field>
+        </record>
+        <record id="inventory_stage_tomato_cultivation" model="agri.inventory.stage">
+            <field name="name">Cultivation - Tomato Cherry</field>
+            <field name="sequence">40</field>
+            <field name="date" eval="(DateTime.now() - relativedelta(months=1, days=10))"/>
+            <field name="farm_id" ref="agricultural_management.farm_main_001"/>
+            <field name="project_id" ref="agricultural_management.project_tomato_001"/>
+            <field name="product_id" ref="agricultural_management.product_tomato"/>
+            <field name="stage_type">cultivation</field>
+            <field name="quantity_in">900.0</field>
+            <field name="quantity_out">870.0</field>
+            <field name="quantity_loss">25.0</field>
+            <field name="quantity_waste">5.0</field>
+            <field name="uom_id" ref="uom.product_uom_unit"/>
+            <field name="quality_grade">grade_a</field>
+            <field name="quality_score">92.0</field>
+            <field name="temperature">26.0</field>
+            <field name="humidity">65.0</field>
+            <field name="ph_level">6.0</field>
+            <field name="light_exposure">14.0</field>
+            <field name="stage_cost">8500.00</field>
+            <field name="labor_cost">4000.00</field>
+            <field name="material_cost">3500.00</field>
+            <field name="equipment_cost">1000.00</field>
+            <field name="processing_method">Hydroponic cultivation with fertigation</field>
+            <field name="equipment_used">Hydroponic system, fertigation, climate control</field>
+            <field name="chemicals_used">NPK fertilizer, calcium nitrate, micronutrients</field>
+            <field name="responsible_user_id" ref="base.user_admin"/>
+            <field name="state">completed</field>
+            <field name="notes">Excellent growth rate, plants are healthy and vigorous</field>
+        </record>
+        <record id="inventory_stage_tomato_harvest" model="agri.inventory.stage">
+            <field name="name">Harvest - Tomato Cherry</field>
+            <field name="sequence">50</field>
+            <field name="date" eval="(DateTime.now() - relativedelta(weeks=2))"/>
+            <field name="farm_id" ref="agricultural_management.farm_main_001"/>
+            <field name="project_id" ref="agricultural_management.project_tomato_001"/>
+            <field name="product_id" ref="agricultural_management.product_tomato"/>
+            <field name="stage_type">harvest</field>
+            <field name="quantity_in">870.0</field>
+            <field name="quantity_out">5200.0</field>
+            <field name="quantity_loss">150.0</field>
+            <field name="quantity_waste">50.0</field>
+            <field name="uom_id" ref="uom.product_uom_kgm"/>
+            <field name="quality_grade">grade_a</field>
+            <field name="quality_score">94.0</field>
+            <field name="defect_rate">3.8</field>
+            <field name="temperature">24.0</field>
+            <field name="humidity">60.0</field>
+            <field name="stage_cost">6500.00</field>
+            <field name="labor_cost">4500.00</field>
+            <field name="material_cost">1500.00</field>
+            <field name="equipment_cost">500.00</field>
+            <field name="processing_method">Manual harvesting at optimal ripeness</field>
+            <field name="equipment_used">Harvesting baskets, sorting tables</field>
+            <field name="responsible_user_id" ref="base.user_admin"/>
+            <field name="state">completed</field>
+            <field name="notes">Excellent harvest yield, high quality fruits</field>
+        </record>
+        <record id="inventory_stage_cucumber_seeding" model="agri.inventory.stage">
+            <field name="name">Seeding - Cucumber</field>
+            <field name="sequence">10</field>
+            <field name="date" eval="(DateTime.now() - relativedelta(months=2, days=3))"/>
+            <field name="farm_id" ref="agricultural_management.farm_main_001"/>
+            <field name="project_id" ref="agricultural_management.project_cucumber_001"/>
+            <field name="product_id" ref="agricultural_management.product_cucumber"/>
+            <field name="stage_type">seeding</field>
+            <field name="quantity_in">800.0</field>
+            <field name="quantity_out">760.0</field>
+            <field name="quantity_loss">40.0</field>
+            <field name="quantity_waste">0.0</field>
+            <field name="uom_id" ref="uom.product_uom_unit"/>
+            <field name="quality_grade">grade_a</field>
+            <field name="quality_score">82.0</field>
+            <field name="temperature">23.0</field>
+            <field name="humidity">78.0</field>
+            <field name="ph_level">6.8</field>
+            <field name="stage_cost">2000.00</field>
+            <field name="labor_cost">1200.00</field>
+            <field name="material_cost">600.00</field>
+            <field name="equipment_cost">200.00</field>
+            <field name="processing_method">Direct seeding in rock wool</field>
+            <field name="equipment_used">Rock wool cubes, seeding tools</field>
+            <field name="responsible_user_id" ref="base.user_admin"/>
+            <field name="state">completed</field>
+            <field name="notes">Good germination rate for cucumber variety</field>
+        </record>
+        <record id="inventory_stage_cucumber_cultivation" model="agri.inventory.stage">
+            <field name="name">Cultivation - Cucumber</field>
+            <field name="sequence">40</field>
+            <field name="date" eval="(DateTime.now() - relativedelta(months=1, days=5))"/>
+            <field name="farm_id" ref="agricultural_management.farm_main_001"/>
+            <field name="project_id" ref="agricultural_management.project_cucumber_001"/>
+            <field name="product_id" ref="agricultural_management.product_cucumber"/>
+            <field name="stage_type">cultivation</field>
+            <field name="quantity_in">760.0</field>
+            <field name="quantity_out">740.0</field>
+            <field name="quantity_loss">15.0</field>
+            <field name="quantity_waste">5.0</field>
+            <field name="uom_id" ref="uom.product_uom_unit"/>
+            <field name="quality_grade">grade_a</field>
+            <field name="quality_score">89.0</field>
+            <field name="temperature">25.0</field>
+            <field name="humidity">70.0</field>
+            <field name="ph_level">6.5</field>
+            <field name="light_exposure">12.0</field>
+            <field name="stage_cost">7200.00</field>
+            <field name="labor_cost">3500.00</field>
+            <field name="material_cost">2800.00</field>
+            <field name="equipment_cost">900.00</field>
+            <field name="processing_method">Vertical growing with support strings</field>
+            <field name="equipment_used">Growing strings, clips, pruning tools</field>
+            <field name="chemicals_used">Balanced fertilizer, calcium chloride</field>
+            <field name="responsible_user_id" ref="base.user_admin"/>
+            <field name="state">completed</field>
+            <field name="notes">Vigorous growth with excellent fruit set</field>
+        </record>
+
+    </data>
+</odoo>

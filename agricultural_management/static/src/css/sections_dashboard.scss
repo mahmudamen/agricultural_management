@@ -1,0 +1,231 @@
+/* === Hospital Rooms Management Styles === */
+
+// Base styling for all kanban views
+.o_kanban_view {
+    .o_kanban_card {
+        transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+        border-radius: 12px !important;
+        padding: 0 !important;
+        margin: 0.75rem !important;
+        overflow: hidden;
+        box-shadow: 0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23);
+        animation: fadeInUp 0.4s ease-out forwards;
+
+        &:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 14px 28px rgba(0,0,0,0.25), 0 10px 10px rgba(0,0,0,0.22);
+        }
+
+        .o_kanban_record_top {
+            padding: 16px;
+            border-bottom: 1px solid rgba(0,0,0,0.1);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+
+            .o_kanban_record_title {
+                font-size: 1.5rem;
+                font-weight: 800;
+            }
+
+            .room-status {
+                padding: 4px 10px;
+                border-radius: 20px;
+                font-size: 0.85rem;
+                font-weight: 600;
+
+                &.available {
+                    background: rgba(16, 185, 129, 0.2);
+                    color: #10B981;
+                }
+
+                &.occupied {
+                    background: rgba(245, 158, 11, 0.2);
+                    color: #F59E0B;
+                }
+            }
+        }
+
+        .o_kanban_record_body {
+            padding: 16px;
+
+            .room-detail-row {
+                display: flex;
+                justify-content: space-between;
+                margin-bottom: 8px;
+                padding: 4px 0;
+                border-bottom: 1px solid rgba(0,0,0,0.05);
+
+                .room-label {
+                    font-weight: 600;
+                    opacity: 0.8;
+                }
+
+                .room-value {
+                    font-weight: 500;
+                }
+
+                &.section-count {
+                    margin-top: 8px;
+                    border-bottom: none;
+
+                    .section-number {
+                        background: rgba(0,0,0,0.05);
+                        padding: 2px 10px;
+                        border-radius: 20px;
+                        font-weight: 700;
+                    }
+                }
+            }
+
+            .room-separator {
+                height: 1px;
+                background: rgba(0,0,0,0.1);
+                margin: 12px 0;
+            }
+        }
+
+        .o_kanban_record_bottom {
+            background: rgba(0,0,0,0.02);
+            border-top: 1px solid rgba(0,0,0,0.05);
+            padding: 12px 16px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+
+            .view-beds-btn {
+                background-color: rgba(59, 130, 246, 0.1);
+                color: #3B82F6;
+                border: none;
+                padding: 5px 10px;
+                border-radius: 6px;
+                transition: all 0.2s ease;
+
+                &:hover {
+                    background-color: rgba(59, 130, 246, 0.2);
+                    transform: translateY(-2px);
+                }
+            }
+        }
+    }
+}
+
+// Light mode specific styling
+body:not(.o_dark_mode) .o_kanban_view .o_kanban_card {
+    background: white;
+
+    .room-number {
+        color: #1F2937;
+    }
+
+    .room-label {
+        color: #4B5563;
+    }
+
+    .room-value {
+        color: #1F2937;
+    }
+
+    .section-count {
+        .room-label {
+            color: #3B82F6;
+        }
+
+        .section-number {
+            color: #3B82F6;
+        }
+    }
+}
+
+// Dark mode specific styling - with VERY high specificity and !important flags
+.o_dark_mode .o_kanban_view .o_kanban_card {
+    background: #1F2937 !important;
+    border: 1px solid #374151 !important;
+
+    .o_kanban_record_top {
+        border-bottom-color: #374151 !important;
+
+        .room-number {
+            color: #4FD1C5 !important; // Bright teal
+            text-shadow: 0 0 10px rgba(79, 209, 197, 0.3) !important;
+        }
+
+        .room-status {
+            &.available {
+                background: rgba(16, 185, 129, 0.3) !important;
+                color: #A7F3D0 !important;
+
+                i {
+                    color: #A7F3D0 !important;
+                }
+            }
+
+            &.occupied {
+                background: rgba(245, 158, 11, 0.3) !important;
+                color: #FCD34D !important;
+
+                i {
+                    color: #FCD34D !important;
+                }
+            }
+        }
+    }
+
+    .o_kanban_record_body {
+        .room-detail-row {
+            border-bottom-color: #374151 !important;
+
+            .room-label {
+                color: #94A3B8 !important; // Light slate
+            }
+
+            .room-value {
+                color: #F9FAFB !important; // Almost white
+            }
+
+            &.section-count {
+                .room-label {
+                    color: #FCA5A5 !important; // Light red
+                }
+
+                .section-number {
+                    color: #FCA5A5 !important;
+                    background: rgba(239, 68, 68, 0.2) !important;
+                }
+            }
+        }
+
+        .room-separator {
+            background: #4B5563 !important;
+        }
+    }
+
+    .o_kanban_record_bottom {
+        background: #111827 !important;
+        border-top-color: #374151 !important;
+
+        .view-beds-btn {
+            background-color: rgba(59, 130, 246, 0.2) !important;
+            color: #93C5FD !important;
+
+            i {
+                color: #93C5FD !important;
+            }
+
+            &:hover {
+                background-color: rgba(59, 130, 246, 0.3) !important;
+            }
+        }
+    }
+}
+
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}

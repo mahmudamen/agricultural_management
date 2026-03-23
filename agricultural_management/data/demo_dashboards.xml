@@ -1,0 +1,15 @@
+<odoo>
+<data>
+    <!-- Example: Revenue per Project -->
+    <record id="graph_revenue_per_project" model="ir.ui.view">
+        <field name="name">graph_revenue_project</field>
+        <field name="model">agri.production.calculation.line</field>
+        <field name="arch" type="xml">
+            <graph string="Revenue per Project" type="bar">
+                <field name="revenue" type="measure"/>
+                <field name="project_id" type="row"/>
+            </graph>
+        </field>
+    </record>
+</data>
+</odoo>

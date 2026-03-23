@@ -1,0 +1,190 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <record id="view_agricultural_project_form_advanced" model="ir.ui.view">
+            <field name="name">agricultural.project.form.advanced</field>
+            <field name="model">agricultural.project</field>
+            <field name="arch" type="xml">
+                <form string="Agricultural Project" class="o_form_full">
+                    <!-- ================= HEADER ================= -->
+                    <header>
+                        <button name="action_recalculate_all_metrics"
+                                type="object"
+                                string="Recalculate"
+                                class="btn-primary"
+                                icon="fa-refresh"/>
+                        <button name="action_allocate_costs_to_farms"
+                                type="object"
+                                string="Allocate Costs"
+                                class="btn-secondary"
+                                icon="fa-sitemap"/>
+                        <button name="action_calculate_farm_profits"
+                                type="object"
+                                string="Farm Profit"
+                                class="btn-success"
+                                icon="fa-line-chart"/>
+                        <field name="state" widget="statusbar"
+                               statusbar_visible="draft,submitted,approved,active,completed"/>
+                    </header>
+                    <!-- ================= SHEET ================= -->
+                    <sheet>
+                        <!-- ===== TOP KPI ===== -->
+                        <div class="oe_button_box" name="button_box">
+
+                            <button type="object" name="action_view_profit_analysis"
+                                    class="oe_stat_button" icon="fa-money">
+                                <field name="net_profit" widget="statinfo" string="Net Profit"/>
+                            </button>
+                            <button type="object" name="action_view_profit_analysis"
+                                    class="oe_stat_button" icon="fa-line-chart">
+                                <field name="profit_margin_percent" widget="statinfo" string="Margin %"/>
+                            </button>
+                            <button type="object"
+                                    class="oe_stat_button" icon="fa-leaf">
+                                <field name="total_harvested_quantity" widget="statinfo" string="Yield"/>
+                            </button>
+                            <button type="object"
+                                    class="oe_stat_button" icon="fa-area-chart">
+                                <field name="total_project_area" widget="statinfo" string="Area"/>
+                            </button>
+                        </div>
+                        <!-- ===== MAIN INFO ===== -->
+                        <group>
+                            <group>
+                                <field name="name"/>
+                                <field name="code"/>
+                                <field name="project_type"/>
+                                <field name="priority" widget="priority"/>
+                            </group>
+                            <group>
+                                <field name="manager_id"/>
+                                <field name="farm_id"/>
+                                <field name="company_id"/>
+                                <field name="currency_id"/>
+                            </group>
+                        </group>
+                        <!-- ================= NOTEBOOK ================= -->
+                        <notebook>
+                            <!-- ================= FINANCIAL ================= -->
+                            <page string="Financial" icon="fa-money">
+                                <group string="Budget">
+                                    <group>
+                                        <field name="total_budget"/>
+                                        <field name="approved_budget"/>
+                                        <field name="remaining_budget"/>
+                                    </group>
+                                    <group>
+                                        <field name="actual_cost"/>
+                                        <field name="committed_cost"/>
+                                        <field name="pending_cost"/>
+                                    </group>
+                                </group>
+                                <group string="Cost Breakdown">
+                                    <group>
+                                        <field name="direct_material_cost"/>
+                                        <field name="direct_labor_cost"/>
+                                        <field name="direct_equipment_cost"/>
+                                    </group>
+                                    <group>
+                                        <field name="indirect_overhead_cost"/>
+                                        <field name="allocated_overhead"/>
+                                        <field name="total_direct_cost"/>
+                                        <field name="total_indirect_cost"/>
+                                    </group>
+                                </group>
+                                <group string="Profit Analysis">
+                                    <group>
+                                        <field name="actual_revenue"/>
+                                        <field name="expected_revenue"/>
+                                    </group>
+                                    <group>
+                                        <field name="gross_profit"/>
+                                        <field name="net_profit"/>
+                                        <field name="profit_margin_percent"/>
+                                    </group>
+                                </group>
+                            </page>
+                            <!-- ================= FARM ALLOCATION ================= -->
+                            <page string="Farm Allocation" icon="fa-sitemap">
+                                <field name="farm_cost_allocation_ids">
+                                    <list editable="bottom">
+                                        <field name="farm_id"/>
+                                        <field name="area_square_meters"/>
+                                        <field name="allocated_cost"/>
+                                        <field name="cost_per_square_meter"/>
+                                    </list>
+                                </field>
+                            </page>
+                            <!-- ================= PROFIT BY FARM ================= -->
+                            <page string="Farm Profit" icon="fa-line-chart">
+                                <field name="farm_level_profit_ids">
+                                    <list>
+                                        <field name="farm_id"/>
+                                        <field name="total_cost"/>
+                                        <field name="total_revenue"/>
+                                        <field name="gross_profit"/>
+                                        <field name="profit_margin_percent"/>
+                                    </list>
+                                </field>
+                            </page>
+                            <!-- ================= OPERATIONS ================= -->
+                            <page string="Operations" icon="fa-cogs">
+                                <group>
+                                    <group>
+                                        <field name="total_operations"/>
+                                        <field name="completed_operations"/>
+                                    </group>
+                                    <group>
+                                        <field name="pending_operations"/>
+                                        <field name="in_progress_operations"/>
+                                    </group>
+                                </group>
+
+                            </page>
+                            <!-- ================= YIELD ================= -->
+                            <page string="Yield" icon="fa-leaf">
+                                <group>
+                                    <group>
+                                        <field name="expected_yield"/>
+                                        <field name="actual_yield"/>
+                                    </group>
+                                    <group>
+                                        <field name="yield_variance"/>
+                                        <field name="yield_achievement_rate"/>
+                                    </group>
+                                </group>
+                            </page>
+                            <!-- ================= AREA METRICS ================= -->
+                            <page string="Area Metrics" icon="fa-map">
+                                <group>
+                                    <group>
+                                        <field name="cost_per_square_meter"/>
+                                        <field name="revenue_per_square_meter"/>
+                                    </group>
+                                    <group>
+                                        <field name="profit_per_square_meter"/>
+                                    </group>
+                                </group>
+                            </page>
+                        </notebook>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+        <record id="project_list_farm" model="ir.ui.view">
+            <field name="name">project_list_farm</field>
+            <field name="model">agricultural.project</field>
+            <field name="arch" type="xml">
+                <list string="Project List">
+                    <field name="name"/>
+                    <field name="farm_id"/>
+                    <field name="state"/>
+                    <button name="agricultural_production_request_action"
+                            type="object"
+                            string="Add Produced Consumed"
+                            class="oe_highlight"/>
+                </list>
+            </field>
+        </record>
+    </data>
+</odoo>
