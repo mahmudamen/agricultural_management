@@ -1,313 +1,274 @@
-<!-- ═══════════════════════════════════════════════════════════ -->
-<!-- XAMLTech - Advanced Agricultural Management - Odoo 19     -->
-<!-- ═══════════════════════════════════════════════════════════ -->
+<!-- ═══════════════════════════════════════════════════════════════ -->
+<!-- Advanced Agricultural Management System — Odoo 19 by XAMLTech -->
+<!-- Published: https://apps.odoo.com/apps/modules/19.0/agricultural_management -->
+<!-- Website: https://xamltech.com | Demo: https://demo.xamltech.com -->
+<!-- ═══════════════════════════════════════════════════════════════ -->
 
-<section class="oe_container" style="font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif;background:#fff">
+<section class="oe_container" style="font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,sans-serif;background:#fff">
 
-<!-- ═══════ HERO BANNER ═══════ -->
-<div style="background:linear-gradient(135deg,#0B3D2E 0%,#145A3C 40%,#1A7A4F 100%);border-radius:0 0 20px 20px;padding:60px 40px;text-align:center;position:relative;overflow:hidden;margin-bottom:40px">
-  <div style="position:absolute;top:-60px;right:-60px;width:200px;height:200px;border-radius:50%;background:rgba(255,255,255,0.04)"></div>
-  <div style="position:absolute;bottom:-40px;left:-40px;width:160px;height:160px;border-radius:50%;background:rgba(255,255,255,0.03)"></div>
-  <div style="position:relative;z-index:1;max-width:900px;margin:0 auto">
-    <p style="color:#7DCEA0;font-size:13px;letter-spacing:4px;text-transform:uppercase;margin:0 0 14px;font-weight:700">Odoo 19 Enterprise &amp; Community</p>
-    <h1 style="color:#fff;font-size:44px;font-weight:800;margin:0 0 18px;line-height:1.1">Advanced Agricultural<br/>Management System</h1>
-    <p style="color:#D5F5E3;font-size:18px;margin:0 0 28px;line-height:1.65">Complete farm-to-warehouse ERP with <b style="color:#fff">OWL Dashboard</b>, real-time costing, 4-level farm hierarchy, harvest scheduling, quality sorting, and full accounting integration.</p>
-    <div style="display:flex;gap:10px;justify-content:center;flex-wrap:wrap">
-      <span style="background:rgba(255,255,255,0.15);color:#fff;padding:8px 20px;border-radius:50px;font-size:12px;font-weight:700;letter-spacing:0.5px">OWL Dashboard</span>
-      <span style="background:rgba(255,255,255,0.15);color:#fff;padding:8px 20px;border-radius:50px;font-size:12px;font-weight:700;letter-spacing:0.5px">Real-Time Costing</span>
-      <span style="background:rgba(255,255,255,0.15);color:#fff;padding:8px 20px;border-radius:50px;font-size:12px;font-weight:700;letter-spacing:0.5px">Dark &amp; Light Mode</span>
-      <span style="background:rgba(255,255,255,0.15);color:#fff;padding:8px 20px;border-radius:50px;font-size:12px;font-weight:700;letter-spacing:0.5px">Multi-Level Farm Hierarchy</span>
+<!-- ══════════ HERO ══════════ -->
+<div style="background:linear-gradient(135deg,#071E14 0%,#0B3D2E 30%,#145A3C 60%,#1A7A4F 100%);border-radius:0 0 24px 24px;padding:60px 40px 50px;text-align:center;position:relative;overflow:hidden;margin-bottom:0">
+  <div style="position:absolute;top:-80px;right:-80px;width:300px;height:300px;border-radius:50%;background:rgba(125,206,160,0.06)"></div>
+  <div style="position:absolute;bottom:-60px;left:-60px;width:220px;height:220px;border-radius:50%;background:rgba(125,206,160,0.04)"></div>
+  <div style="position:relative;z-index:1;max-width:860px;margin:0 auto">
+    <p style="color:#7DCEA0;font-size:12px;letter-spacing:5px;text-transform:uppercase;margin:0 0 16px;font-weight:800">Odoo 19 &bull; Enterprise &amp; Community &bull; Published on Odoo Apps Store</p>
+    <h1 style="color:#fff;font-size:46px;font-weight:900;margin:0 0 18px;line-height:1.08;letter-spacing:-0.5px">Advanced Agricultural<br/>Management System</h1>
+    <p style="color:#D5F5E3;font-size:17px;margin:0 0 30px;line-height:1.7;max-width:720px;display:inline-block">Complete farm-to-warehouse ERP solution with <b style="color:#fff">OWL Dashboard &amp; Chart.js analytics</b>, 4-level farm hierarchy, real-time costing engine, harvest scheduling with quality sorting, full accounting &amp; analytic accounts integration, and 12-section operations dashboard.</p>
+    <div style="display:flex;gap:10px;justify-content:center;flex-wrap:wrap;margin-bottom:28px">
+      <span style="background:rgba(255,255,255,0.14);color:#fff;padding:7px 18px;border-radius:50px;font-size:11px;font-weight:700;letter-spacing:0.5px">OWL Dashboard + Chart.js</span>
+      <span style="background:rgba(255,255,255,0.14);color:#fff;padding:7px 18px;border-radius:50px;font-size:11px;font-weight:700;letter-spacing:0.5px">Real-Time Costing</span>
+      <span style="background:rgba(255,255,255,0.14);color:#fff;padding:7px 18px;border-radius:50px;font-size:11px;font-weight:700;letter-spacing:0.5px">Dark &amp; Light Mode</span>
+      <span style="background:rgba(255,255,255,0.14);color:#fff;padding:7px 18px;border-radius:50px;font-size:11px;font-weight:700;letter-spacing:0.5px">7-Step Approval Workflow</span>
+      <span style="background:rgba(255,255,255,0.14);color:#fff;padding:7px 18px;border-radius:50px;font-size:11px;font-weight:700;letter-spacing:0.5px">Arabic RTL Support</span>
+    </div>
+    <!-- CTA Buttons -->
+    <div style="display:flex;gap:12px;justify-content:center;flex-wrap:wrap">
+      <a href="https://demo.xamltech.com/web/database/manager" target="_blank" style="background:#2980B9;color:#fff;padding:13px 32px;border-radius:10px;font-weight:800;font-size:15px;text-decoration:none;display:inline-flex;align-items:center;gap:8px">&#9654; Try Live Demo</a>
+      <a href="https://xamltech.com/erp-agriculture-egypt" target="_blank" style="background:rgba(255,255,255,0.15);color:#fff;padding:13px 32px;border-radius:10px;font-weight:700;font-size:15px;text-decoration:none;border:1px solid rgba(255,255,255,0.3)">Learn More</a>
     </div>
   </div>
 </div>
 
-<!-- ═══════ BRAND + BADGES ═══════ -->
-<div class="container" style="max-width:1100px;margin:0 auto 30px;padding:0 20px">
-  <div class="row align-items-center" style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:12px;margin-bottom:20px">
-    <div>
-      <h2 style="font-size:28px;font-weight:800;color:#0B5D3F;margin:0">XAMLTech</h2>
-      <p style="font-size:13px;color:#666;margin:3px 0 0;letter-spacing:0.5px">Odoo ERP Specialists &bull; Agriculture &amp; Manufacturing</p>
-    </div>
-    <div style="display:flex;gap:8px;flex-wrap:wrap">
-      <span style="background:#0B5D3F;color:#fff;padding:6px 16px;border-radius:6px;font-size:13px;font-weight:700">&#10003; Community</span>
-      <span style="background:#0B5D3F;color:#fff;padding:6px 16px;border-radius:6px;font-size:13px;font-weight:700">&#10003; Enterprise</span>
-      <span style="background:#0B5D3F;color:#fff;padding:6px 16px;border-radius:6px;font-size:13px;font-weight:700">&#10003; Odoo.sh</span>
-    </div>
-  </div>
-  <!-- Support bar -->
-  <div style="background:#0B5D3F;border-radius:12px;padding:14px 20px;display:flex;gap:16px;justify-content:center;align-items:center;flex-wrap:wrap;color:#fff">
-    <div style="padding:6px 14px;border-radius:8px;text-align:center;background:rgba(255,255,255,0.12)">
-      <div style="font-size:14px;font-weight:700">Lifetime Support</div>
-      <div style="font-size:12px;margin-top:2px;opacity:0.85">support@xamltech.com</div>
-    </div>
-    <a href="https://demo.xamltech.com/web/database/manager" target="_blank" style="padding:6px 14px;border-radius:8px;text-align:center;background:rgba(255,255,255,0.2);text-decoration:none;color:#fff;border:1px solid rgba(255,255,255,0.3)">
-      <div style="font-size:14px;font-weight:700">&#9654; Live Demo</div>
-      <div style="font-size:11px;margin-top:2px;opacity:0.85">DB: demo | User: demo | Pass: demo</div>
-    </a>
-    <div style="padding:6px 14px;border-radius:8px;text-align:center;background:rgba(255,255,255,0.12)">
-      <div style="font-size:14px;font-weight:700">Customization</div>
-      <div style="font-size:12px;margin-top:2px;opacity:0.85"><a href="https://xamltech.com" style="color:#7DCEA0;text-decoration:underline">xamltech.com</a></div>
-    </div>
-  </div>
-</div>
-
-<!-- ═══════ DASHBOARD SCREENSHOT ═══════ -->
-<div class="container" style="max-width:1100px;margin:0 auto 50px;padding:0 20px">
-  <div style="text-align:center;margin-bottom:24px">
-    <h2 style="font-size:28px;font-weight:700;color:#1a1a1a;margin:0 0 8px">Interactive OWL Dashboard</h2>
-    <hr style="width:80px;border-width:3px;border-color:#0B5D3F;margin:0 auto 12px"/>
-    <p style="color:#666;font-size:15px;max-width:700px;margin:0 auto">Real-time KPI cards, Chart.js powered analytics, revenue vs cost comparison, cost breakdown, and yield efficiency &mdash; all in a single view with dark mode support.</p>
-  </div>
-  <div style="border-radius:12px;overflow:hidden;box-shadow:0 8px 40px rgba(0,0,0,0.12);border:1px solid #e0e0e0">
-    <img src="screenshot_dashboard.png" alt="Agricultural Dashboard with KPI cards and charts" style="width:100%;display:block"/>
-  </div>
-</div>
-
-<!-- ═══════ DEMO ACCESS BANNER ═══════ -->
-<div class="container" style="max-width:1100px;margin:0 auto 40px;padding:0 20px">
-  <a href="https://demo.xamltech.com/web/database/manager" target="_blank" style="display:block;text-decoration:none;background:linear-gradient(90deg,#1A5276,#2980B9,#1A5276);border-radius:12px;padding:20px 30px;text-align:center;border:2px solid #2980B9;transition:transform 0.2s">
-    <div style="display:flex;align-items:center;justify-content:center;gap:20px;flex-wrap:wrap">
-      <div style="text-align:center">
-        <div style="color:#fff;font-size:20px;font-weight:800;margin:0">&#9654; Try Live Demo Now</div>
-        <div style="color:#AED6F1;font-size:13px;margin-top:4px">No installation required &mdash; explore all features instantly</div>
+<!-- ══════════ DEMO ACCESS BANNER ══════════ -->
+<div style="max-width:1100px;margin:-24px auto 40px;padding:0 20px;position:relative;z-index:2">
+  <a href="https://demo.xamltech.com/web/database/manager" target="_blank" style="display:block;text-decoration:none;background:linear-gradient(90deg,#1A5276,#2471A3,#1A5276);border-radius:14px;padding:22px 30px;text-align:center;box-shadow:0 8px 32px rgba(26,82,118,0.3)">
+    <div style="display:flex;align-items:center;justify-content:center;gap:24px;flex-wrap:wrap">
+      <div>
+        <div style="color:#fff;font-size:19px;font-weight:800">&#9654; Try Live Demo &mdash; No Installation Required</div>
+        <div style="color:#AED6F1;font-size:12px;margin-top:3px">Explore all features with sample data instantly</div>
       </div>
-      <div style="display:flex;gap:12px;flex-wrap:wrap;justify-content:center">
-        <div style="background:rgba(255,255,255,0.15);border-radius:8px;padding:8px 16px;text-align:center">
-          <div style="color:#AED6F1;font-size:10px;font-weight:600;text-transform:uppercase;letter-spacing:1px">URL</div>
-          <div style="color:#fff;font-size:13px;font-weight:700">demo.xamltech.com</div>
+      <div style="display:flex;gap:10px;flex-wrap:wrap;justify-content:center">
+        <div style="background:rgba(255,255,255,0.12);border-radius:8px;padding:8px 18px;text-align:center">
+          <div style="color:#AED6F1;font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px">URL</div>
+          <div style="color:#fff;font-size:14px;font-weight:800">demo.xamltech.com</div>
         </div>
-        <div style="background:rgba(255,255,255,0.15);border-radius:8px;padding:8px 16px;text-align:center">
-          <div style="color:#AED6F1;font-size:10px;font-weight:600;text-transform:uppercase;letter-spacing:1px">Database</div>
-          <div style="color:#fff;font-size:13px;font-weight:700">demo</div>
+        <div style="background:rgba(255,255,255,0.12);border-radius:8px;padding:8px 18px;text-align:center">
+          <div style="color:#AED6F1;font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px">Database</div>
+          <div style="color:#fff;font-size:14px;font-weight:800">demo</div>
         </div>
-        <div style="background:rgba(255,255,255,0.15);border-radius:8px;padding:8px 16px;text-align:center">
-          <div style="color:#AED6F1;font-size:10px;font-weight:600;text-transform:uppercase;letter-spacing:1px">Login</div>
-          <div style="color:#fff;font-size:13px;font-weight:700">demo / demo</div>
+        <div style="background:rgba(255,255,255,0.12);border-radius:8px;padding:8px 18px;text-align:center">
+          <div style="color:#AED6F1;font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px">User / Password</div>
+          <div style="color:#fff;font-size:14px;font-weight:800">demo / demo</div>
         </div>
       </div>
     </div>
   </a>
 </div>
 
-<!-- ═══════ WORKFLOW STEPS ═══════ -->
-<div class="container" style="max-width:1100px;margin:0 auto 50px;padding:0 20px">
-  <div style="text-align:center;margin-bottom:24px">
-    <h2 style="font-size:28px;font-weight:700;color:#1a1a1a;margin:0 0 8px">End-to-End Agricultural Workflow</h2>
-    <hr style="width:80px;border-width:3px;border-color:#0B5D3F;margin:0 auto 12px"/>
+<!-- ══════════ BRAND BAR ══════════ -->
+<div style="max-width:1100px;margin:0 auto 40px;padding:0 20px">
+  <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:12px;margin-bottom:16px">
+    <div>
+      <h2 style="font-size:26px;font-weight:800;color:#0B5D3F;margin:0"><a href="https://xamltech.com" target="_blank" style="color:#0B5D3F;text-decoration:none">XAMLTech</a></h2>
+      <p style="font-size:12px;color:#888;margin:3px 0 0;letter-spacing:0.5px">Odoo ERP Specialists &bull; Agriculture &amp; Manufacturing &bull; <a href="https://xamltech.com" target="_blank" style="color:#0B5D3F">xamltech.com</a></p>
+    </div>
+    <div style="display:flex;gap:6px;flex-wrap:wrap">
+      <span style="background:#0B5D3F;color:#fff;padding:5px 14px;border-radius:6px;font-size:12px;font-weight:700">&#10003; Community</span>
+      <span style="background:#0B5D3F;color:#fff;padding:5px 14px;border-radius:6px;font-size:12px;font-weight:700">&#10003; Enterprise</span>
+      <span style="background:#0B5D3F;color:#fff;padding:5px 14px;border-radius:6px;font-size:12px;font-weight:700">&#10003; Odoo.sh</span>
+    </div>
   </div>
-  <div style="display:flex;justify-content:center;gap:0;flex-wrap:wrap;text-align:center">
-    <div style="flex:1;min-width:100px;padding:0 8px">
-      <div style="width:52px;height:52px;background:#0B5D3F;border-radius:50%;display:flex;align-items:center;justify-content:center;margin:0 auto 8px;color:#fff;font-size:20px;font-weight:800">1</div>
-      <p style="font-size:12px;font-weight:700;color:#1a1a1a;margin:0">Farm Setup</p>
-      <p style="font-size:10px;color:#888;margin:2px 0 0">Hierarchy &amp; Areas</p>
-    </div>
-    <div style="flex:0 0 20px;padding-top:22px;color:#ccc;font-size:16px">&rarr;</div>
-    <div style="flex:1;min-width:100px;padding:0 8px">
-      <div style="width:52px;height:52px;background:#2980B9;border-radius:50%;display:flex;align-items:center;justify-content:center;margin:0 auto 8px;color:#fff;font-size:20px;font-weight:800">2</div>
-      <p style="font-size:12px;font-weight:700;color:#1a1a1a;margin:0">Production</p>
-      <p style="font-size:10px;color:#888;margin:2px 0 0">Requests &amp; Approval</p>
-    </div>
-    <div style="flex:0 0 20px;padding-top:22px;color:#ccc;font-size:16px">&rarr;</div>
-    <div style="flex:1;min-width:100px;padding:0 8px">
-      <div style="width:52px;height:52px;background:#E67E22;border-radius:50%;display:flex;align-items:center;justify-content:center;margin:0 auto 8px;color:#fff;font-size:20px;font-weight:800">3</div>
-      <p style="font-size:12px;font-weight:700;color:#1a1a1a;margin:0">Harvest</p>
-      <p style="font-size:10px;color:#888;margin:2px 0 0">Schedule &amp; Collect</p>
-    </div>
-    <div style="flex:0 0 20px;padding-top:22px;color:#ccc;font-size:16px">&rarr;</div>
-    <div style="flex:1;min-width:100px;padding:0 8px">
-      <div style="width:52px;height:52px;background:#8E44AD;border-radius:50%;display:flex;align-items:center;justify-content:center;margin:0 auto 8px;color:#fff;font-size:20px;font-weight:800">4</div>
-      <p style="font-size:12px;font-weight:700;color:#1a1a1a;margin:0">Sort &amp; Grade</p>
-      <p style="font-size:10px;color:#888;margin:2px 0 0">Quality &amp; Lots</p>
-    </div>
-    <div style="flex:0 0 20px;padding-top:22px;color:#ccc;font-size:16px">&rarr;</div>
-    <div style="flex:1;min-width:100px;padding:0 8px">
-      <div style="width:52px;height:52px;background:#C0392B;border-radius:50%;display:flex;align-items:center;justify-content:center;margin:0 auto 8px;color:#fff;font-size:20px;font-weight:800">5</div>
-      <p style="font-size:12px;font-weight:700;color:#1a1a1a;margin:0">Warehouse</p>
-      <p style="font-size:10px;color:#888;margin:2px 0 0">Stock &amp; Transfer</p>
-    </div>
-    <div style="flex:0 0 20px;padding-top:22px;color:#ccc;font-size:16px">&rarr;</div>
-    <div style="flex:1;min-width:100px;padding:0 8px">
-      <div style="width:52px;height:52px;background:#1A5276;border-radius:50%;display:flex;align-items:center;justify-content:center;margin:0 auto 8px;color:#fff;font-size:20px;font-weight:800">6</div>
-      <p style="font-size:12px;font-weight:700;color:#1a1a1a;margin:0">Costing &amp; P&amp;L</p>
-      <p style="font-size:10px;color:#888;margin:2px 0 0">Real-Time Analysis</p>
-    </div>
+  <div style="background:#0B5D3F;border-radius:10px;padding:12px 16px;display:flex;gap:12px;justify-content:center;align-items:center;flex-wrap:wrap;color:#fff;font-size:13px">
+    <a href="https://demo.xamltech.com/web/database/manager" target="_blank" style="padding:5px 14px;border-radius:8px;text-align:center;background:rgba(255,255,255,0.18);text-decoration:none;color:#fff;font-weight:700">&#9654; Live Demo</a>
+    <a href="mailto:support@xamltech.com" style="padding:5px 14px;border-radius:8px;text-align:center;background:rgba(255,255,255,0.1);text-decoration:none;color:#fff">Lifetime Support</a>
+    <a href="https://wa.me/201007982468" target="_blank" style="padding:5px 14px;border-radius:8px;text-align:center;background:rgba(255,255,255,0.1);text-decoration:none;color:#fff">WhatsApp</a>
+    <a href="https://xamltech.com/erp-agriculture-egypt" target="_blank" style="padding:5px 14px;border-radius:8px;text-align:center;background:rgba(255,255,255,0.1);text-decoration:none;color:#fff">Agriculture ERP Page</a>
+    <a href="https://xamltech.com/addons-store" target="_blank" style="padding:5px 14px;border-radius:8px;text-align:center;background:rgba(255,255,255,0.1);text-decoration:none;color:#fff">All Addons</a>
   </div>
 </div>
 
-<!-- ═══════ SCREENSHOT: PRODUCTION REQUEST ═══════ -->
-<div class="container" style="max-width:1100px;margin:0 auto 50px;padding:0 20px">
+<!-- ══════════ SCREENSHOT 1: DASHBOARD ══════════ -->
+<div style="max-width:1100px;margin:0 auto 50px;padding:0 20px">
+  <div style="text-align:center;margin-bottom:20px">
+    <h2 style="font-size:28px;font-weight:800;color:#1a1a1a;margin:0 0 6px">Interactive OWL Dashboard with Chart.js</h2>
+    <hr style="width:80px;border-width:3px;border-color:#0B5D3F;margin:0 auto 10px"/>
+    <p style="color:#666;font-size:14px;max-width:700px;margin:0 auto">8 KPI cards, Revenue vs Cost bar chart, Cost Breakdown doughnut, Yield Efficiency line chart &mdash; real-time RPC data, dark/light mode, fully responsive.</p>
+  </div>
+  <div style="border-radius:14px;overflow:hidden;box-shadow:0 12px 48px rgba(0,0,0,0.12);border:1px solid #ddd">
+    <img src="screenshot_dashboard.png" alt="Agricultural OWL Dashboard with KPI cards, Chart.js graphs - Revenue, Cost, Profit analysis - Odoo 19" style="width:100%;display:block"/>
+  </div>
+</div>
+
+<!-- ══════════ WORKFLOW ══════════ -->
+<div style="max-width:1100px;margin:0 auto 50px;padding:0 20px;text-align:center">
+  <h2 style="font-size:26px;font-weight:700;color:#1a1a1a;margin:0 0 6px">End-to-End Agricultural Workflow</h2>
+  <hr style="width:80px;border-width:3px;border-color:#0B5D3F;margin:0 auto 10px"/>
+  <p style="color:#666;font-size:14px;margin:0 0 24px">From farm setup to financial analysis &mdash; every step is integrated with Odoo Accounting, Inventory, Purchase, and HR</p>
+  <div style="display:flex;justify-content:center;gap:0;flex-wrap:wrap">
+    <div style="flex:1;min-width:90px;padding:0 6px"><div style="width:48px;height:48px;background:#0B5D3F;border-radius:50%;display:flex;align-items:center;justify-content:center;margin:0 auto 6px;color:#fff;font-size:18px;font-weight:800">1</div><p style="font-size:11px;font-weight:700;color:#1a1a1a;margin:0">Farm Setup</p><p style="font-size:9px;color:#999;margin:1px 0 0">Hierarchy &amp; Areas</p></div>
+    <div style="flex:0 0 16px;padding-top:20px;color:#ccc;font-size:14px">&rarr;</div>
+    <div style="flex:1;min-width:90px;padding:0 6px"><div style="width:48px;height:48px;background:#2980B9;border-radius:50%;display:flex;align-items:center;justify-content:center;margin:0 auto 6px;color:#fff;font-size:18px;font-weight:800">2</div><p style="font-size:11px;font-weight:700;color:#1a1a1a;margin:0">Production</p><p style="font-size:9px;color:#999;margin:1px 0 0">Requests &amp; Approval</p></div>
+    <div style="flex:0 0 16px;padding-top:20px;color:#ccc;font-size:14px">&rarr;</div>
+    <div style="flex:1;min-width:90px;padding:0 6px"><div style="width:48px;height:48px;background:#E67E22;border-radius:50%;display:flex;align-items:center;justify-content:center;margin:0 auto 6px;color:#fff;font-size:18px;font-weight:800">3</div><p style="font-size:11px;font-weight:700;color:#1a1a1a;margin:0">Harvest</p><p style="font-size:9px;color:#999;margin:1px 0 0">Schedule &amp; Collect</p></div>
+    <div style="flex:0 0 16px;padding-top:20px;color:#ccc;font-size:14px">&rarr;</div>
+    <div style="flex:1;min-width:90px;padding:0 6px"><div style="width:48px;height:48px;background:#8E44AD;border-radius:50%;display:flex;align-items:center;justify-content:center;margin:0 auto 6px;color:#fff;font-size:18px;font-weight:800">4</div><p style="font-size:11px;font-weight:700;color:#1a1a1a;margin:0">Sort &amp; Grade</p><p style="font-size:9px;color:#999;margin:1px 0 0">Quality &amp; Lots</p></div>
+    <div style="flex:0 0 16px;padding-top:20px;color:#ccc;font-size:14px">&rarr;</div>
+    <div style="flex:1;min-width:90px;padding:0 6px"><div style="width:48px;height:48px;background:#C0392B;border-radius:50%;display:flex;align-items:center;justify-content:center;margin:0 auto 6px;color:#fff;font-size:18px;font-weight:800">5</div><p style="font-size:11px;font-weight:700;color:#1a1a1a;margin:0">Warehouse</p><p style="font-size:9px;color:#999;margin:1px 0 0">Stock &amp; Transfer</p></div>
+    <div style="flex:0 0 16px;padding-top:20px;color:#ccc;font-size:14px">&rarr;</div>
+    <div style="flex:1;min-width:90px;padding:0 6px"><div style="width:48px;height:48px;background:#1A5276;border-radius:50%;display:flex;align-items:center;justify-content:center;margin:0 auto 6px;color:#fff;font-size:18px;font-weight:800">6</div><p style="font-size:11px;font-weight:700;color:#1a1a1a;margin:0">Costing &amp; P&amp;L</p><p style="font-size:9px;color:#999;margin:1px 0 0">Real-Time Analytics</p></div>
+  </div>
+</div>
+
+<!-- ══════════ SCREENSHOT 2: PRODUCTION ══════════ -->
+<div style="max-width:1100px;margin:0 auto 50px;padding:0 20px">
   <div style="display:flex;gap:30px;align-items:center;flex-wrap:wrap">
-    <div style="flex:1;min-width:300px">
-      <span style="background:#E8F5E9;color:#2E7D32;font-size:11px;font-weight:700;padding:4px 12px;border-radius:50px;letter-spacing:1px">PRODUCTION</span>
-      <h3 style="font-size:24px;font-weight:700;color:#1a1a1a;margin:12px 0 10px">Production Requests with 7-Step Approval</h3>
-      <p style="color:#555;font-size:14px;line-height:1.7;margin:0 0 16px">Full workflow from Draft to Completed with Dr. Approval, Inventory Review, Transfer, RFQ generation, and automatic stock moves. Each step has role-based access control.</p>
-      <ul style="list-style:none;padding:0;margin:0;font-size:13px;color:#444;line-height:2.2">
-        <li>&#10003; Material lines with stock availability checking</li>
-        <li>&#10003; Auto-generate purchase orders for missing materials</li>
-        <li>&#10003; Multi-level approval (Engineer → Warehouse → Accounts)</li>
-        <li>&#10003; Automatic journal entries on completion</li>
+    <div style="flex:1;min-width:280px">
+      <span style="background:#E8F5E9;color:#2E7D32;font-size:10px;font-weight:800;padding:4px 12px;border-radius:50px;letter-spacing:1px">PRODUCTION REQUESTS</span>
+      <h3 style="font-size:22px;font-weight:800;color:#1a1a1a;margin:12px 0 8px">7-Step Approval Workflow</h3>
+      <p style="color:#555;font-size:13px;line-height:1.7;margin:0 0 14px">Full lifecycle from Draft to Completed: material lines with stock availability checking, multi-level approval (Engineer &rarr; Warehouse &rarr; Accounts), automatic purchase order generation, journal entries on completion.</p>
+      <ul style="list-style:none;padding:0;margin:0;font-size:12px;color:#444;line-height:2.2">
+        <li>&#10003; Material lines with real-time stock availability</li>
+        <li>&#10003; Auto-generate RFQs for missing materials</li>
+        <li>&#10003; Multi-level approval with role-based access</li>
+        <li>&#10003; Automatic stock moves and journal entries</li>
+        <li>&#10003; Production request templates for recurring operations</li>
       </ul>
     </div>
-    <div style="flex:1;min-width:300px;border-radius:12px;overflow:hidden;box-shadow:0 6px 30px rgba(0,0,0,0.1);border:1px solid #e0e0e0">
-      <img src="screenshot_production.png" alt="Production Request Form with approval workflow" style="width:100%;display:block"/>
+    <div style="flex:1;min-width:280px;border-radius:14px;overflow:hidden;box-shadow:0 8px 36px rgba(0,0,0,0.1);border:1px solid #ddd">
+      <img src="screenshot_production.png" alt="Odoo 19 Production Request Form with 7-step approval workflow - Draft to Completed" style="width:100%;display:block"/>
     </div>
   </div>
 </div>
 
-<!-- ═══════ SCREENSHOT: HARVEST SCHEDULE ═══════ -->
-<div style="background:#f8faf8;padding:40px 0;margin-bottom:50px">
-<div class="container" style="max-width:1100px;margin:0 auto;padding:0 20px">
+<!-- ══════════ SCREENSHOT 3: HARVEST ══════════ -->
+<div style="background:#f7faf7;padding:40px 0;margin-bottom:0">
+<div style="max-width:1100px;margin:0 auto;padding:0 20px">
   <div style="display:flex;gap:30px;align-items:center;flex-wrap:wrap;flex-direction:row-reverse">
-    <div style="flex:1;min-width:300px">
-      <span style="background:#FFF3E0;color:#E65100;font-size:11px;font-weight:700;padding:4px 12px;border-radius:50px;letter-spacing:1px">HARVEST</span>
-      <h3 style="font-size:24px;font-weight:700;color:#1a1a1a;margin:12px 0 10px">Harvest Scheduling &amp; Grading</h3>
-      <p style="color:#555;font-size:14px;line-height:1.7;margin:0 0 16px">Plan harvests by schedule type, track actual vs expected quantities, assign workers, and manage warehouse locations &mdash; all with full lot/batch traceability from field to warehouse.</p>
-      <ul style="list-style:none;padding:0;margin:0;font-size:13px;color:#444;line-height:2.2">
+    <div style="flex:1;min-width:280px">
+      <span style="background:#FFF3E0;color:#E65100;font-size:10px;font-weight:800;padding:4px 12px;border-radius:50px;letter-spacing:1px">HARVEST &amp; SORTING</span>
+      <h3 style="font-size:22px;font-weight:800;color:#1a1a1a;margin:12px 0 8px">Harvest Scheduling &amp; Quality Grading</h3>
+      <p style="color:#555;font-size:13px;line-height:1.7;margin:0 0 14px">Plan harvests by schedule type, track actual vs expected quantities, assign workers, manage warehouse locations with full lot/batch traceability from field to warehouse.</p>
+      <ul style="list-style:none;padding:0;margin:0;font-size:12px;color:#444;line-height:2.2">
         <li>&#10003; Manual, seasonal, recurring, weather-based schedules</li>
         <li>&#10003; Grade A/B/C quality classification with pricing</li>
         <li>&#10003; Automatic lot/batch number generation</li>
-        <li>&#10003; Worker assignment and equipment planning</li>
+        <li>&#10003; Waste and rejection tracking with reasons</li>
+        <li>&#10003; Auto-create stock pickings on completion</li>
       </ul>
     </div>
-    <div style="flex:1;min-width:300px;border-radius:12px;overflow:hidden;box-shadow:0 6px 30px rgba(0,0,0,0.1);border:1px solid #e0e0e0">
-      <img src="screenshot_harvest.png" alt="Harvest Schedule Form with grading" style="width:100%;display:block"/>
+    <div style="flex:1;min-width:280px;border-radius:14px;overflow:hidden;box-shadow:0 8px 36px rgba(0,0,0,0.1);border:1px solid #ddd">
+      <img src="screenshot_harvest.png" alt="Odoo 19 Harvest Schedule form with grading, lot tracking, warehouse locations" style="width:100%;display:block"/>
     </div>
   </div>
 </div>
 </div>
 
-<!-- ═══════ SCREENSHOT: PROJECT ═══════ -->
-<div class="container" style="max-width:1100px;margin:0 auto 50px;padding:0 20px">
+<!-- ══════════ SCREENSHOT 4: PROJECT ══════════ -->
+<div style="max-width:1100px;margin:40px auto 50px;padding:0 20px">
   <div style="display:flex;gap:30px;align-items:center;flex-wrap:wrap">
-    <div style="flex:1;min-width:300px">
-      <span style="background:#E3F2FD;color:#1565C0;font-size:11px;font-weight:700;padding:4px 12px;border-radius:50px;letter-spacing:1px">PROJECTS &amp; COSTING</span>
-      <h3 style="font-size:24px;font-weight:700;color:#1a1a1a;margin:12px 0 10px">Agricultural Projects with Full P&amp;L</h3>
-      <p style="color:#555;font-size:14px;line-height:1.7;margin:0 0 16px">Manage crop production projects with budget tracking, direct/indirect cost breakdown, revenue analysis, profit margin calculation, and ROI monitoring &mdash; per project, per farm, per season.</p>
-      <ul style="list-style:none;padding:0;margin:0;font-size:13px;color:#444;line-height:2.2">
+    <div style="flex:1;min-width:280px">
+      <span style="background:#E3F2FD;color:#1565C0;font-size:10px;font-weight:800;padding:4px 12px;border-radius:50px;letter-spacing:1px">PROJECTS &amp; COSTING</span>
+      <h3 style="font-size:22px;font-weight:800;color:#1a1a1a;margin:12px 0 8px">Agricultural Projects with Full P&amp;L Analysis</h3>
+      <p style="color:#555;font-size:13px;line-height:1.7;margin:0 0 14px">Manage crop production projects with budget tracking, direct/indirect cost breakdown, revenue analysis, profit margin and ROI calculation per project, per farm, per season.</p>
+      <ul style="list-style:none;padding:0;margin:0;font-size:12px;color:#444;line-height:2.2">
         <li>&#10003; 8 project types (crop, livestock, greenhouse, irrigation...)</li>
         <li>&#10003; Budget vs actual with variance analysis</li>
         <li>&#10003; Cost allocation to farms by area percentage</li>
-        <li>&#10003; Farm-level profit breakdown</li>
+        <li>&#10003; Farm-level profit breakdown with ROI tracking</li>
+        <li>&#10003; Progress tracking with remaining days calculation</li>
       </ul>
     </div>
-    <div style="flex:1;min-width:300px;border-radius:12px;overflow:hidden;box-shadow:0 6px 30px rgba(0,0,0,0.1);border:1px solid #e0e0e0">
-      <img src="screenshot_project.png" alt="Agricultural Project with Budget and Costs" style="width:100%;display:block"/>
+    <div style="flex:1;min-width:280px;border-radius:14px;overflow:hidden;box-shadow:0 8px 36px rgba(0,0,0,0.1);border:1px solid #ddd">
+      <img src="screenshot_project.png" alt="Odoo 19 Agricultural Project with budget, cost breakdown, P&L, ROI analysis" style="width:100%;display:block"/>
     </div>
   </div>
 </div>
 
-<!-- ═══════ SCREENSHOT: PRODUCTS + LOTS ═══════ -->
-<div style="background:#f8faf8;padding:40px 0;margin-bottom:50px">
-<div class="container" style="max-width:1100px;margin:0 auto;padding:0 20px">
+<!-- ══════════ SCREENSHOTS 5+6: PRODUCTS + LOTS ══════════ -->
+<div style="background:#f7faf7;padding:40px 0;margin-bottom:0">
+<div style="max-width:1100px;margin:0 auto;padding:0 20px">
   <div style="display:flex;gap:20px;flex-wrap:wrap">
-    <div style="flex:1;min-width:300px">
-      <div style="border-radius:12px;overflow:hidden;box-shadow:0 6px 30px rgba(0,0,0,0.1);border:1px solid #e0e0e0;margin-bottom:16px">
-        <img src="screenshot_products.png" alt="Product categories and types" style="width:100%;display:block"/>
+    <div style="flex:1;min-width:280px">
+      <div style="border-radius:14px;overflow:hidden;box-shadow:0 8px 36px rgba(0,0,0,0.1);border:1px solid #ddd;margin-bottom:14px">
+        <img src="screenshot_products.png" alt="7 Agricultural Product Types - Seeds, Fertilizers, Pesticides, Equipment in Odoo 19" style="width:100%;display:block"/>
       </div>
-      <h4 style="font-size:16px;font-weight:700;color:#1a1a1a;margin:0 0 6px">7 Agricultural Product Types</h4>
-      <p style="color:#666;font-size:13px;margin:0">Seeds, Fertilizers, Pesticides, Equipment, Spare Parts, Packaging, and finished crops &mdash; each with category-based stock account mapping and per-section availability filters.</p>
+      <h4 style="font-size:15px;font-weight:800;color:#1a1a1a;margin:0 0 5px">7 Agricultural Product Types</h4>
+      <p style="color:#666;font-size:12px;margin:0;line-height:1.6">Seeds, Fertilizers, Pesticides, Equipment, Spare Parts, Packaging, and finished crops &mdash; with per-section availability filters and category-based stock account mapping.</p>
     </div>
-    <div style="flex:1;min-width:300px">
-      <div style="border-radius:12px;overflow:hidden;box-shadow:0 6px 30px rgba(0,0,0,0.1);border:1px solid #e0e0e0;margin-bottom:16px">
-        <img src="screenshot_lots.png" alt="Production lots with quality grading" style="width:100%;display:block"/>
+    <div style="flex:1;min-width:280px">
+      <div style="border-radius:14px;overflow:hidden;box-shadow:0 8px 36px rgba(0,0,0,0.1);border:1px solid #ddd;margin-bottom:14px">
+        <img src="screenshot_lots.png" alt="Production Lots with quality grading A/B/C, farm organization in Odoo 19" style="width:100%;display:block"/>
       </div>
-      <h4 style="font-size:16px;font-weight:700;color:#1a1a1a;margin:0 0 6px">Production Lots &amp; Quality Tracking</h4>
-      <p style="color:#666;font-size:13px;margin:0">Full lot traceability with quality grades (A-Premium, B-Standard, C-Economy, Organic), farm-based organization, quarantine status, and cost allocation per lot.</p>
+      <h4 style="font-size:15px;font-weight:800;color:#1a1a1a;margin:0 0 5px">Production Lots &amp; Quality Tracking</h4>
+      <p style="color:#666;font-size:12px;margin:0;line-height:1.6">Full lot traceability with quality grades (A-Premium, B-Standard, C-Economy, Organic), farm-based organization, quarantine status, and cost allocation per lot.</p>
     </div>
   </div>
 </div>
 </div>
 
-<!-- ═══════ KEY FEATURES ═══════ -->
-<div class="container" style="max-width:1100px;margin:0 auto 50px;padding:0 20px">
-  <div style="text-align:center;margin-bottom:24px">
-    <h2 style="font-size:28px;font-weight:700;color:#1a1a1a;margin:0 0 8px">Key Features</h2>
+<!-- ══════════ KEY FEATURES ══════════ -->
+<div style="max-width:1100px;margin:40px auto 40px;padding:0 20px">
+  <div style="text-align:center;margin-bottom:20px">
+    <h2 style="font-size:26px;font-weight:800;color:#1a1a1a;margin:0 0 6px">Complete Feature Set</h2>
     <hr style="width:80px;border-width:3px;border-color:#0B5D3F;margin:0 auto"/>
   </div>
   <ul style="padding:0;list-style:none">
-    <li class="shadow rounded" style="padding:16px 20px;margin-bottom:12px;font-size:14px;color:#212121;font-weight:600;letter-spacing:0.3px;border-left:4px solid #0B5D3F;border-radius:8px"><span class="fa fa-arrow-right" style="color:#0B5D3F;padding-right:10px"></span>OWL Dashboard with Chart.js &mdash; 8 KPI cards, 3 interactive charts (Revenue vs Cost, Cost Breakdown doughnut, Yield Efficiency line), live RPC data, dark/light mode, responsive design</li>
-    <li class="shadow rounded" style="padding:16px 20px;margin-bottom:12px;font-size:14px;color:#212121;font-weight:600;letter-spacing:0.3px;border-left:4px solid #0B5D3F;border-radius:8px"><span class="fa fa-arrow-right" style="color:#0B5D3F;padding-right:10px"></span>4-Level Farm Hierarchy (Farm &rarr; Sector &rarr; Unit &rarr; House) with dynamic Total Area calculation including all children, supporting Meter and Feddan measurements</li>
-    <li class="shadow rounded" style="padding:16px 20px;margin-bottom:12px;font-size:14px;color:#212121;font-weight:600;letter-spacing:0.3px;border-left:4px solid #0B5D3F;border-radius:8px"><span class="fa fa-arrow-right" style="color:#0B5D3F;padding-right:10px"></span>Real-Time Costing Engine &mdash; materials, labor, equipment costs flow through analytic accounts per farm for instant cost-per-crop, per-house, per-season analysis</li>
-    <li class="shadow rounded" style="padding:16px 20px;margin-bottom:12px;font-size:14px;color:#212121;font-weight:600;letter-spacing:0.3px;border-left:4px solid #0B5D3F;border-radius:8px"><span class="fa fa-arrow-right" style="color:#0B5D3F;padding-right:10px"></span>7-Step Production Request Workflow with multi-level approval (Draft &rarr; Submitted &rarr; Dr. Approved &rarr; Inventory Review &rarr; Transfer Ready &rarr; RFQ Pending &rarr; Completed)</li>
-    <li class="shadow rounded" style="padding:16px 20px;margin-bottom:12px;font-size:14px;color:#212121;font-weight:600;letter-spacing:0.3px;border-left:4px solid #0B5D3F;border-radius:8px"><span class="fa fa-arrow-right" style="color:#0B5D3F;padding-right:10px"></span>Harvest Scheduling with quality-based sorting (Grade A/B/C), batch lot generation, waste tracking, grade-based pricing, and automatic stock pickings</li>
-    <li class="shadow rounded" style="padding:16px 20px;margin-bottom:12px;font-size:14px;color:#212121;font-weight:600;letter-spacing:0.3px;border-left:4px solid #0B5D3F;border-radius:8px"><span class="fa fa-arrow-right" style="color:#0B5D3F;padding-right:10px"></span>Full Accounting Integration &mdash; automated journal entries, multi-journal setup, budget variance analysis, analytic accounts auto-created per farm, cost allocation with percentage distribution</li>
-    <li class="shadow rounded" style="padding:16px 20px;margin-bottom:12px;font-size:14px;color:#212121;font-weight:600;letter-spacing:0.3px;border-left:4px solid #0B5D3F;border-radius:8px"><span class="fa fa-arrow-right" style="color:#0B5D3F;padding-right:10px"></span>Multi-Warehouse Stock Management with auto-created locations per farm, internal transfers, lot traceability, perpetual inventory valuation</li>
-    <li class="shadow rounded" style="padding:16px 20px;margin-bottom:12px;font-size:14px;color:#212121;font-weight:600;letter-spacing:0.3px;border-left:4px solid #0B5D3F;border-radius:8px"><span class="fa fa-arrow-right" style="color:#0B5D3F;padding-right:10px"></span>12-Section Operations Dashboard (Production, Cost Centers, Accounting, Finished Goods, Sorting, Warehouses, Workers, Pre-Sale, Purchasing, Harvest, Vehicles, Maintenance)</li>
-    <li class="shadow rounded" style="padding:16px 20px;margin-bottom:12px;font-size:14px;color:#212121;font-weight:600;letter-spacing:0.3px;border-left:4px solid #0B5D3F;border-radius:8px"><span class="fa fa-arrow-right" style="color:#0B5D3F;padding-right:10px"></span>Role-Based Security visible in User Settings &mdash; Agricultural Role (User/Engineer/Manager) + department checkboxes (Warehouse, Purchase, Accountant, Section Manager)</li>
-    <li class="shadow rounded" style="padding:16px 20px;margin-bottom:12px;font-size:14px;color:#212121;font-weight:600;letter-spacing:0.3px;border-left:4px solid #0B5D3F;border-radius:8px"><span class="fa fa-arrow-right" style="color:#0B5D3F;padding-right:10px"></span>Sales &amp; Purchasing integration with vendor evaluation, auto-RFQ from production requests, grade-based customer invoicing, and waste cost handling</li>
+    <li class="shadow rounded" style="padding:14px 18px;margin-bottom:10px;font-size:13px;color:#212121;font-weight:600;letter-spacing:0.2px;border-left:4px solid #0B5D3F;border-radius:8px"><span class="fa fa-arrow-right" style="color:#0B5D3F;padding-right:10px"></span>OWL Dashboard with Chart.js &mdash; 8 live KPI cards, 3 interactive charts (bar, doughnut, line), RPC data loading, dark/light mode, responsive animations</li>
+    <li class="shadow rounded" style="padding:14px 18px;margin-bottom:10px;font-size:13px;color:#212121;font-weight:600;letter-spacing:0.2px;border-left:4px solid #0B5D3F;border-radius:8px"><span class="fa fa-arrow-right" style="color:#0B5D3F;padding-right:10px"></span>4-Level Dynamic Farm Hierarchy (Farm &rarr; Sector &rarr; Unit &rarr; House) with Total Area Including Children auto-calculation in Meter/Feddan</li>
+    <li class="shadow rounded" style="padding:14px 18px;margin-bottom:10px;font-size:13px;color:#212121;font-weight:600;letter-spacing:0.2px;border-left:4px solid #0B5D3F;border-radius:8px"><span class="fa fa-arrow-right" style="color:#0B5D3F;padding-right:10px"></span>Real-Time Costing Engine &mdash; materials, labor, equipment costs flow through analytic accounts for instant cost-per-crop, per-house, per-season analysis</li>
+    <li class="shadow rounded" style="padding:14px 18px;margin-bottom:10px;font-size:13px;color:#212121;font-weight:600;letter-spacing:0.2px;border-left:4px solid #0B5D3F;border-radius:8px"><span class="fa fa-arrow-right" style="color:#0B5D3F;padding-right:10px"></span>7-Step Production Request Workflow: Draft &rarr; Submitted &rarr; Dr. Approved &rarr; Inventory Review &rarr; Transfer Ready &rarr; RFQ Pending &rarr; Completed</li>
+    <li class="shadow rounded" style="padding:14px 18px;margin-bottom:10px;font-size:13px;color:#212121;font-weight:600;letter-spacing:0.2px;border-left:4px solid #0B5D3F;border-radius:8px"><span class="fa fa-arrow-right" style="color:#0B5D3F;padding-right:10px"></span>Harvest Scheduling with Grade A/B/C sorting, batch lot generation, waste tracking, and grade-based pricing for revenue calculation</li>
+    <li class="shadow rounded" style="padding:14px 18px;margin-bottom:10px;font-size:13px;color:#212121;font-weight:600;letter-spacing:0.2px;border-left:4px solid #0B5D3F;border-radius:8px"><span class="fa fa-arrow-right" style="color:#0B5D3F;padding-right:10px"></span>Full Accounting Integration &mdash; automated journal entries, budget variance analysis, analytic accounts auto-created per farm, cost allocation by percentage</li>
+    <li class="shadow rounded" style="padding:14px 18px;margin-bottom:10px;font-size:13px;color:#212121;font-weight:600;letter-spacing:0.2px;border-left:4px solid #0B5D3F;border-radius:8px"><span class="fa fa-arrow-right" style="color:#0B5D3F;padding-right:10px"></span>Multi-Warehouse Stock Management with auto-created locations per farm, internal transfers, full lot traceability, and perpetual inventory valuation</li>
+    <li class="shadow rounded" style="padding:14px 18px;margin-bottom:10px;font-size:13px;color:#212121;font-weight:600;letter-spacing:0.2px;border-left:4px solid #0B5D3F;border-radius:8px"><span class="fa fa-arrow-right" style="color:#0B5D3F;padding-right:10px"></span>12-Section Operations Dashboard &mdash; Production, Cost Centers, Accounting, Finished Goods, Sorting, Warehouses, Workers, Purchasing, Harvest, Vehicles, Maintenance</li>
+    <li class="shadow rounded" style="padding:14px 18px;margin-bottom:10px;font-size:13px;color:#212121;font-weight:600;letter-spacing:0.2px;border-left:4px solid #0B5D3F;border-radius:8px"><span class="fa fa-arrow-right" style="color:#0B5D3F;padding-right:10px"></span>Role-Based Security visible in User Settings without developer mode &mdash; Agricultural Role selector + department checkboxes for Warehouse, Purchase, Accountant, Section Manager</li>
+    <li class="shadow rounded" style="padding:14px 18px;margin-bottom:10px;font-size:13px;color:#212121;font-weight:600;letter-spacing:0.2px;border-left:4px solid #0B5D3F;border-radius:8px"><span class="fa fa-arrow-right" style="color:#0B5D3F;padding-right:10px"></span>Sales &amp; Purchasing integration: vendor evaluation, auto-RFQ from production, grade-based invoicing, waste cost handling, delivery scheduling</li>
   </ul>
 </div>
 
-<!-- ═══════ ERP INTEGRATION GRID ═══════ -->
-<div class="container" style="max-width:1100px;margin:0 auto 50px;padding:0 20px">
-  <div style="text-align:center;margin-bottom:24px">
-    <h2 style="font-size:28px;font-weight:700;color:#1a1a1a;margin:0 0 8px">Deep Odoo ERP Integration</h2>
-    <hr style="width:80px;border-width:3px;border-color:#0B5D3F;margin:0 auto"/>
+<!-- ══════════ ERP INTEGRATION ══════════ -->
+<div style="max-width:1100px;margin:0 auto 40px;padding:0 20px">
+  <div style="text-align:center;margin-bottom:20px">
+    <h2 style="font-size:26px;font-weight:800;color:#1a1a1a;margin:0 0 6px">Deep Odoo ERP Integration</h2>
+    <hr style="width:80px;border-width:3px;border-color:#0B5D3F;margin:0 auto 8px"/>
+    <p style="color:#666;font-size:13px">Not a standalone module &mdash; fully embedded into 14+ Odoo core modules</p>
   </div>
-  <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:16px">
-    <div style="border:1px solid #e0e0e0;border-radius:12px;padding:22px;border-top:4px solid #0B5D3F">
-      <h4 style="font-size:14px;font-weight:700;color:#1a1a1a;margin:0 0 8px">Accounting &amp; Finance</h4>
-      <p style="font-size:12px;color:#555;line-height:1.8;margin:0">Automated journal entries &bull; Multi-journal setup &bull; Budget tracking &bull; Direct/indirect costs &bull; P&amp;L by farm</p>
+  <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:14px">
+    <div style="border:1px solid #e0e0e0;border-radius:10px;padding:20px;border-top:4px solid #0B5D3F"><h4 style="font-size:13px;font-weight:800;color:#1a1a1a;margin:0 0 6px">Accounting</h4><p style="font-size:11px;color:#555;line-height:1.7;margin:0">Journal entries &bull; Budget tracking &bull; Multi-journal &bull; Direct/indirect costs &bull; P&amp;L by farm</p></div>
+    <div style="border:1px solid #e0e0e0;border-radius:10px;padding:20px;border-top:4px solid #2980B9"><h4 style="font-size:13px;font-weight:800;color:#1a1a1a;margin:0 0 6px">Analytic Accounts</h4><p style="font-size:11px;color:#555;line-height:1.7;margin:0">Auto-created per farm &bull; Cost centers &bull; % allocation &bull; Budget vs actual &bull; Profitability per crop</p></div>
+    <div style="border:1px solid #e0e0e0;border-radius:10px;padding:20px;border-top:4px solid #E67E22"><h4 style="font-size:13px;font-weight:800;color:#1a1a1a;margin:0 0 6px">Inventory</h4><p style="font-size:11px;color:#555;line-height:1.7;margin:0">Auto locations &bull; Multi-warehouse &bull; Lot traceability &bull; Transfers &bull; Perpetual valuation</p></div>
+    <div style="border:1px solid #e0e0e0;border-radius:10px;padding:20px;border-top:4px solid #8E44AD"><h4 style="font-size:13px;font-weight:800;color:#1a1a1a;margin:0 0 6px">Projects</h4><p style="font-size:11px;color:#555;line-height:1.7;margin:0">8 types &bull; Budget planning &bull; Approval workflow &bull; Cost breakdown &bull; ROI tracking</p></div>
+    <div style="border:1px solid #e0e0e0;border-radius:10px;padding:20px;border-top:4px solid #C0392B"><h4 style="font-size:13px;font-weight:800;color:#1a1a1a;margin:0 0 6px">Sales &amp; Purchase</h4><p style="font-size:11px;color:#555;line-height:1.7;margin:0">Auto-RFQ &bull; Vendor evaluation &bull; Grade pricing &bull; Delivery scheduling &bull; Waste handling</p></div>
+    <div style="border:1px solid #e0e0e0;border-radius:10px;padding:20px;border-top:4px solid #16A085"><h4 style="font-size:13px;font-weight:800;color:#1a1a1a;margin:0 0 6px">HR &amp; Workers</h4><p style="font-size:11px;color:#555;line-height:1.7;margin:0">Worker assignment &bull; 7 product types &bull; Section tasks &bull; Engineer roles &bull; Payroll integration</p></div>
+  </div>
+</div>
+
+<!-- ══════════ TECH SPECS ══════════ -->
+<div style="max-width:1100px;margin:0 auto 40px;padding:0 20px">
+  <div style="background:#f8f9fa;border-radius:12px;padding:28px;text-align:center;border:1px solid #e0e0e0">
+    <h3 style="font-size:16px;font-weight:800;color:#333;margin:0 0 14px">Technical Specifications</h3>
+    <div style="display:flex;justify-content:center;gap:36px;flex-wrap:wrap;margin-bottom:14px">
+      <div><span style="font-size:28px;font-weight:900;color:#0B5D3F;display:block">19+</span><span style="font-size:11px;color:#666">Custom Models</span></div>
+      <div><span style="font-size:28px;font-weight:900;color:#2980B9;display:block">17,700+</span><span style="font-size:11px;color:#666">Lines of Code</span></div>
+      <div><span style="font-size:28px;font-weight:900;color:#E67E22;display:block">12</span><span style="font-size:11px;color:#666">Section Dashboards</span></div>
+      <div><span style="font-size:28px;font-weight:900;color:#8E44AD;display:block">OWL 2</span><span style="font-size:11px;color:#666">Frontend Framework</span></div>
     </div>
-    <div style="border:1px solid #e0e0e0;border-radius:12px;padding:22px;border-top:4px solid #2980B9">
-      <h4 style="font-size:14px;font-weight:700;color:#1a1a1a;margin:0 0 8px">Analytic Accounts</h4>
-      <p style="font-size:12px;color:#555;line-height:1.8;margin:0">Auto-created per farm &bull; Cost center tracking &bull; % allocation &bull; Budget vs actual &bull; Profitability per crop</p>
-    </div>
-    <div style="border:1px solid #e0e0e0;border-radius:12px;padding:22px;border-top:4px solid #E67E22">
-      <h4 style="font-size:14px;font-weight:700;color:#1a1a1a;margin:0 0 8px">Inventory &amp; Warehouse</h4>
-      <p style="font-size:12px;color:#555;line-height:1.8;margin:0">Auto stock locations &bull; Multi-warehouse &bull; Lot traceability &bull; Internal transfers &bull; Perpetual valuation</p>
-    </div>
-    <div style="border:1px solid #e0e0e0;border-radius:12px;padding:22px;border-top:4px solid #8E44AD">
-      <h4 style="font-size:14px;font-weight:700;color:#1a1a1a;margin:0 0 8px">Projects &amp; Cost Analysis</h4>
-      <p style="font-size:12px;color:#555;line-height:1.8;margin:0">8 project types &bull; Budget planning &bull; Multi-level approval &bull; Material/labor/equipment costs &bull; ROI</p>
-    </div>
-    <div style="border:1px solid #e0e0e0;border-radius:12px;padding:22px;border-top:4px solid #C0392B">
-      <h4 style="font-size:14px;font-weight:700;color:#1a1a1a;margin:0 0 8px">Sales &amp; Purchasing</h4>
-      <p style="font-size:12px;color:#555;line-height:1.8;margin:0">Auto-purchase from requests &bull; Vendor evaluation &bull; Grade pricing &bull; Delivery scheduling &bull; Waste handling</p>
-    </div>
-    <div style="border:1px solid #e0e0e0;border-radius:12px;padding:22px;border-top:4px solid #16A085">
-      <h4 style="font-size:14px;font-weight:700;color:#1a1a1a;margin:0 0 8px">HR &amp; Product Types</h4>
-      <p style="font-size:12px;color:#555;line-height:1.8;margin:0">Worker assignment &bull; 7 product types &bull; Section-based tasks &bull; Engineer roles &bull; Skills tracking</p>
+    <div style="display:flex;justify-content:center;gap:6px;flex-wrap:wrap">
+      <span style="background:#E8F5E9;color:#2E7D32;padding:4px 12px;border-radius:50px;font-size:10px;font-weight:700">Python 3.10+</span>
+      <span style="background:#E3F2FD;color:#1565C0;padding:4px 12px;border-radius:50px;font-size:10px;font-weight:700">PostgreSQL</span>
+      <span style="background:#FFF3E0;color:#E65100;padding:4px 12px;border-radius:50px;font-size:10px;font-weight:700">OWL + Chart.js</span>
+      <span style="background:#F3E5F5;color:#6A1B9A;padding:4px 12px;border-radius:50px;font-size:10px;font-weight:700">SCSS Dark/Light</span>
+      <span style="background:#EFEBE9;color:#4E342E;padding:4px 12px;border-radius:50px;font-size:10px;font-weight:700">LGPL-3</span>
+      <span style="background:#E0F2F1;color:#00695C;padding:4px 12px;border-radius:50px;font-size:10px;font-weight:700">Community + Enterprise</span>
     </div>
   </div>
 </div>
 
-<!-- ═══════ TECH SPECS ═══════ -->
-<div class="container" style="max-width:1100px;margin:0 auto 50px;padding:0 20px">
-  <div style="background:#f8f9fa;border-radius:14px;padding:30px;text-align:center;border:1px solid #e0e0e0">
-    <h3 style="font-size:18px;font-weight:700;color:#333;margin:0 0 16px">Technical Specifications</h3>
-    <div style="display:flex;justify-content:center;gap:40px;flex-wrap:wrap;margin-bottom:16px">
-      <div><span style="font-size:30px;font-weight:800;color:#0B5D3F;display:block">19+</span><span style="font-size:12px;color:#666">Custom Models</span></div>
-      <div><span style="font-size:30px;font-weight:800;color:#2980B9;display:block">17,700+</span><span style="font-size:12px;color:#666">Lines of Code</span></div>
-      <div><span style="font-size:30px;font-weight:800;color:#E67E22;display:block">12</span><span style="font-size:12px;color:#666">Section Dashboards</span></div>
-      <div><span style="font-size:30px;font-weight:800;color:#8E44AD;display:block">OWL 2</span><span style="font-size:12px;color:#666">Frontend Framework</span></div>
-    </div>
-    <div style="display:flex;justify-content:center;gap:8px;flex-wrap:wrap">
-      <span style="background:#E8F5E9;color:#2E7D32;padding:5px 14px;border-radius:50px;font-size:11px;font-weight:700">Python 3.10+</span>
-      <span style="background:#E3F2FD;color:#1565C0;padding:5px 14px;border-radius:50px;font-size:11px;font-weight:700">PostgreSQL</span>
-      <span style="background:#FFF3E0;color:#E65100;padding:5px 14px;border-radius:50px;font-size:11px;font-weight:700">OWL + Chart.js</span>
-      <span style="background:#F3E5F5;color:#6A1B9A;padding:5px 14px;border-radius:50px;font-size:11px;font-weight:700">SCSS Dark/Light</span>
-      <span style="background:#EFEBE9;color:#4E342E;padding:5px 14px;border-radius:50px;font-size:11px;font-weight:700">LGPL-3</span>
-      <span style="background:#E0F2F1;color:#00695C;padding:5px 14px;border-radius:50px;font-size:11px;font-weight:700">Community + Enterprise</span>
-    </div>
-  </div>
-</div>
-
-<!-- ═══════ CTA ═══════ -->
-<div style="background:linear-gradient(135deg,#0B3D2E,#145A3C);border-radius:16px;padding:40px;text-align:center;max-width:1100px;margin:0 auto 30px">
-  <h2 style="color:#fff;font-size:24px;font-weight:700;margin:0 0 10px">Ready to Modernize Your Farm Operations?</h2>
-  <p style="color:#D5F5E3;font-size:14px;margin:0 0 20px;max-width:600px;display:inline-block">The most comprehensive agricultural management module for Odoo 19. Install in under 5 minutes.</p>
+<!-- ══════════ CTA ══════════ -->
+<div style="background:linear-gradient(135deg,#071E14,#0B3D2E,#145A3C);border-radius:16px;padding:40px;text-align:center;max-width:1100px;margin:0 auto 24px">
+  <h2 style="color:#fff;font-size:24px;font-weight:800;margin:0 0 8px">Ready to Modernize Your Farm Operations?</h2>
+  <p style="color:#D5F5E3;font-size:13px;margin:0 0 22px;max-width:560px;display:inline-block">The most comprehensive agricultural management module for Odoo 19. Try the live demo or install in under 5 minutes.</p>
   <div style="display:flex;gap:10px;justify-content:center;flex-wrap:wrap">
-    <a href="https://demo.xamltech.com/web/database/manager" target="_blank" style="background:#2980B9;color:#fff;padding:12px 28px;border-radius:8px;font-weight:700;font-size:14px;text-decoration:none">&#9654; Try Live Demo</a>
-    <a href="https://xamltech.com" style="background:#27AE60;color:#fff;padding:12px 28px;border-radius:8px;font-weight:700;font-size:14px;text-decoration:none">Visit xamltech.com</a>
-    <a href="mailto:support@xamltech.com" style="background:rgba(255,255,255,0.15);color:#fff;padding:12px 28px;border-radius:8px;font-weight:700;font-size:14px;text-decoration:none;border:1px solid rgba(255,255,255,0.3)">Contact Support</a>
+    <a href="https://demo.xamltech.com/web/database/manager" target="_blank" style="background:#2980B9;color:#fff;padding:12px 28px;border-radius:8px;font-weight:800;font-size:14px;text-decoration:none">&#9654; Try Live Demo</a>
+    <a href="https://xamltech.com/erp-agriculture-egypt" target="_blank" style="background:#27AE60;color:#fff;padding:12px 28px;border-radius:8px;font-weight:800;font-size:14px;text-decoration:none">Agriculture ERP Page</a>
+    <a href="https://xamltech.com/addons-store" target="_blank" style="background:rgba(255,255,255,0.12);color:#fff;padding:12px 28px;border-radius:8px;font-weight:700;font-size:14px;text-decoration:none;border:1px solid rgba(255,255,255,0.3)">All XAMLTech Addons</a>
   </div>
 </div>
 
-<!-- ═══════ FOOTER ═══════ -->
-<div style="text-align:center;padding:16px 0;border-top:1px solid #e0e0e0;margin-top:10px">
-  <p style="font-size:13px;color:#999;margin:0">Developed by <strong style="color:#666">XAMLTech</strong> &mdash; Odoo ERP Specialists for Agriculture &amp; Manufacturing</p>
-  <p style="font-size:11px;color:#bbb;margin:4px 0 0">Version 19.0.1.0.0 | License: LGPL-3 | Odoo 19 Enterprise &amp; Community</p>
+<!-- ══════════ FOOTER ══════════ -->
+<div style="text-align:center;padding:14px 0;border-top:1px solid #e0e0e0;margin-top:8px">
+  <p style="font-size:12px;color:#999;margin:0">Developed by <a href="https://xamltech.com" target="_blank" style="color:#0B5D3F;font-weight:700;text-decoration:none">XAMLTech</a> &mdash; Odoo ERP Specialists &bull; <a href="https://xamltech.com/erp-agriculture-egypt" target="_blank" style="color:#0B5D3F;text-decoration:none">Agriculture ERP</a> &bull; <a href="https://xamltech.com/addons-store" target="_blank" style="color:#0B5D3F;text-decoration:none">Addons Store</a> &bull; <a href="https://wa.me/201007982468" target="_blank" style="color:#0B5D3F;text-decoration:none">WhatsApp</a></p>
+  <p style="font-size:10px;color:#bbb;margin:4px 0 0">v19.0.1.0.0 | LGPL-3 | Odoo 19 Enterprise &amp; Community | Aswan, Egypt</p>
 </div>
 
 </section>
