@@ -29,8 +29,13 @@
         * Email Notifications - automated alerts for task assignments
         * Arabic RTL Support - full Arabic language support
     ''',
-    'author': 'XAMLTech',
-    'website': 'https://xamltech.com',
+    'author': 'xamltech',
+    'website': 'https://xamltech.com/',
+    'license': 'LGPL-3',
+    "currency": 'USD',
+    'price': 850.00,
+    'company': 'xamltech',
+    'maintainer': 'Mahmudamen',
     'support': 'support@xamltech.com',
     'license': 'LGPL-3',
     'depends': [
