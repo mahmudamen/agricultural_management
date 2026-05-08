@@ -33,7 +33,7 @@
     'website': 'https://xamltech.com/',
     'license': 'LGPL-3',
     "currency": 'USD',
-    'price': 850.00,
+    'price': 125.00,
     'company': 'xamltech',
     'maintainer': 'Mahmudamen',
     'depends': [
